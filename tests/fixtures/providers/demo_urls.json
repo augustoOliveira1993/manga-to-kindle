@@ -1,0 +1,7 @@
+{
+  "manga_url": "https://fixture.invalid/manga/demo",
+  "chapter_urls": [
+    "https://fixture.invalid/chapter/demo-001",
+    "https://fixture.invalid/chapter/demo-002"
+  ]
+}

@@ -1,0 +1,103 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:manga-to-kindle:contracts:artifact-attestation:1.0",
+  "title": "Manga to Kindle Artifact Attestation",
+  "description": "Hash de saída, execução e estado dos gates de um artefato específico.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "manifest_sha256",
+    "build_started_at_utc",
+    "artifact_name",
+    "artifact_format",
+    "target_pair",
+    "artifact_sha256",
+    "gates",
+    "result"
+  ],
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.0"
+    },
+    "manifest_sha256": {"$ref": "#/$defs/sha256"},
+    "build_started_at_utc": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "artifact_name": {
+      "type": "string",
+      "minLength": 1
+    },
+    "artifact_format": {
+      "type": "string",
+      "enum": ["portable-archive", "inno-installer"]
+    },
+    "target_pair": {"$ref": "#/$defs/targetPair"},
+    "artifact_sha256": {"$ref": "#/$defs/sha256"},
+    "gates": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "architecture_matrix",
+        "license_review",
+        "clean_vm_validation"
+      ],
+      "properties": {
+        "architecture_matrix": {"$ref": "#/$defs/gateState"},
+        "license_review": {"$ref": "#/$defs/gateState"},
+        "clean_vm_validation": {"$ref": "#/$defs/gateState"}
+      }
+    },
+    "result": {
+      "type": "string",
+      "enum": ["pending", "passed", "failed"]
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "result": {"const": "passed"}
+        }
+      },
+      "then": {
+        "properties": {
+          "gates": {
+            "properties": {
+              "architecture_matrix": {"const": "passed"},
+              "license_review": {"const": "passed"},
+              "clean_vm_validation": {"const": "passed"}
+            }
+          }
+        }
+      }
+    }
+  ],
+  "$defs": {
+    "sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "targetPair": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["windows", "architecture"],
+      "properties": {
+        "windows": {
+          "type": "string",
+          "enum": ["Windows 10", "Windows 11"]
+        },
+        "architecture": {
+          "type": "string",
+          "enum": ["x64", "ARM64", "x86"]
+        }
+      }
+    },
+    "gateState": {
+      "type": "string",
+      "enum": ["pending", "passed", "failed"]
+    }
+  }
+}
