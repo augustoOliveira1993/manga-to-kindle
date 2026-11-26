@@ -16,6 +16,7 @@ class DownloadState(StrEnum):
     QUEUED = "queued"
     RUNNING = "running"
     PAUSED = "paused"
+    INTERRUPTED = "interrupted"
     SUCCEEDED = "succeeded"
     FAILED = "failed"
     CANCELLED = "cancelled"
@@ -26,11 +27,23 @@ _ALLOWED_TRANSITIONS = {
     DownloadState.QUEUED: {DownloadState.RUNNING, DownloadState.FAILED, DownloadState.CANCELLED},
     DownloadState.RUNNING: {
         DownloadState.PAUSED,
+        DownloadState.INTERRUPTED,
         DownloadState.SUCCEEDED,
         DownloadState.FAILED,
         DownloadState.CANCELLED,
     },
-    DownloadState.PAUSED: {DownloadState.RUNNING, DownloadState.CANCELLED},
+    DownloadState.PAUSED: {
+        DownloadState.RUNNING,
+        DownloadState.INTERRUPTED,
+        DownloadState.SUCCEEDED,
+        DownloadState.FAILED,
+        DownloadState.CANCELLED,
+    },
+    DownloadState.INTERRUPTED: {
+        DownloadState.RUNNING,
+        DownloadState.SUCCEEDED,
+        DownloadState.CANCELLED,
+    },
 }
 
 
@@ -47,6 +60,7 @@ class DownloadJob:
     progress: int = 0
     total: int | None = None
     cancel_requested: bool = False
+    provider_id: str | None = None
     created_at: datetime = field(default_factory=_utc_now)
     updated_at: datetime = field(default_factory=_utc_now)
 
@@ -62,6 +76,8 @@ class DownloadJob:
             raise DomainValidationError("O progresso não pode exceder o total conhecido.")
         if self.created_at.utcoffset() is None or self.updated_at.utcoffset() is None:
             raise DomainValidationError("Os horários do job precisam conter fuso UTC.")
+        if self.provider_id is not None and not self.provider_id.strip():
+            raise DomainValidationError("O provedor do job não pode ser vazio.")
 
     def transition_to(self, next_state: DownloadState) -> DownloadJob:
         if self.state in _TERMINAL_STATES:

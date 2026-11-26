@@ -29,7 +29,7 @@ class ChapterSelection:
         if first_id not in positions or last_id not in positions:
             raise KeyError("Os extremos precisam existir na ordem atual do catálogo.")
         start, end = sorted((positions[first_id], positions[last_id]))
-        self._selected_ids.update(ordered_ids[start : end + 1])
+        self._selected_ids = set(ordered_ids[start : end + 1])
 
     def reconcile(self, ordered_ids: tuple[UUID, ...]) -> None:
         present = set(ordered_ids)

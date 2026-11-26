@@ -12,6 +12,7 @@ from sqlalchemy import delete, func, select
 from manga_to_kindle.domain.catalog import CatalogSnapshot
 from manga_to_kindle.domain.chapter import Chapter
 from manga_to_kindle.domain.errors import DomainValidationError
+from manga_to_kindle.domain.library import normalize_search_text
 from manga_to_kindle.domain.manga import Manga
 from manga_to_kindle.infrastructure.persistence.database import SQLiteDatabase
 from manga_to_kindle.infrastructure.persistence.models import (
@@ -51,6 +52,9 @@ class CatalogRepository:
             manga.source_ref = snapshot.source_id
             manga.provider_id = snapshot.provider_id
             manga.author = snapshot.manga.author
+            manga.search_key = normalize_search_text(
+                f"{snapshot.manga.title} {snapshot.manga.author or ''}"
+            )
             manga.cover_path = (
                 snapshot.manga.cover_path.as_posix()
                 if snapshot.manga.cover_path is not None
@@ -83,6 +87,9 @@ class CatalogRepository:
                 record.title = chapter.title
                 record.number = str(chapter.number) if chapter.number is not None else None
                 record.volume = str(chapter.volume) if chapter.volume is not None else None
+                record.search_key = normalize_search_text(
+                    f"{record.title or ''} {record.number or ''} {record.volume or ''}"
+                )
                 record.available = chapter.available
 
             session.flush()

@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from collections.abc import Callable, Mapping
+from collections.abc import Mapping
 
 from PySide6.QtCore import Qt, Signal
 from PySide6.QtGui import QCloseEvent
@@ -19,16 +19,18 @@ from PySide6.QtWidgets import (
 )
 
 from manga_to_kindle.application.ui.theme_mode import ThemeMode
-from manga_to_kindle.domain.catalog import CatalogSnapshot
 from manga_to_kindle.presentation.qt.shortcuts import bind_navigation_shortcuts
 from manga_to_kindle.presentation.qt.theme import stylesheet_for
 from manga_to_kindle.presentation.qt.views.add_manga_view import AddMangaView
 from manga_to_kindle.presentation.qt.views.components import SimulationBanner
 from manga_to_kindle.presentation.qt.views.conversion_view import ConversionView
 from manga_to_kindle.presentation.qt.views.downloads_view import DownloadsView
+from manga_to_kindle.presentation.qt.views.image_import_view import ImageImportView
 from manga_to_kindle.presentation.qt.views.library_view import LibraryView
+from manga_to_kindle.presentation.qt.views.manual_send_view import ManualSendView
 from manga_to_kindle.presentation.qt.views.settings_view import SettingsView
 from manga_to_kindle.presentation.qt.workers.adapter import OperationRunner
+from manga_to_kindle.presentation.qt.workers.demo import CatalogQuery
 
 
 class MainWindow(QMainWindow):
@@ -38,16 +40,18 @@ class MainWindow(QMainWindow):
 
     _PAGES: tuple[tuple[str, str, str, str], ...] = (
         ("library", "▤  Biblioteca", "Biblioteca", "Sua coleção local"),
-        ("add", "＋  Adicionar mangá", "Adicionar mangá", "Validação somente local"),
-        ("downloads", "↓  Downloads", "Downloads", "Acompanhe demonstrações"),
-        ("conversion", "▣  Conversão", "Conversão", "Prévia sem criar arquivos"),
+        ("add", "＋  Adicionar mangá", "Adicionar mangá", "Catálogo local de demonstração"),
+        ("downloads", "↓  Downloads", "Downloads", "Fila local; fonte autorizada indisponível"),
+        ("conversion", "▣  Conversão", "Conversão", "EPUB e CBZ locais; sem envio"),
+        ("send", "↗  Enviar ao Kindle", "Enviar ao Kindle", "Fluxo manual oficial"),
         ("settings", "⚙  Configurações", "Configurações", "Aparência e preferências"),
+        ("images", "▧  Importar imagens", "Importar imagens", "Origem local autorizada"),
     )
 
     def __init__(
         self,
         parent: QWidget | None = None,
-        catalog_query: Callable[[str], CatalogSnapshot] | None = None,
+        catalog_query: CatalogQuery | None = None,
     ) -> None:
         super().__init__(parent)
         self._allow_close = False
@@ -130,10 +134,12 @@ class MainWindow(QMainWindow):
         content_layout.addWidget(self.simulation_banner)
         self.page_stack = QStackedWidget()
         self.page_stack.setObjectName("pageStack")
-        self.library_view = LibraryView()
+        self.library_view = LibraryView(self.operation_runner)
         self.add_manga_view = AddMangaView(self.operation_runner, catalog_query)
         self.downloads_view = DownloadsView(self.operation_runner)
+        self.image_import_view = ImageImportView(self.operation_runner)
         self.conversion_view = ConversionView(self.operation_runner)
+        self.manual_send_view = ManualSendView(self.operation_runner)
         self.settings_view = SettingsView()
         self.add_manga_view.chapter_list.selection_changed.connect(
             self.conversion_view.set_selected_chapters
@@ -141,12 +147,15 @@ class MainWindow(QMainWindow):
         self.library_view.add_manga_requested.connect(
             lambda: self.set_current_page("add")
         )
+        self.conversion_view.manual_send_requested.connect(self._open_manual_send)
         self._page_widgets: Mapping[str, QWidget] = {
             "library": self.library_view,
             "add": self.add_manga_view,
             "downloads": self.downloads_view,
             "conversion": self.conversion_view,
+            "send": self.manual_send_view,
             "settings": self.settings_view,
+            "images": self.image_import_view,
         }
         for key, _, _, _ in self._PAGES:
             self.page_stack.addWidget(self._page_widgets[key])
@@ -178,12 +187,18 @@ class MainWindow(QMainWindow):
         )
         if index is None:
             return
+        if page != "add" and self.page_stack.currentWidget() is self.add_manga_view:
+            self.add_manga_view.cancel_query()
         key, _, title, subtitle = self._PAGES[index]
         self.page_stack.setCurrentIndex(index)
         self.page_title.setText(title)
         self.page_subtitle.setText(subtitle)
         self.navigation_buttons[key].setChecked(True)
         self.page_changed.emit(key)
+
+    def _open_manual_send(self) -> None:
+        self.set_current_page("send")
+        self.manual_send_view.refresh()
 
     def set_theme(self, theme: ThemeMode, *, emit: bool = False) -> None:
         self._theme = theme

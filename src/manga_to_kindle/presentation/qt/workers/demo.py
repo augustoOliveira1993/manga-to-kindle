@@ -1,9 +1,11 @@
-"""Operações de interface sintéticas sem rede ou gravação de conteúdo."""
+"""Consulta offline do catálogo e operações de demonstração explícitas."""
 
 from __future__ import annotations
 
 from collections.abc import Callable
+from typing import Protocol
 
+from manga_to_kindle.application.catalog.errors import CatalogRefreshCancelled
 from manga_to_kindle.domain.catalog import CatalogSnapshot
 from manga_to_kindle.presentation.qt.view_models import DemoOutcome, DemoResult
 from manga_to_kindle.presentation.qt.workers.adapter import (
@@ -17,29 +19,35 @@ class DemoOperationError(RuntimeError):
     code = "DEMO_OPERATION_FAILED"
 
 
-type CatalogQuery = Callable[[str], CatalogSnapshot]
+class CatalogQuery(Protocol):
+    def __call__(
+        self,
+        value: str,
+        *,
+        is_cancelled: Callable[[], bool] | None = None,
+    ) -> CatalogSnapshot: ...
 
 
 def make_catalog_operation(
     query: CatalogQuery,
     value: str,
-    outcome: DemoOutcome,
-    *,
-    total_steps: int = 8,
-    delay_seconds: float = 0.025,
 ) -> BackgroundOperation:
-    """Executa consulta de fixture no worker, com progresso e cancelamento cooperativo."""
+    """Executa a consulta atual no worker e não publica resultado cancelado."""
 
     def run(cancellation: CancellationToken, report: ProgressReporter) -> CatalogSnapshot | None:
-        for step in range(1, total_steps + 1):
-            if cancellation.wait(delay_seconds):
-                return None
-            report(step, total_steps, "Consultando catálogo local")
-            if outcome is DemoOutcome.ERROR and step == max(1, total_steps // 2):
-                raise DemoOperationError("Falha simulada.")
-        if outcome is DemoOutcome.EMPTY:
+        if cancellation.cancelled:
             return None
-        return query(value)
+        report(0, 1, "Consultando catálogo local")
+        try:
+            snapshot = query(value, is_cancelled=lambda: cancellation.cancelled)
+        except CatalogRefreshCancelled:
+            if cancellation.cancelled:
+                return None
+            raise
+        if cancellation.cancelled:
+            return None
+        report(1, 1, "Catálogo recebido")
+        return snapshot
 
     return run
 

@@ -1,10 +1,11 @@
 {
   "chapters": [
-    {"id": "chapter-10", "number": "10", "source_order": 4},
-    {"id": "special-b", "number": null, "source_order": 7},
+    {"id": "chapter-10", "number": "10", "source_order": 5},
+    {"id": "special-b", "number": null},
     {"id": "chapter-1", "number": "1", "source_order": 1},
-    {"id": "chapter-1-5", "number": "1.5", "source_order": 2},
-    {"id": "chapter-2", "number": "2", "source_order": 3},
+    {"id": "chapter-1-extra", "number": "1", "source_order": 2},
+    {"id": "chapter-1-5", "number": "1.5", "source_order": 3},
+    {"id": "chapter-2", "number": "2", "source_order": 4},
     {"id": "special-a", "number": null, "source_order": 6}
   ]
 }

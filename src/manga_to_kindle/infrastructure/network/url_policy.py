@@ -43,12 +43,19 @@ class ExternalUrlPolicy:
         *,
         allowed_hosts: frozenset[str],
         allowed_ports: frozenset[int] = frozenset({80, 443}),
+        allowed_schemes: frozenset[str] = frozenset({"https"}),
     ) -> ValidatedDestination:
         normalized_hosts = frozenset(
             host.encode("idna").decode("ascii").lower().rstrip(".")
             for host in allowed_hosts
         )
-        if url.host not in normalized_hosts or url.port not in allowed_ports:
+        if (
+            not allowed_schemes
+            or not allowed_schemes <= {"http", "https"}
+            or url.scheme not in allowed_schemes
+            or url.host not in normalized_hosts
+            or url.port not in allowed_ports
+        ):
             raise UnsafeDestination()
         try:
             literal = ipaddress.ip_address(url.host)
@@ -75,6 +82,7 @@ class ExternalUrlPolicy:
         *,
         allowed_hosts: frozenset[str],
         allowed_ports: frozenset[int] = frozenset({80, 443}),
+        allowed_schemes: frozenset[str] = frozenset({"https"}),
         max_redirects: int = 5,
     ) -> tuple[NormalizedUrl, ...]:
         if max_redirects < 0 or len(locations) > min(max_redirects, 5):
@@ -84,6 +92,7 @@ class ExternalUrlPolicy:
                 start,
                 allowed_hosts=allowed_hosts,
                 allowed_ports=allowed_ports,
+                allowed_schemes=allowed_schemes,
             )
             chain = [start]
             current = start
@@ -99,6 +108,7 @@ class ExternalUrlPolicy:
                     target,
                     allowed_hosts=allowed_hosts,
                     allowed_ports=allowed_ports,
+                    allowed_schemes=allowed_schemes,
                 )
                 chain.append(target)
                 seen.add(rendered)

@@ -1,15 +1,19 @@
 from __future__ import annotations
 
 import socket
+import time
+from dataclasses import replace
 from datetime import UTC, datetime
+from threading import Event
 
 import pytest
 from PySide6.QtCore import QEventLoop, Qt, QTimer
 from PySide6.QtTest import QTest
 
+from manga_to_kindle.application.catalog.errors import CatalogRefreshCancelled
 from manga_to_kindle.domain.catalog import CatalogSnapshot
+from manga_to_kindle.domain.providers import ProviderUnavailable
 from manga_to_kindle.presentation.qt.fixtures import build_demo_catalog
-from manga_to_kindle.presentation.qt.view_models import DemoOutcome
 
 
 def _wait_for_operation(view, qt_core_app) -> None:
@@ -36,7 +40,7 @@ def test_fixture_url_loads_authorized_offline_catalog_without_network(
     QTest.mouseClick(view.query_button, Qt.MouseButton.LeftButton)
     _wait_for_operation(view, qt_core_app)
 
-    assert view.chapter_list.count() == 2
+    assert view.chapter_list.count() == 7
     assert view.selection_widget.isVisible()
     assert "demonstração" in view.status_label.text().lower()
     assert view.selected_chapter_ids == ()
@@ -129,7 +133,7 @@ def test_chapter_interval_selection_is_inclusive_and_uses_stable_ids(
         simulated=True,
     )
     view.url_input.setText("https://fixture.invalid/manga/demo")
-    view.set_catalog_query(lambda _url: snapshot)
+    view.set_catalog_query(lambda _url, *, is_cancelled=None: snapshot)
     QTest.mouseClick(view.query_button, Qt.MouseButton.LeftButton)
     _wait_for_operation(view, qt_core_app)
     view.range_start_combo.setCurrentIndex(1)
@@ -141,6 +145,29 @@ def test_chapter_interval_selection_is_inclusive_and_uses_stable_ids(
     assert view.selection_summary.text() == "3 capítulos selecionados"
 
 
+def test_catalog_interval_crosses_special_chapters_and_replaces_other_selection(
+    main_window, qt_core_app
+) -> None:
+    main_window.set_current_page("add")
+    view = main_window.add_manga_view
+    view.url_input.setText("https://fixture.invalid/manga/demo")
+    QTest.mouseClick(view.query_button, Qt.MouseButton.LeftButton)
+    _wait_for_operation(view, qt_core_app)
+    view.chapter_list.item(0).setCheckState(Qt.CheckState.Checked)
+    view.range_start_combo.setCurrentIndex(6)
+    view.range_end_combo.setCurrentIndex(3)
+
+    QTest.mouseClick(view.select_range_button, Qt.MouseButton.LeftButton)
+    qt_core_app.processEvents()
+
+    expected_ids = tuple(
+        view.chapter_list.item(row).data(Qt.ItemDataRole.UserRole)
+        for row in range(3, 7)
+    )
+    assert view.selected_chapter_ids == expected_ids
+    assert view.selection_summary.text() == "4 capítulos selecionados"
+
+
 def test_catalog_refresh_keeps_only_selection_ids_that_still_exist(
     main_window, qt_core_app
 ) -> None:
@@ -149,10 +176,11 @@ def test_catalog_refresh_keeps_only_selection_ids_that_still_exist(
     view.url_input.setText("https://fixture.invalid/manga/demo")
     QTest.mouseClick(view.query_button, Qt.MouseButton.LeftButton)
     _wait_for_operation(view, qt_core_app)
-    first_id, second_id = view.selected_chapter_ids or tuple(
+    chapter_ids = view.selected_chapter_ids or tuple(
         view.chapter_list.item(row).data(Qt.ItemDataRole.UserRole)
         for row in range(view.chapter_list.count())
     )
+    first_id, second_id = chapter_ids[:2]
     view.chapter_list.item(0).setCheckState(Qt.CheckState.Checked)
     qt_core_app.processEvents()
 
@@ -162,21 +190,89 @@ def test_catalog_refresh_keeps_only_selection_ids_that_still_exist(
     assert view.selected_chapter_ids == (first_id,)
     assert second_id not in view.selected_chapter_ids
 
-def test_empty_catalog_and_simulated_error_have_recovery_action(
+def test_empty_catalog_is_displayed_as_a_valid_result(main_window, qt_core_app) -> None:
+    main_window.set_current_page("add")
+    view = main_window.add_manga_view
+    catalog = build_demo_catalog()
+    snapshot = CatalogSnapshot(
+        provider_id="fixture",
+        source_id="fixture:demo",
+        manga=replace(catalog.manga, chapters=()),
+        updated_at=datetime.now(UTC),
+        simulated=True,
+    )
+    view.set_catalog_query(lambda _url, *, is_cancelled=None: snapshot)
+    view.url_input.setText("https://fixture.invalid/manga/demo")
+    QTest.mouseClick(view.query_button, Qt.MouseButton.LeftButton)
+    _wait_for_operation(view, qt_core_app)
+    assert "nenhum capítulo" in view.status_label.text().lower()
+    assert view.chapter_list.count() == 0
+    assert view.selection_widget.isVisible()
+
+
+def test_failed_refresh_keeps_last_catalog_and_selection_visible(
     main_window, qt_core_app
 ) -> None:
     main_window.set_current_page("add")
     view = main_window.add_manga_view
-    view.url_input.setText("https://fixture.invalid/manga/demo")
-    view.outcome_combo.setCurrentIndex(view.outcome_combo.findData(DemoOutcome.EMPTY))
-    QTest.mouseClick(view.query_button, Qt.MouseButton.LeftButton)
-    _wait_for_operation(view, qt_core_app)
-    assert "sem capítulos" in view.status_label.text().lower()
-    assert not view.selection_widget.isVisible()
+    catalog = build_demo_catalog()
+    snapshot = CatalogSnapshot(
+        provider_id="fixture",
+        source_id="fixture:demo",
+        manga=catalog.manga,
+        updated_at=datetime.now(UTC),
+        simulated=True,
+    )
+    calls = 0
 
-    view.outcome_combo.setCurrentIndex(view.outcome_combo.findData(DemoOutcome.ERROR))
+    def query(_url: str, *, is_cancelled=None) -> CatalogSnapshot:
+        nonlocal calls
+        calls += 1
+        if calls == 1:
+            return snapshot
+        raise ProviderUnavailable()
+
+    view.set_catalog_query(query)
+    view.url_input.setText("https://fixture.invalid/manga/demo")
     QTest.mouseClick(view.query_button, Qt.MouseButton.LeftButton)
     _wait_for_operation(view, qt_core_app)
-    assert "falha simulada" in view.status_label.text().lower()
+    selected_id = catalog.chapters[0].id
+    view.chapter_list.item(0).setCheckState(Qt.CheckState.Checked)
+    qt_core_app.processEvents()
+
+    QTest.mouseClick(view.query_button, Qt.MouseButton.LeftButton)
+    _wait_for_operation(view, qt_core_app)
+
+    assert view.chapter_list.isVisible()
+    assert view.selected_chapter_ids == (selected_id,)
+    assert "temporariamente indisponível" in view.status_label.text().lower()
+    assert "mantido" in view.status_label.text().lower()
+    assert view.query_button.isEnabled()
+
+
+def test_navigation_cancels_catalog_query(main_window, qt_core_app) -> None:
+    main_window.set_current_page("add")
+    view = main_window.add_manga_view
+    started = Event()
+    observed_cancellation = Event()
+
+    def query(_url: str, *, is_cancelled=None) -> CatalogSnapshot:
+        started.set()
+        while is_cancelled is None or not is_cancelled():
+            time.sleep(0.005)
+        observed_cancellation.set()
+        raise CatalogRefreshCancelled("Consulta cancelada antes da gravação.")
+
+    view.set_catalog_query(query)
+    view.url_input.setText("https://fixture.invalid/manga/demo")
+    QTest.mouseClick(view.query_button, Qt.MouseButton.LeftButton)
+    assert started.wait(timeout=2)
+
+    main_window.set_current_page("library")
+    _wait_for_operation(view, qt_core_app)
+    main_window.set_current_page("add")
+
+    assert observed_cancellation.is_set()
+    assert "cancelada" in view.status_label.text().lower()
     assert view.query_button.isEnabled()
 

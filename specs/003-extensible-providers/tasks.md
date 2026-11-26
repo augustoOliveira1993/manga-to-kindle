@@ -10,17 +10,17 @@
 
 ## Fase 1 — Setup
 
-- [ ] T001 [P] Confirmar no `pyproject.toml` e lock apenas as dependências HTTP/parsing já justificadas no plano; sem Playwright sem necessidade autorizada.
-- [ ] T002 [P] Criar fixtures de provedores/URLs em `tests/fixtures/providers/` sem rede externa.
+- [x] T001 [P] Confirmar no `pyproject.toml` e lock apenas as dependências HTTP/parsing já justificadas no plano; sem Playwright sem necessidade autorizada.
+- [x] T002 [P] Criar fixtures de provedores/URLs em `tests/fixtures/providers/` sem rede externa.
 
 ## Fase 2 — Foundational
 
-- [ ] T003 Criar testes do protocolo, capacidades, erros e registro em `tests/unit/domain/test_manga_provider.py` e `tests/unit/application/test_provider_registry.py`.
-- [ ] T004 Definir contrato tipado MangaProvider (`supports`, `get_manga`, `get_chapters`, `get_pages`), capacidades declaradas e erros tipados em `src/manga_to_kindle/domain/providers.py`.
-- [ ] T005 Criar testes de normalização, esquema, hostname, IP privado, DNS e redirecionamentos em `tests/unit/security/test_external_url_policy.py`.
-- [ ] T006 Implementar política central de URL/destino, validação a cada redirect e recusa de redes privadas em `src/manga_to_kindle/infrastructure/network/url_policy.py`; não realizar chamadas durante a validação.
-- [ ] T007 Criar testes para seleção determinística/ambiguidade do provedor em `tests/unit/application/test_provider_registry.py`.
-- [ ] T008 Implementar registro e seleção por `supports` com injeção explícita de dependências em `src/manga_to_kindle/application/providers/registry.py`.
+- [x] T003 Criar testes do protocolo, capacidades, erros e registro em `tests/unit/domain/test_manga_provider.py` e `tests/unit/application/test_provider_registry.py`.
+- [x] T004 Definir contrato tipado MangaProvider (`supports`, `get_manga`, `get_chapters`, `get_pages`), capacidades declaradas e erros tipados em `src/manga_to_kindle/domain/providers.py`.
+- [x] T005 Criar testes de normalização, esquema, hostname, IP privado, DNS e redirecionamentos em `tests/unit/security/test_external_url_policy.py`.
+- [x] T006 Implementar política central de URL/destino, validação a cada redirect e recusa de redes privadas em `src/manga_to_kindle/infrastructure/network/url_policy.py`; não realizar chamadas durante a validação.
+- [x] T007 Criar testes para seleção determinística/ambiguidade do provedor em `tests/unit/application/test_provider_registry.py`.
+- [x] T008 Implementar registro e seleção por `supports` com injeção explícita de dependências em `src/manga_to_kindle/application/providers/registry.py`.
 
 ## Fase 3 — Histórias de usuário
 
@@ -30,8 +30,8 @@
 
 **Teste independente**: Consultar uma URL sintética de fixture e verificar resultados determinísticos em `get_manga`, `get_chapters` e `get_pages`, sem resolução DNS ou rede.
 
-- [ ] T009 [US1] Criar testes de contrato e dados artificiais do provider de demonstração em `tests/unit/infrastructure/providers/test_fixture_provider.py`.
-- [ ] T010 [US1] Implementar provider de fixtures determinístico, com URLs sintéticas e rótulo de simulação, em `src/manga_to_kindle/infrastructure/providers/fixture_provider.py`.
+- [x] T009 [US1] Criar testes de contrato e dados artificiais do provider de demonstração em `tests/unit/infrastructure/providers/test_fixture_provider.py`.
+- [x] T010 [US1] Implementar provider de fixtures determinístico, com URLs sintéticas e rótulo de simulação, em `src/manga_to_kindle/infrastructure/providers/fixture_provider.py`.
 
 ### US2 — Rejeitar entrada inválida ou destino inseguro (prioridade não especificada na spec)
 
@@ -39,8 +39,8 @@
 
 **Teste independente**: Passar URLs malformadas, esquemas proibidos, fontes sem provedor, endereços privados e redirecionamentos inseguros; verificar erro tipado e nenhuma conexão ao destino rejeitado.
 
-- [ ] T011 [US2] Cobrir esquemas não HTTP(S), credenciais embutidas, hosts inválidos, loopback/privados, DNS alterado e redirect inseguro em `tests/security/test_provider_url_policy.py`.
-- [ ] T012 [US2] Integrar erros legíveis e redigidos à fronteira de aplicação em `src/manga_to_kindle/application/providers/resolve_provider.py`; recusar fonte não registrada sem rede.
+- [x] T011 [US2] Cobrir esquemas não HTTP(S), credenciais embutidas, hosts inválidos, loopback/privados, DNS alterado e redirect inseguro em `tests/security/test_provider_url_policy.py`.
+- [x] T012 [US2] Integrar erros legíveis e redigidos à fronteira de aplicação em `src/manga_to_kindle/application/providers/resolve_provider.py`; recusar fonte não registrada sem rede.
 
 ### US3 — Adicionar provedores autorizados (P2)
 
@@ -48,18 +48,18 @@
 
 **Teste independente**: Registrar um provedor de teste com capacidades explícitas e verificar seleção única, ausência de seleção, seleção ambígua e bloqueio de capacidade sem evidência autorizada.
 
-- [ ] T013 [US3] Criar testes de declaração de capabilities e gate sem fonte aprovada em `tests/integration/test_provider_authorization_gate.py`.
-- [ ] T014 [US3] Documentar procedimento de revisão de autorização, licenças, limites e evidência para futuro provider em `specs/003-extensible-providers/research.md`; não implementar provider real sem evidência aprovada.
+- [x] T013 [US3] Criar testes de declaração de capabilities e gate sem fonte aprovada em `tests/integration/test_provider_authorization_gate.py`.
+- [x] T014 [US3] Documentar procedimento de revisão de autorização, licenças, limites e evidência para futuro provider em `specs/003-extensible-providers/research.md`; não implementar provider real sem evidência aprovada.
 
 ## Fase 4 — Integração
 
-- [ ] T015 Integrar provider de fixtures ao caso de uso F004 e ao boundary da UI F002 sem alterar a navegação em `tests/integration/test_provider_catalog_boundary.py`.
-- [ ] T016 Testar que erros tipados não vazam URLs com credenciais nem dados sensíveis para logs em `tests/security/test_provider_log_redaction.py`.
+- [x] T015 Integrar provider de fixtures ao caso de uso F004 e ao boundary da UI F002 sem alterar a navegação em `tests/integration/test_provider_catalog_boundary.py`.
+- [x] T016 Testar que erros tipados não vazam URLs com credenciais nem dados sensíveis para logs em `tests/security/test_provider_log_redaction.py`.
 
 ## Fase 5 — Polish e validação
 
-- [ ] T017 Atualizar README/quickstart para declarar funcionamento offline de fixtures e bloqueio de fontes reais.; arquivos/componentes: `README.md; specs/003-extensible-providers/quickstart.md`
-- [ ] T018 Executar testes focados de contratos e segurança; registrar qualquer dependência de integração autorizada ainda bloqueada.; arquivos/componentes: `tests/security/test_provider_log_redaction.py; specs/003-extensible-providers/quickstart.md`
+- [x] T017 Atualizar README/quickstart para declarar funcionamento offline de fixtures e bloqueio de fontes reais.; arquivos/componentes: `README.md; specs/003-extensible-providers/quickstart.md`
+- [x] T018 Executar testes focados de contratos e segurança; registrar qualquer dependência de integração autorizada ainda bloqueada.; arquivos/componentes: `tests/security/test_provider_log_redaction.py; specs/003-extensible-providers/quickstart.md`
 
 ## Dependências e estratégia de execução
 

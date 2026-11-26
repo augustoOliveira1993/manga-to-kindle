@@ -6,7 +6,7 @@
 
 **Status**: Rascunho
 
-**Entrada**: Exportar páginas ilustradas como EPUB com metadados, capa, sumário, ordem e direção configurável; permitir saída por capítulo ou volume, divisão por tamanho e CBZ opcional. Oferecer adaptador opcional para KCC CLI com detecção e argumentos verificados na instalação real, e fallback EPUB nativo com EbookLib. Validar estrutura e testar manualmente em Kindle real; não prometer compatibilidade de layout fixo com Send to Kindle sem evidência. Considerar alternativa local compatível com USB somente se o conversor suportar e validar o formato.
+**Entrada**: Exportar páginas ilustradas como EPUB com metadados, capa, sumário, ordem e direção configurável; permitir saída por capítulo ou volume, divisão por tamanho e CBZ opcional. Gerar EPUB 3 nativamente com serialização XML e ZIP da biblioteca padrão Python, sem biblioteca EPUB de terceiros. Oferecer adaptador opcional para KCC CLI somente com versão/opções verificadas na instalação real. Validar estrutura e testar manualmente em Kindle real; não prometer compatibilidade de layout fixo com Send to Kindle sem evidência. Considerar alternativa local compatível com USB somente se o conversor suportar e validar o formato.
 
 ## Histórias de Usuário e Testes (obrigatório)
 
@@ -89,7 +89,7 @@ Como pessoa usuária, quero usar uma instalação compatível do KCC ou escolher
 - **RF-007**: Se não houver capa local fornecida, o aplicativo deve criar uma capa tipográfica neutra com o título e, se conhecido, autor, sem arte ou metadados bibliográficos inventados; a interface deve identificá-la como gerada.
 - **RF-008**: Como EPUB 3 exige idioma e identificador, se o idioma não estiver informado, a interface deve pedir uma seleção válida antes da exportação. O identificador deve ser exclusivo do pacote e não pode ser apresentado como ISBN.
 - **RF-009**: O EPUB deve incluir conteúdo de página em layout fixo com dimensão coerente com o DeviceProfile selecionado, capa, direção e ordem registradas. Cada página do livro deve corresponder a uma página processada, sem anexar recursos externos.
-- **RF-010**: O resultado EPUB nativo deve ser gerado por EbookLib, sujeito à validação de sua versão para a estrutura EPUB exigida, inclusive layout fixo por recursos documentados, ao teste de compatibilidade com Python suportado e à revisão da licença AGPL-3.0 antes de inclusão na distribuição.
+- **RF-010**: O resultado EPUB 3 nativo deve ser gerado por writer próprio que use apenas `zipfile` e `xml.etree.ElementTree` da biblioteca padrão Python 3.12. O pacote deve seguir a estrutura normativa, inclusive layout fixo, sem dependência de biblioteca EPUB de terceiros. A implementação deve ser coberta por testes de contrato e validada com EPUBCheck antes da publicação.
 - **RF-011**: A estrutura final deve ser validada antes de aparecer como concluída: contêiner EPUB íntegro, metadados obrigatórios, capa, recursos referenciados presentes, sumário navegável, spine ordenado e sem referências externas ou scripts. Títulos e autores devem ser escapados como texto, não interpretados como marcação. A suíte de aceitação deve executar EPUBCheck em versão registrada e não aceitar erros de conformidade.
 - **RF-012**: O EPUB nativo é o fallback quando KCC estiver ausente, incompatível, cancelado, tiver falhado ou não possuir argumento confirmado para a opção solicitada. Nenhum resultado parcial do KCC pode substituir um EPUB nativo válido.
 - **RF-013**: O CBZ é opcional e deve conter os derivados processados selecionados, em sequência estável indicada por nomes ordenáveis, sem alterar ou converter os originais. CBZ não deve ser apresentado como portador universal da direção de navegação; leitores determinam sua própria configuração, e direção KCC só pode ser aplicada quando verificada para a versão/formato.
@@ -173,15 +173,15 @@ Como pessoa usuária, quero usar uma instalação compatível do KCC ou escolher
 - F004 — Catálogo e capítulos do Manga to Kindle: metadados opcionais, volume, IDs e ordem canônica.
 - F005 — Downloads do Manga to Kindle: Page local, identidade e ordem de páginas, hashes e preservação dos originais.
 - F006 — Importação e processamento de imagens do Manga to Kindle: ProcessedPages, dimensões do perfil e imagens prontas para empacotamento.
-- EbookLib: dependência direta prevista para EPUB nativo, sujeita à aprovação de licença AGPL-3.0 e à compatibilidade do release selecionado com Python 3.12+.
+- Biblioteca padrão Python 3.12 (`zipfile`, `xml.etree.ElementTree`) para empacotar e serializar o EPUB; nenhum writer EPUB de terceiros é incluído.
 - KCC: ferramenta externa opcional, nunca instalada ou baixada pelo app. Argumentos e formatos devem vir da instalação detectada e documentação/release correspondente.
 - EPUBCheck: ferramenta de validação de desenvolvimento/aceitação a fixar em versão documentada; não é necessária no caminho de execução local da pessoa usuária.
 - Não foi encontrado docs/roadmap.md; a ordem e futuras dependências devem ser reconciliadas quando o roadmap existir.
 
 ### Bloqueios e Gates
 
-- **B007-EBOOKLIB-LICENSE**: A fonte oficial atual do EbookLib declara AGPL-3.0. Antes de adicioná-lo a uv.lock/distribuição, a licença deve ser revisada para o modelo de distribuição do Manga to Kindle. Sem aprovação, não incluir a dependência nem substituir silenciosamente por outra biblioteca; registrar a decisão de produto.
-- **B007-EBOOKLIB-FXL**: Embora a documentação oficial confirme geração EPUB2/EPUB3 e suporte a metadados, capa, sumário e spine, a capacidade da versão escolhida de gerar o layout fixo necessário por recursos documentados deve ser demonstrada com EPUBCheck e fixtures. Sem essa prova, não inventar APIs nem anunciar EPUB nativo fixed layout; registrar o bloqueio para decisão de produto.
+- **B007-EBOOKLIB-LICENSE**: Resolvido em 25/11/2026 por decisão explícita do usuário de alterar a arquitetura para um writer próprio com a biblioteca padrão. EbookLib não será adicionado ao lock nem à distribuição.
+- **B007-EPUB-FXL**: O writer próprio deve emitir as propriedades e dimensões fixed-layout definidas no EPUB 3.3 e passar EPUBCheck 5.4.0; até essa validação, não anunciar saída conformante ou compatibilidade com Send to Kindle.
 - **B007-KCC-NETWORK**: A fonte oficial atual do KCC informa conexões de rede para verificação de versão/avisos durante inicialização. Não executar KCC nem consultar sua ajuda sem aviso; usar somente se a versão instalada oferecer modo sem conexões verificável ou após autorização explícita por execução. Se não autorizado, manter o fallback local.
 - **B007-KCC-CAPABILITY**: Cada formato/opção solicitado depende de compatibilidade comprovada para a versão executável detectada. Ausência de confirmação bloqueia somente esse adaptador/formato, não a geração EPUB nativa aprovada.
 
@@ -193,7 +193,7 @@ Como pessoa usuária, quero usar uma instalação compatível do KCC ou escolher
 | Versão do KCC muda opções ou padrões e corrompe saída. | Detectar versão/capacidades, verificar ajuda/documentação da instalação, usar testes de contrato e fallback sem argumentos adivinhados. |
 | KCC envia telemetria/verificação sem consentimento ou registra títulos e caminhos. | Aviso por execução, opt-in de rede, logs redigidos e fallback nativo quando a conexão for recusada. |
 | KCC modifica ou apaga imagens de entrada. | Usar cópias de estágio, nunca fornecer originais como destino de saída e nunca ativar opção destrutiva. |
-| EbookLib licenciação incompatível com distribuição. | Gate de revisão antes da dependência e da publicação; decisão documentada. |
+| Writer próprio produz estrutura EPUB inválida ou fixed layout inconsistente. | Serialização com XML seguro, validação interna de pacote e EPUBCheck 5.4.0 antes de publicar. |
 | Autor, idioma, volume ou ISBN são inventados para preencher metadados obrigatórios. | Exigir idioma fornecido, omitir autor/volume ausentes e usar ID técnico que não se apresenta como ISBN. |
 | Divisão gera partes incompletas ou além do limite. | Medir tamanho final, dividir em fronteiras, verificar cada artefato e falhar quando uma página não cabe. |
 | EPUB fixo se comporta diferente entre leitores. | Declarar limite, validar no Kindle físico e não inferir suporte Send to Kindle da aceitação geral do EPUB. |
@@ -206,8 +206,8 @@ Como pessoa usuária, quero usar uma instalação compatível do KCC ou escolher
 - Provedor remoto, download de capítulos, scraping ou retirada de B003-REAL-SOURCE.
 - Conversão de imagens fonte ou edição de originais; OCR, tradução, compressão inteligente, restauração e leitura de painéis.
 - Bundling, instalação automática, atualização ou redistribuição do KCC executável.
-- Inventar/assumir argumentos CLI, formatos de saída, recursos, versão ou comportamento do KCC/EbookLib.
-- Publicar ou redistribuir EbookLib antes de aprovar compatibilidade de licença.
+- Inventar/assumir argumentos CLI, formatos de saída, recursos, versão ou comportamento do KCC.
+- Adicionar bibliotecas de autoria EPUB de terceiros sem outra decisão explícita de arquitetura/licença.
 - Exportar identificadores como ISBN, nome de autor padrão do conversor ou idioma presumido do sistema.
 
 ### Estratégia de Verificação
@@ -217,8 +217,8 @@ Usar Pytest com fixtures locais para metadados, ordem, direções, covers, volum
 ### Referências Verificadas
 
 - Repositório oficial KCC: https://github.com/ciromattia/kcc — CLI, formatos, perfis, artefato dual MOBI/AZW3, comportamento de direção em CBZ, conexões de versão/avisos e licença do projeto; conferir a versão instalada antes de usar qualquer argumento.
-- Repositório oficial EbookLib: https://github.com/aerkalov/ebooklib — leitura/escrita EPUB2/EPUB3, recursos de metadados/capa/sumário/spine, compatibilidade declarada e licença AGPL-3.0.
-- Tutorial oficial EbookLib: https://github.com/aerkalov/ebooklib/blob/master/docs/tutorial.rst — metadados mínimos, navegação, spine e tratamento de escrita.
+- A especificação EPUB 3.3 do W3C: https://www.w3.org/TR/epub-33/ — pacote, layout fixo, dimensões e direção de progressão.
+- O repositório oficial do EbookLib foi consultado durante a decisão, mas não é dependência da implementação: https://github.com/aerkalov/ebooklib.
 - EPUB 3.3 W3C: https://www.w3.org/TR/epub-33/ — semântica da ordem do spine e direção de progressão RTL/LTR.
 - EPUBCheck oficial W3C/DAISY: https://github.com/w3c/epubcheck — validador de conformidade EPUB 2/3.
 - Tipos de arquivos Kindle/Send to Kindle da Amazon: https://digprjsurvey.amazon.com/csad/help/node/TNtSm13k3txFI4EvDV — lista EPUB como tipo aceito; não estabelece nesta página compatibilidade de layout fixo do artefato produzido por esta feature.

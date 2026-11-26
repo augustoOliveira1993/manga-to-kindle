@@ -34,6 +34,7 @@ def test_desktop_startup_composes_f001_runtime_and_f002_navigation(
         "downloads",
         "conversion",
         "settings",
+        "images",
     }
     assert paths.database_file.is_file()
     assert "pronta" in window.startup_status.text().lower()

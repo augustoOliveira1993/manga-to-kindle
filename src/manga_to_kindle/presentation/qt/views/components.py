@@ -33,9 +33,14 @@ from manga_to_kindle.presentation.qt.workers.demo import make_demo_operation
 
 class SimulationBanner(QLabel):
     def __init__(self) -> None:
-        super().__init__("DADOS SIMULADOS  •  serviços reais ainda não conectados")
+        super().__init__(
+            "EXEMPLOS OFFLINE  •  fonte externa não conectada; exportação local disponível"
+        )
         self.setObjectName("simulationBanner")
-        self.setAccessibleName("Aviso: dados simulados, serviços reais ainda não conectados")
+        self.setAccessibleName(
+            "Aviso: catálogo offline de exemplo, fonte externa não conectada; "
+            "exportação local disponível"
+        )
         self.setWordWrap(True)
 
 

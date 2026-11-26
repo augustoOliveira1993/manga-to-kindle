@@ -183,8 +183,15 @@ class SQLiteDatabase:
             result: str = connection.exec_driver_sql(
                 "PRAGMA integrity_check"
             ).scalar_one()
+            foreign_key_violations = connection.exec_driver_sql(
+                "PRAGMA foreign_key_check"
+            ).all()
         if result != "ok":
             raise DatabaseInitializationError("A verificação de integridade do SQLite falhou.")
+        if foreign_key_violations:
+            raise DatabaseInitializationError(
+                "A verificação de relações do banco local encontrou registros órfãos."
+            )
 
     def _create_backup(self) -> Path:
         backup_path = self.database_path.with_name(

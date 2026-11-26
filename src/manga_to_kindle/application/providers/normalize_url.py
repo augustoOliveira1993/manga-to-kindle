@@ -22,6 +22,8 @@ def normalize_url(value: str) -> NormalizedUrl:
             raise UnsupportedScheme()
         if "@" in parsed.netloc or parsed.username is not None or parsed.password is not None:
             raise InvalidUrl()
+        if parsed.netloc.endswith(":"):
+            raise InvalidUrl()
         raw_host = parsed.hostname
         port = parsed.port
     except ValueError as error:

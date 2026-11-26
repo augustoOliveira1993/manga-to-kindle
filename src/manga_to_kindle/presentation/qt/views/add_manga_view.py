@@ -1,4 +1,4 @@
-"""Formulário local que valida URL sem consultar ou registrar a fonte."""
+"""Offline catalog query, presentation, selection, and refresh controls."""
 
 from __future__ import annotations
 
@@ -24,7 +24,6 @@ from manga_to_kindle.application.providers.resolve_provider import (
 from manga_to_kindle.application.ui.validate_url import validate_http_url
 from manga_to_kindle.domain.catalog import CatalogSnapshot
 from manga_to_kindle.domain.chapter import Chapter
-from manga_to_kindle.presentation.qt.view_models import DemoOutcome, resolve_demo_outcome
 from manga_to_kindle.presentation.qt.views.components import ChapterSelectionList
 from manga_to_kindle.presentation.qt.workers.adapter import OperationRunner
 from manga_to_kindle.presentation.qt.workers.demo import CatalogQuery, make_catalog_operation
@@ -41,15 +40,15 @@ class AddMangaView(QWidget):
         self._runner = runner
         self._catalog_query = catalog_query
         self._operation_id: str | None = None
-        self._outcome = DemoOutcome.SUCCESS
         self._chapters: tuple[Chapter, ...] = ()
+        self._snapshot: CatalogSnapshot | None = None
         self._selection = ChapterSelection()
         layout = QVBoxLayout(self)
         layout.setContentsMargins(0, 0, 0, 0)
         layout.setSpacing(14)
 
         intro = QLabel(
-            "Informe um endereço para testar a validação local. Nenhuma conexão será feita."
+            "Consulte o catálogo local de demonstração. Nenhuma fonte externa será acessada."
         )
         intro.setObjectName("muted")
         intro.setWordWrap(True)
@@ -59,19 +58,20 @@ class AddMangaView(QWidget):
         self.url_input.setPlaceholderText("https://exemplo.com/manga/...")
         self.url_input.setAccessibleName("Endereço HTTP ou HTTPS para demonstração")
         form.addRow("Endereço HTTP/HTTPS", self.url_input)
-        self.outcome_combo = QComboBox()
-        self.outcome_combo.setObjectName("catalogDemoOutcome")
-        self.outcome_combo.setAccessibleName("Resultado da consulta simulada")
-        self.outcome_combo.addItem("Catálogo de demonstração disponível", DemoOutcome.SUCCESS)
-        self.outcome_combo.addItem("Nenhum capítulo na demonstração", DemoOutcome.EMPTY)
-        self.outcome_combo.addItem("Simular falha de consulta", DemoOutcome.ERROR)
-        form.addRow("Resultado simulado", self.outcome_combo)
 
-        self.query_button = QPushButton("Consultar demonstração")
-        self.query_button.setObjectName("queryDemoCatalog")
-        self.query_button.setAccessibleName("Consultar catálogo de demonstração, sem rede")
+        self.query_button = QPushButton("Consultar catálogo")
+        self.query_button.setObjectName("queryCatalog")
+        self.query_button.setAccessibleName("Consultar catálogo local, sem rede")
         self.query_button.setProperty("primaryAction", True)
-        self.status_label = QLabel("Aguardando endereço para demonstração.")
+        self.cancel_button = QPushButton("Cancelar consulta")
+        self.cancel_button.setObjectName("cancelCatalogQuery")
+        self.cancel_button.setAccessibleName("Cancelar consulta do catálogo")
+        self.cancel_button.setEnabled(False)
+        query_actions = QHBoxLayout()
+        query_actions.addWidget(self.query_button)
+        query_actions.addWidget(self.cancel_button)
+        query_actions.addStretch(1)
+        self.status_label = QLabel("Aguardando endereço para consulta.")
         self.status_label.setObjectName("catalogState")
         self.status_label.setAccessibleName("Estado da consulta")
         self.status_label.setWordWrap(True)
@@ -79,7 +79,7 @@ class AddMangaView(QWidget):
         self.progress_bar.setObjectName("catalogProgress")
         self.progress_bar.setRange(0, 100)
         self.progress_bar.setValue(0)
-        self.progress_bar.setAccessibleName("Progresso da consulta simulada")
+        self.progress_bar.setAccessibleName("Progresso da consulta do catálogo")
         self.progress_bar.hide()
 
         selection_header = QHBoxLayout()
@@ -136,12 +136,13 @@ class AddMangaView(QWidget):
 
         layout.addWidget(intro)
         layout.addLayout(form)
-        layout.addWidget(self.query_button, 0, Qt.AlignmentFlag.AlignLeft)
+        layout.addLayout(query_actions)
         layout.addWidget(self.status_label)
         layout.addWidget(self.progress_bar)
         layout.addWidget(self.selection_widget, 1)
 
-        self.query_button.clicked.connect(self.query_demo)
+        self.query_button.clicked.connect(self.query_catalog)
+        self.cancel_button.clicked.connect(self.cancel_query)
         runner.started.connect(self._on_started)
         runner.progress.connect(self._on_progress)
         runner.succeeded.connect(self._on_succeeded)
@@ -164,35 +165,54 @@ class AddMangaView(QWidget):
     def set_catalog_query(self, catalog_query: CatalogQuery | None) -> None:
         self._catalog_query = catalog_query
 
-    def query_demo(self) -> None:
+    def query_catalog(self) -> None:
         if self._operation_id is not None:
             return
         validation = validate_http_url(self.url_input.text())
         if not validation.valid:
-            self.status_label.setText(
+            self._retain_previous_catalog(
                 "Endereço inválido. Informe uma URL HTTP ou HTTPS sem credenciais."
             )
             self.progress_bar.hide()
-            self.chapter_list.hide()
-            self.selection_widget.hide()
             return
         if self._catalog_query is None:
-            self.status_label.setText("O provedor de catálogo ainda não está disponível.")
+            self._retain_previous_catalog("O provedor de catálogo ainda não está disponível.")
             return
-        self._outcome = resolve_demo_outcome(self.outcome_combo.currentData())
         self.query_button.setEnabled(False)
-        self.status_label.setText("Consultando catálogo de demonstração…")
+        self.cancel_button.setEnabled(True)
+        self.status_label.setText(
+            "Atualizando catálogo; os dados atuais são a última versão válida…"
+            if self._snapshot is not None
+            else "Consultando catálogo local…"
+        )
         self.progress_bar.setValue(0)
         self.progress_bar.show()
-        self.chapter_list.hide()
-        self.selection_widget.hide()
+        if self._snapshot is None:
+            self.selection_widget.hide()
         self._operation_id = self._runner.start(
             make_catalog_operation(
                 self._catalog_query,
                 self.url_input.text().strip(),
-                self._outcome,
-                total_steps=8,
             )
+        )
+
+    def cancel_query(self) -> None:
+        if self._operation_id is None:
+            return
+        if self._runner.cancel(self._operation_id):
+            self.cancel_button.setEnabled(False)
+            self.status_label.setText(
+                "Cancelando atualização; o último catálogo válido será mantido…"
+                if self._snapshot is not None
+                else "Cancelando consulta…"
+            )
+
+    def _retain_previous_catalog(self, message: str) -> None:
+        if self._snapshot is None:
+            self.status_label.setText(message)
+            return
+        self.status_label.setText(
+            f"{message} O último catálogo válido foi mantido e permanece exibido."
         )
 
     def _select_range(self) -> None:
@@ -222,6 +242,7 @@ class AddMangaView(QWidget):
             item.setCheckState(Qt.CheckState.Unchecked)
 
     def _show_catalog(self, snapshot: CatalogSnapshot) -> None:
+        self._snapshot = snapshot
         self._chapters = snapshot.chapters
         chapter_ids = tuple(chapter.id for chapter in self._chapters)
         self._selection.reconcile(chapter_ids)
@@ -235,6 +256,13 @@ class AddMangaView(QWidget):
             else f"Capa local: {snapshot.manga.cover_path.name}"
         )
         self.chapter_list.set_chapters(self._chapters, self._selection.selected_ids)
+        has_chapters = bool(self._chapters)
+        self.chapter_list.setVisible(has_chapters)
+        self.select_all_button.setEnabled(has_chapters)
+        self.select_none_button.setEnabled(has_chapters)
+        self.range_start_combo.setEnabled(has_chapters)
+        self.range_end_combo.setEnabled(has_chapters)
+        self.select_range_button.setEnabled(has_chapters)
         for combo in (self.range_start_combo, self.range_end_combo):
             combo.clear()
             for chapter in self._chapters:
@@ -242,18 +270,31 @@ class AddMangaView(QWidget):
                     str(chapter.number) if chapter.number is not None else "Especial"
                 )
                 combo.addItem(title, chapter.id)
-        self.chapter_list.show()
         self.selection_widget.show()
-        self.status_label.setText(
-            "Catálogo de demonstração carregado. Nenhuma fonte real foi consultada."
-            if snapshot.simulated
-            else "Catálogo carregado."
-        )
+        if has_chapters:
+            message = (
+                "Catálogo de demonstração carregado."
+                if snapshot.simulated
+                else "Catálogo carregado."
+            )
+        elif snapshot.simulated:
+            message = "Nenhum capítulo foi encontrado no catálogo de demonstração."
+        else:
+            message = "Nenhum capítulo foi encontrado no catálogo."
+        if snapshot.simulated:
+            message = f"{message} Nenhuma fonte real foi consultada."
+        self.status_label.setText(message)
+        self.query_button.setText("Atualizar catálogo")
+        self.query_button.setAccessibleName("Atualizar catálogo local, sem rede")
         self._selection_changed(self.chapter_list.selected_chapter_ids())
 
     def _on_started(self, operation_id: str) -> None:
         if operation_id == self._operation_id:
-            self.status_label.setText("Carregando demonstração local…")
+            self.status_label.setText(
+                "Atualizando catálogo; a última versão válida permanece exibida…"
+                if self._snapshot is not None
+                else "Consultando catálogo local…"
+            )
 
     def _on_progress(
         self,
@@ -269,17 +310,15 @@ class AddMangaView(QWidget):
             self.progress_bar.setValue(min(completed, total))
         else:
             self.progress_bar.setRange(0, 0)
-        self.status_label.setText(f"{stage}: {completed} de {total or 'várias'}")
+        message = f"{stage}: {completed} de {total or 'várias'}"
+        self.status_label.setText(
+            f"{message}. Os dados exibidos são a última versão válida."
+            if self._snapshot is not None
+            else message
+        )
 
     def _on_succeeded(self, operation_id: str, result: object) -> None:
         if operation_id != self._operation_id:
-            return
-        if result is None:
-            self.status_label.setText(
-                "Demonstração concluída sem capítulos. Nenhum serviço foi consultado."
-            )
-            self.chapter_list.clear()
-            self.selection_widget.hide()
             return
         if isinstance(result, CatalogSnapshot):
             self._show_catalog(result)
@@ -288,22 +327,20 @@ class AddMangaView(QWidget):
 
     def _on_failed(self, operation_id: str, error_code: str) -> None:
         if operation_id == self._operation_id:
-            if error_code == "DEMO_OPERATION_FAILED":
-                message = "Falha simulada ao consultar. Tente novamente."
-            else:
-                message = provider_error_message_for_code(error_code)
-            self.status_label.setText(message)
-            self.chapter_list.hide()
-            self.selection_widget.hide()
+            message = provider_error_message_for_code(error_code)
+            self._retain_previous_catalog(message)
+            if self._snapshot is None:
+                self.selection_widget.hide()
 
     def _on_cancelled(self, operation_id: str) -> None:
         if operation_id == self._operation_id:
-            self.status_label.setText("Consulta simulada cancelada.")
+            self._retain_previous_catalog("Consulta cancelada.")
 
     def _on_finished(self, operation_id: str) -> None:
         if operation_id != self._operation_id:
             return
         self._operation_id = None
         self.query_button.setEnabled(True)
+        self.cancel_button.setEnabled(False)
         self.progress_bar.hide()
 

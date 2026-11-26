@@ -12,7 +12,7 @@ def test_navigation_buttons_work_with_keyboard(main_window) -> None:
 
     assert button.focusPolicy() != Qt.FocusPolicy.NoFocus
     assert main_window.page_title.text() == "Downloads"
-    assert "DADOS SIMULADOS" in main_window.simulation_banner.text()
+    assert "EXEMPLOS OFFLINE" in main_window.simulation_banner.text()
 
 
 def test_chapter_list_has_keyboard_selection_instructions(main_window) -> None:

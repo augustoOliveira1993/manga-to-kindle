@@ -5,19 +5,21 @@ from __future__ import annotations
 from collections.abc import Callable
 from typing import Protocol
 
+from manga_to_kindle.application.catalog.errors import CatalogRefreshCancelled
 from manga_to_kindle.domain.catalog import CatalogSnapshot
 
 
 class CatalogQuery(Protocol):
-    def execute(self, value: str) -> CatalogSnapshot: ...
+    def execute(
+        self,
+        value: str,
+        *,
+        is_cancelled: Callable[[], bool] | None = None,
+    ) -> CatalogSnapshot: ...
 
 
 class CatalogWriter(Protocol):
     def replace(self, snapshot: CatalogSnapshot) -> None: ...
-
-
-class CatalogRefreshCancelled(RuntimeError):
-    code = "OPERATION_CANCELLED"
 
 
 class RefreshCatalog:
@@ -34,7 +36,7 @@ class RefreshCatalog:
         cancelled = is_cancelled or (lambda: False)
         if cancelled():
             raise CatalogRefreshCancelled("A consulta foi cancelada.")
-        snapshot = self._query.execute(value)
+        snapshot = self._query.execute(value, is_cancelled=cancelled)
         if cancelled():
             raise CatalogRefreshCancelled("A atualização foi cancelada antes de ser salva.")
         self._repository.replace(snapshot)

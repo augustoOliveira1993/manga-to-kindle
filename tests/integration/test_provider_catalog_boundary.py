@@ -1,11 +1,14 @@
 from __future__ import annotations
 
 import socket
+from threading import Event
+from time import perf_counter
 
 from PySide6.QtCore import QEventLoop, Qt, QTimer
 from PySide6.QtTest import QTest
 from PySide6.QtWidgets import QApplication
 
+from manga_to_kindle.application.catalog.errors import CatalogRefreshCancelled
 from manga_to_kindle.application.catalog.get_catalog import GetCatalog
 from manga_to_kindle.application.providers.registry import ProviderRegistry
 from manga_to_kindle.infrastructure.providers.fixture_provider import FixtureProvider
@@ -33,8 +36,48 @@ def test_ui_resolves_only_fixture_provider_and_never_opens_network(
     view.url_input.setText("https://fixture.invalid/manga/demo")
     QTest.mouseClick(view.query_button, Qt.MouseButton.LeftButton)
     _wait(window, qt_core_app)
-    assert view.chapter_list.count() == 2
+    fixture = GetCatalog(ProviderRegistry((FixtureProvider(),))).execute(
+        "https://fixture.invalid/manga/demo"
+    )
+    assert view.chapter_list.count() == len(fixture.chapters)
     assert "demonstração" in view.status_label.text().lower()
+    window.allow_close()
+    window.close()
+    qt_core_app.processEvents()
+
+
+def test_slow_catalog_query_keeps_the_ui_responsive(qt_core_app: QApplication) -> None:
+    started = Event()
+    release = Event()
+    fixture_query = GetCatalog(ProviderRegistry((FixtureProvider(),))).execute
+
+    def slow_query(value: str, *, is_cancelled=None):
+        started.set()
+        release.wait(timeout=1.0)
+        if is_cancelled is not None and is_cancelled():
+            raise CatalogRefreshCancelled("Consulta cancelada antes da gravação.")
+        return fixture_query(value, is_cancelled=is_cancelled)
+
+    window = MainWindow(catalog_query=slow_query)
+    window.show()
+    view = window.add_manga_view
+    window.set_current_page("add")
+    view.url_input.setText("https://fixture.invalid/manga/demo")
+    QTest.mouseClick(view.query_button, Qt.MouseButton.LeftButton)
+    assert started.wait(timeout=1.0)
+
+    loop = QEventLoop()
+    QTimer.singleShot(10, loop.quit)
+    began = perf_counter()
+    loop.exec()
+    elapsed = perf_counter() - began
+
+    view.cancel_query()
+    release.set()
+    _wait(window, qt_core_app)
+
+    assert elapsed < 0.2
+    assert window.operation_runner.active_count == 0
     window.allow_close()
     window.close()
     qt_core_app.processEvents()

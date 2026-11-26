@@ -38,7 +38,7 @@ Este documento coordena os `tasks.md` das features F001–F012. Os arquivos loca
 ## Gates e riscos transversais
 
 - **G-F003/F005/F010 — fonte real**: até que exista fonte com download autorizado, documentação verificável, termos/licenças e limites confirmados, validar apenas fixture/transporte fake. Sem bypass de DRM, CAPTCHA, autenticação ou controles de acesso.
-- **G-F007 — conversão**: licença de EbookLib, capacidades reais/argumentos da versão KCC, inicialização sem rede e compatibilidade Kindle/Send to Kindle precisam de evidência. Sem promessa de fixed layout ou envio; teste físico não executado permanece pendente.
+- **G-F007 — conversão**: o writer EPUB usa biblioteca padrão por decisão registrada; validar saída com EPUBCheck. Capacidades reais/argumentos da versão KCC e eventual rede precisam de evidência. Sem promessa de compatibilidade Kindle/Send to Kindle; teste físico não executado permanece pendente.
 - **G-F009 — SMTP**: integração opcional requer cofre do sistema, destinatário autorizado e confirmação por tentativa; resultado de aceite nunca significa entrega.
 - **G-F012 — release**: baseline do app e matriz x86/x64/ARM64 não foram informados; não presumir arquitetura. Inno Setup, KCC e browser ficam condicionados a licença/requisitos. Windows limpo deve ser executado e documentado antes de release.
 - Dados sempre ficam fora da instalação; operações mutáveis usam transações/staging/finalização atômica e recuperação; logging sem segredos ou conteúdo dos livros.

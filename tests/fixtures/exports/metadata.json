@@ -1,0 +1,20 @@
+{
+  "manga_title": "Coleção Sintética de Teste",
+  "language": "pt-BR",
+  "author": null,
+  "chapters": [
+    {
+      "directory": "capitulo-1",
+      "number": "1",
+      "title": "Primeiro capítulo",
+      "volume": "1"
+    },
+    {
+      "directory": "capitulo-2",
+      "number": "2",
+      "title": "Segundo capítulo",
+      "volume": "1"
+    }
+  ],
+  "note": "Arte geométrica gerada para testes; sem conteúdo ou dados de terceiros."
+}

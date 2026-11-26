@@ -29,6 +29,7 @@ def test_normalization_canonicalizes_host_port_and_fragment_but_preserves_query(
         "ftp://example.test/book",
         "https://user:secret@example.test/book",
         "https://example.test:70000/book",
+        "https://example.test:/book",
         "https://example.test/a b",
         "//example.test/book",
     ],
@@ -49,6 +50,7 @@ def test_private_ip_literals_are_rejected(address: str) -> None:
             normalize_url(f"{scheme}://{host}/"),
             allowed_hosts=frozenset({address}),
             allowed_ports=frozenset({80}),
+            allowed_schemes=frozenset({"http"}),
         )
 
 
@@ -96,4 +98,34 @@ def test_redirect_chain_revalidates_host_scheme_loop_and_hop_limit() -> None:
             start,
             ["/1", "/2", "/3", "/4", "/5", "/6"],
             allowed_hosts=allowed,
+        )
+
+
+def test_scheme_capability_is_checked_for_initial_and_redirect_destinations() -> None:
+    policy = ExternalUrlPolicy(lambda _host: ["8.8.8.8"])
+    start = normalize_url("http://manga.example.test/start")
+    allowed = frozenset({"manga.example.test"})
+
+    with pytest.raises(UnsafeDestination):
+        policy.validate(
+            start,
+            allowed_hosts=allowed,
+            allowed_schemes=frozenset({"https"}),
+        )
+
+    validated = policy.validate(
+        start,
+        allowed_hosts=allowed,
+        allowed_ports=frozenset({80}),
+        allowed_schemes=frozenset({"http"}),
+    )
+    assert validated.scheme == "http"
+
+    with pytest.raises(RedirectRejected):
+        policy.validate_redirect_chain(
+            start,
+            ["http://manga.example.test/next"],
+            allowed_hosts=allowed,
+            allowed_ports=frozenset({80}),
+            allowed_schemes=frozenset({"https"}),
         )

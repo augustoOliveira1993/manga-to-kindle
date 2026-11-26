@@ -53,3 +53,17 @@ def test_numeric_ties_use_source_order_then_stable_identity() -> None:
         UUID(int=12),
         UUID(int=20),
     ]
+
+
+def test_special_chapters_without_source_order_use_stable_identity() -> None:
+    chapters = (
+        _chapter(20, None, None),
+        _chapter(11, None, None),
+        _chapter(12, None, 2),
+    )
+
+    assert [chapter.id for chapter in order_chapters(chapters)] == [
+        UUID(int=12),
+        UUID(int=11),
+        UUID(int=20),
+    ]

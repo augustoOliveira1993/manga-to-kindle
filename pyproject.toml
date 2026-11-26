@@ -8,6 +8,7 @@ dependencies = [
     "PySide6>=6.8,<7",
     "SQLAlchemy>=2.0,<3",
     "alembic>=1.14,<2",
+    "pillow>=13.0,<14",
     "pydantic>=2.10,<3",
 ]
 

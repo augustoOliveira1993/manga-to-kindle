@@ -17,9 +17,14 @@ from manga_to_kindle.domain.providers import (
 )
 
 _MANGA_ID = UUID("42a1d674-c3f4-5c17-9240-1efbd886e5fd")
-_CHAPTERS: tuple[tuple[str, str], ...] = (
-    ("demo-001", "1"),
-    ("demo-002", "2"),
+_CHAPTERS: tuple[tuple[str, str | None, str, int | None], ...] = (
+    ("demo-010", "10", "Capítulo 10 — Demonstração", 5),
+    ("demo-special-b", None, "Bônus B — Demonstração", 7),
+    ("demo-001", "1", "Capítulo 1 — Demonstração", 1),
+    ("demo-001-extra", "1", "Capítulo 1 extra — Demonstração", 2),
+    ("demo-001-5", "1.5", "Capítulo 1.5 — Demonstração", 3),
+    ("demo-002", "2", "Capítulo 2 — Demonstração", 4),
+    ("demo-special-a", None, "Bônus A — Demonstração", 6),
 )
 
 
@@ -65,21 +70,21 @@ class FixtureProvider:
                 manga_id=_MANGA_ID,
                 id=uuid5(NAMESPACE_URL, f"manga-to-kindle:fixture:chapter:{source_id}"),
                 position=position,
-                title=f"Capítulo {number} — Demonstração",
-                number=Decimal(number),
+                title=title,
+                number=Decimal(number) if number is not None else None,
+                source_order=source_order,
             )
-            for position, (source_id, number) in enumerate(_CHAPTERS)
+            for position, (source_id, number, title, source_order) in enumerate(_CHAPTERS)
         )
 
     def get_pages(self, chapter: Chapter) -> tuple[ProviderPageReference, ...]:
         source_id = next(
             (
                 source_id
-                for position, (source_id, _number) in enumerate(_CHAPTERS)
+                for source_id, _number, _title, _source_order in _CHAPTERS
                 if chapter.id
                 == uuid5(NAMESPACE_URL, f"manga-to-kindle:fixture:chapter:{source_id}")
                 and chapter.manga_id == _MANGA_ID
-                and chapter.position == position
             ),
             None,
         )

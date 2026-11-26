@@ -1,0 +1,27 @@
+{
+  "manga": [
+    {
+      "id": "b27a57b5-fc34-47ca-982e-89db905df8d2",
+      "title": "Coração Azul",
+      "author": "Ágata Nogueira",
+      "chapters": [
+        {"id": "328a322e-1eca-4ad9-96b4-6e702608f2a3", "number": "1", "title": "A chegada", "volume": "1"},
+        {"id": "96c70fb3-8a06-4506-8fe2-76a2e125e871", "number": "2.5", "title": "Especial: Café", "volume": "1"}
+      ]
+    },
+    {
+      "id": "55cf960c-3fa4-4ce8-a232-7883b59702b4",
+      "title": "Cidade de Papel",
+      "author": "Lia Reis",
+      "chapters": [
+        {"id": "d33c7983-a598-41bf-b19e-bef2811691c8", "number": "1", "title": "Primeiro dia", "volume": null}
+      ]
+    },
+    {
+      "id": "7407b989-2205-4607-9764-8cf2ee853852",
+      "title": "Mangá sem capítulos",
+      "author": null,
+      "chapters": []
+    }
+  ]
+}

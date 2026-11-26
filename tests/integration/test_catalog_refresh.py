@@ -1,5 +1,8 @@
 from __future__ import annotations
 
+from collections.abc import Callable
+from dataclasses import replace
+
 import pytest
 
 from manga_to_kindle.application.catalog.get_catalog import GetCatalog
@@ -26,13 +29,54 @@ def test_refresh_failure_and_cancellation_preserve_previous_snapshot(tmp_path) -
     saved = refresh.execute(url)
 
     class FailingQuery:
-        def execute(self, _url: str):
+        def execute(
+            self,
+            _url: str,
+            *,
+            is_cancelled: Callable[[], bool] | None = None,
+        ):
             raise ProviderUnavailable()
 
     with pytest.raises(ProviderUnavailable):
         RefreshCatalog(FailingQuery(), repository).execute(url)
     with pytest.raises(CatalogRefreshCancelled):
         refresh.execute(url, is_cancelled=lambda: True)
+
+    assert repository.get(saved.manga.id) == saved
+    database.close()
+
+
+def test_cancellation_after_query_keeps_last_snapshot_before_commit(tmp_path) -> None:
+    database = SQLiteDatabase(AppPaths.from_root(tmp_path).database_file)
+    database.initialize()
+    repository = CatalogRepository(database)
+    query = GetCatalog(ProviderRegistry([FixtureProvider()]))
+    refresh = RefreshCatalog(query, repository)
+    url = "https://fixture.invalid/manga/demo"
+    saved = refresh.execute(url)
+
+    class ChangedQuery:
+        def execute(
+            self,
+            value: str,
+            *,
+            is_cancelled: Callable[[], bool] | None = None,
+        ):
+            snapshot = query.execute(value)
+            return replace(snapshot, manga=replace(snapshot.manga, title="Título atualizado"))
+
+    checks = 0
+
+    def cancel_before_commit() -> bool:
+        nonlocal checks
+        checks += 1
+        return checks > 1
+
+    with pytest.raises(CatalogRefreshCancelled):
+        RefreshCatalog(ChangedQuery(), repository).execute(
+            url,
+            is_cancelled=cancel_before_commit,
+        )
 
     assert repository.get(saved.manga.id) == saved
     database.close()
