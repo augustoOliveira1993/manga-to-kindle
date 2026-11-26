@@ -40,7 +40,7 @@ def test_library_migration_preserves_catalog_and_enforces_favorites_and_foreign_
             foreign_key_violations = connection.exec_driver_sql("PRAGMA foreign_key_check").all()
             foreign_keys_enabled = connection.exec_driver_sql("PRAGMA foreign_keys").scalar_one()
 
-    assert upgraded.current_revision() == "0006_library"
+    assert upgraded.current_revision() == "0007_transfers"
     assert manga is not None and manga.title == "Coração Azul" and manga.favorite is False
     assert chapter is not None and chapter.title == "A chegada" and chapter.favorite is False
     assert foreign_keys_enabled == 1

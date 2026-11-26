@@ -6,14 +6,14 @@ import hashlib
 import smtplib
 import ssl
 import stat
-from dataclasses import dataclass
+from collections.abc import Callable
 from email.message import EmailMessage
 from pathlib import Path
 from typing import Protocol
 
-from manga_to_kindle.domain.transfers import SmtpProfile, TransferState
+from manga_to_kindle.domain.transfers import SmtpProfile, SmtpTransportResult, TlsMode, TransferState
 
-MAX_KINDLE_EMAIL_BYTES = 50 * 1024 * 1024
+MAX_KINDLE_EMAIL_BYTES = 50_000_000
 CONNECTION_TIMEOUT_SECONDS = 20
 
 
@@ -22,17 +22,15 @@ class CancellationPort(Protocol):
     def cancelled(self) -> bool: ...
 
 
-type ProgressPort = Protocol
-
-
-@dataclass(frozen=True, slots=True)
-class SmtpTransportResult:
-    state: TransferState
-    smtp_code: int | None = None
-    error_code: str | None = None
-
-
 class SmtpTransport:
+    def test_connection(self, profile: SmtpProfile, password: str | None) -> None:
+        try:
+            with _connect(profile) as smtp:
+                if profile.username is not None:
+                    smtp.login(profile.username, password or "")
+        except (OSError, smtplib.SMTPException, UnicodeError):
+            raise ConnectionError("Falha ao estabelecer a conexão SMTP com TLS.") from None
+
     def send(
         self,
         *,
@@ -42,7 +40,7 @@ class SmtpTransport:
         expected_sha256: str,
         expected_size: int,
         cancellation: CancellationPort,
-        report_stage: object,
+        report_stage: Callable[[str, str], None],
     ) -> SmtpTransportResult:
         try:
             message_bytes = _build_message(
@@ -73,33 +71,15 @@ class SmtpTransport:
         submitting_data = False
         smtp: smtplib.SMTP | smtplib.SMTP_SSL | None = None
         try:
-            context = ssl.create_default_context()
-            if profile.tls_mode.value == "implicit":
-                smtp = smtplib.SMTP_SSL(
-                    profile.host,
-                    profile.port,
-                    timeout=CONNECTION_TIMEOUT_SECONDS,
-                    context=context,
+            report_stage("tls", "Negociando TLS validado")
+            smtp = _connect(profile)
+            size_option = smtp.esmtp_features.get("size", "").strip()
+            size_limit = int(size_option) if size_option.isascii() and size_option.isdecimal() else 0
+            if size_limit and len(message_bytes) > size_limit:
+                return SmtpTransportResult(
+                    TransferState.FAILED_BEFORE_SUBMISSION,
+                    error_code="MESSAGE_LIMIT_EXCEEDED",
                 )
-            else:
-                smtp = smtplib.SMTP(
-                    profile.host,
-                    profile.port,
-                    timeout=CONNECTION_TIMEOUT_SECONDS,
-                )
-                code, _response = smtp.ehlo()
-                if code < 200 or code >= 300:
-                    return _response_result(code)
-                if not smtp.has_extn("starttls"):
-                    return SmtpTransportResult(
-                        TransferState.FAILED_BEFORE_SUBMISSION,
-                        error_code="TLS_REQUIRED",
-                    )
-                _report(report_stage, "tls", "Negociando TLS validado")
-                smtp.starttls(context=context)
-                code, _response = smtp.ehlo()
-                if code < 200 or code >= 300:
-                    return _response_result(code)
 
             if cancellation.cancelled:
                 return SmtpTransportResult(TransferState.CANCELLED_BEFORE_SUBMISSION)
@@ -109,13 +89,14 @@ class SmtpTransport:
                         TransferState.FAILED_BEFORE_SUBMISSION,
                         error_code="CREDENTIAL_MISSING",
                     )
-                _report(report_stage, "authenticating", "Autenticando após TLS")
+                report_stage("authenticating", "Autenticando após TLS")
                 smtp.login(profile.username, password)
 
             if cancellation.cancelled:
                 return SmtpTransportResult(TransferState.CANCELLED_BEFORE_SUBMISSION)
-            _report(report_stage, "envelope", "Validando remetente e destino no servidor")
-            code, _response = smtp.mail(profile.sender)
+            report_stage("envelope", "Validando remetente e destino no servidor")
+            options = (f"SIZE={len(message_bytes)}",) if smtp.has_extn("size") else ()
+            code, _response = smtp.mail(profile.sender, options)
             if code < 200 or code >= 300:
                 return _response_result(code)
             code, _response = smtp.rcpt(profile.recipient)
@@ -124,7 +105,7 @@ class SmtpTransport:
             if cancellation.cancelled:
                 return SmtpTransportResult(TransferState.CANCELLED_BEFORE_SUBMISSION)
 
-            _report(report_stage, "transmitting", "Transmitindo o EPUB autorizado")
+            report_stage("transmitting", "Transmitindo o EPUB autorizado")
             submitting_data = True
             code, _response = smtp.data(message_bytes)
             submitting_data = False
@@ -135,7 +116,7 @@ class SmtpTransport:
             return _response_result(error.smtp_code)
         except smtplib.SMTPResponseException as error:
             return _response_result(error.smtp_code)
-        except (smtplib.SMTPServerDisconnected, TimeoutError, OSError, ssl.SSLError):
+        except (smtplib.SMTPServerDisconnected, OSError, UnicodeError):
             if submitting_data:
                 return SmtpTransportResult(
                     TransferState.UNKNOWN,
@@ -213,7 +194,7 @@ def _build_message(
         subtype="epub+zip",
         filename=file_path.name,
     )
-    encoded = message.as_bytes()
+    encoded = message.as_bytes(policy=message.policy.clone(linesep="\r\n"))
     if len(encoded) > MAX_KINDLE_EMAIL_BYTES:
         raise _PayloadTooLarge
     return encoded
@@ -231,6 +212,20 @@ def _response_result(code: int) -> SmtpTransportResult:
     )
 
 
-def _report(callback: object, stage: str, message: str) -> None:
-    if callable(callback):
-        callback(stage, message)
+def _connect(profile: SmtpProfile) -> smtplib.SMTP:
+    context = ssl.create_default_context()
+    if profile.tls_mode is TlsMode.IMPLICIT:
+        smtp: smtplib.SMTP = smtplib.SMTP_SSL(
+            profile.host, profile.port, timeout=CONNECTION_TIMEOUT_SECONDS, context=context,
+        )
+    else:
+        smtp = smtplib.SMTP(profile.host, profile.port, timeout=CONNECTION_TIMEOUT_SECONDS)
+    try:
+        smtp.ehlo_or_helo_if_needed()
+        if profile.tls_mode is TlsMode.STARTTLS:
+            smtp.starttls(context=context)
+            smtp.ehlo_or_helo_if_needed()
+    except Exception:
+        smtp.close()
+        raise
+    return smtp

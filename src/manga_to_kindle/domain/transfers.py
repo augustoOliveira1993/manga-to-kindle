@@ -57,6 +57,13 @@ class TransferState(StrEnum):
 
 
 @dataclass(frozen=True, slots=True)
+class SmtpTransportResult:
+    state: TransferState
+    smtp_code: int | None = None
+    error_code: str | None = None
+
+
+@dataclass(frozen=True, slots=True)
 class SmtpProfile:
     host: str
     port: int
@@ -74,7 +81,12 @@ class SmtpProfile:
         if not _valid_email(self.sender) or not _valid_email(self.recipient):
             raise DomainValidationError("Informe um remetente e um destino Kindle válidos.")
         if self.username is not None:
-            if not self.username.strip() or self.username != self.username.strip():
+            if (
+                not self.username.strip()
+                or self.username != self.username.strip()
+                or not self.username.isascii()
+                or not self.username.isprintable()
+            ):
                 raise DomainValidationError("O usuário SMTP é inválido.")
             if self.credential_ref is None:
                 raise DomainValidationError("O segredo SMTP precisa estar no cofre do Windows.")

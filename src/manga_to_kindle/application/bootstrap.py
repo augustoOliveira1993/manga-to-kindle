@@ -19,6 +19,7 @@ from manga_to_kindle.infrastructure.persistence.image_import_repository import (
     ImageImportRepository,
 )
 from manga_to_kindle.infrastructure.persistence.library_repository import LibraryRepository
+from manga_to_kindle.infrastructure.persistence.transfer_repository import TransferRepository
 
 
 def bootstrap_application(paths: AppPaths | None = None) -> ApplicationRuntime:
@@ -48,6 +49,7 @@ def bootstrap_application(paths: AppPaths | None = None) -> ApplicationRuntime:
             database,
             managed_roots=(image_root, download_root),
         ).recover_deletions()
+        TransferRepository(database).reconcile_interrupted()
         logging_manager.logger.info("application startup complete")
         return ApplicationRuntime(
             paths=resolved_paths,

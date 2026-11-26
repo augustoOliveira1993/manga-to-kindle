@@ -33,6 +33,7 @@ def test_desktop_startup_composes_f001_runtime_and_f002_navigation(
         "add",
         "downloads",
         "conversion",
+        "send",
         "settings",
         "images",
     }
