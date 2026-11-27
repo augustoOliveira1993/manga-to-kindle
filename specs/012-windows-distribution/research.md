@@ -43,7 +43,7 @@
 
 ### Licenças, SBOM e opcionais
 
-- **Decisão**: criar inventário de componentes diretos e transitivos a partir do lock do build/runtime e notices de terceiros; bloquear artefato com licença desconhecida ou gate não resolvido. KCC, browser e Playwright ficam fora. Inno Setup é decisão opcional com revisão própria. EbookLib permanece bloqueado por B007-EBOOKLIB-LICENSE.
+- **Decisão**: criar inventário de componentes diretos e transitivos a partir do lock do build/runtime e notices de terceiros; bloquear release com licença desconhecida ou gate não resolvido. KCC, browser e Playwright ficam fora. Inno Setup é decisão opcional com revisão própria. EbookLib não é dependência porque F007 usa writer da biblioteca padrão.
 - **Racional**: uv export documenta CycloneDX v1.5, mas SBOM não substitui avisos e textos de licença distribuídos. PyInstaller requer execução nativa em Windows. O pacote não deve instalar opcionais em segundo plano nem fazer rede no primeiro início.
 - **Referências**: [export uv/CycloneDX](https://docs.astral.sh/uv/concepts/projects/sync/), [licença PyInstaller](https://pyinstaller.org/en/latest/license.html), [F007 — EPUB/KCC](../007-epub-kcc-export/spec.md), [licenças Inno Setup](https://jrsoftware.org/inno-setup/purchase).
 
@@ -68,14 +68,14 @@
 
 | Item | Estado e efeito |
 |---|---|
-| B012-IMPLEMENTATION-BASELINE | Bloqueia build real: F001–F011, pyproject.toml, lock, app e compatibilidade Qt ainda não existem no checkout. |
+| B012-IMPLEMENTATION-BASELINE | A implementação F001–F011, lock, build PyInstaller e smoke local existem. Build de checkout limpo e compatibilidade em VMs por par aprovado ainda bloqueiam release. |
 | B012-ARCH-MATRIX | Bloqueia matriz final e declaração de suporte. O plano mantém a matriz como entrada configurável pendente de aprovação humana. |
-| B007-EBOOKLIB-LICENSE | Bloqueia empacotar EbookLib; F012 não resolve o gate de F007. |
+| B007-EBOOKLIB-LICENSE | Resolvido na F007: writer próprio com biblioteca padrão, sem EbookLib no lock ou artefato. |
 | Inno Setup | Instalador opcional; validar licença aplicável e documentar versão/compilador antes de qualquer uso. Bundle portátil segue como saída-base. |
-| Versões concretas | Documentação atual é referência de API; escolher/pinar versões após a base existir e resolver compatibilidades no ambiente Windows real. |
+| Versões concretas | O ambiente local está travado em `uv.lock` e PyInstaller 6.22.3; conferir novamente a documentação e validar a matriz antes de release. |
 
 ## Notas de Revisão
 
 - Consulta de documentação oficial feita em 2026-11-25; versões e termos devem ser revalidados na implementação/release.
-- Nenhum pacote, build, instalador, --hidden-import, hook ou DLL foi executado ou adicionado nesta pesquisa.
+- Em 2026-11-26, o build PyInstaller 6.22.3 foi executado no Windows 10 x64 local; a configuração usa hooks padrão, sem `--hidden-import` customizado. O bundle foi iniciado e o ciclo PowerShell foi automatizado em perfil temporário; os testes em VM limpa seguem pendentes.
 - docs/roadmap.md não está no checkout. O escopo de F012 deriva da spec ativa e das specs F001–F011, sem inventar itens de roadmap.

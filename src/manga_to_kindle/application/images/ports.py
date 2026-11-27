@@ -34,6 +34,8 @@ class ImageStorePort(Protocol):
         original_bytes: bytes,
         processed_bytes: tuple[bytes, ...],
         duplicate_content: bool,
+        processed_width: int = 600,
+        processed_height: int = 800,
     ) -> StagedImagePage: ...
 
     def promote_batch(self, job_id: UUID) -> None: ...

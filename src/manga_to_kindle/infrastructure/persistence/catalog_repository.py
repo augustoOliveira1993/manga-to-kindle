@@ -8,6 +8,7 @@ from pathlib import Path
 from uuid import UUID
 
 from sqlalchemy import delete, func, select
+from sqlalchemy.orm import Session
 
 from manga_to_kindle.domain.catalog import CatalogSnapshot
 from manga_to_kindle.domain.chapter import Chapter
@@ -36,77 +37,79 @@ class CatalogRepository:
 
     def replace(self, snapshot: CatalogSnapshot) -> None:
         with self._database.unit_of_work() as session:
-            manga = session.get(MangaRecord, snapshot.manga.id)
-            if manga is None:
-                manga = MangaRecord(id=snapshot.manga.id, title=snapshot.manga.title)
-                session.add(manga)
-                session.flush()
-            elif manga.provider_id not in {None, snapshot.provider_id}:
-                raise CatalogIdentityConflict("O ID do mangá pertence a outro provedor.")
-            elif manga.provider_id is not None and manga.source_ref != snapshot.source_id:
-                raise CatalogIdentityConflict(
-                    "O ID do mangá aponta para outra identidade de origem."
-                )
+            self.replace_in_session(session, snapshot)
 
-            manga.title = snapshot.manga.title
-            manga.source_ref = snapshot.source_id
-            manga.provider_id = snapshot.provider_id
-            manga.author = snapshot.manga.author
-            manga.search_key = normalize_search_text(
-                f"{snapshot.manga.title} {snapshot.manga.author or ''}"
-            )
-            manga.cover_path = (
-                snapshot.manga.cover_path.as_posix()
-                if snapshot.manga.cover_path is not None
-                else None
-            )
-            manga.language = snapshot.manga.language
-            manga.simulated = snapshot.simulated
-            manga.updated_at = snapshot.updated_at
-
-            next_storage_position = (
-                session.scalar(
-                    select(func.max(ChapterRecord.position)).where(
-                        ChapterRecord.manga_id == snapshot.manga.id
-                    )
-                )
-                or -1
-            ) + 1
-            for chapter in snapshot.chapters:
-                record = session.get(ChapterRecord, chapter.id)
-                if record is None:
-                    record = ChapterRecord(
-                        id=chapter.id,
-                        manga_id=snapshot.manga.id,
-                        position=next_storage_position,
-                    )
-                    next_storage_position += 1
-                    session.add(record)
-                elif record.manga_id != snapshot.manga.id:
-                    raise CatalogIdentityConflict("O ID do capítulo pertence a outro mangá.")
-                record.title = chapter.title
-                record.number = str(chapter.number) if chapter.number is not None else None
-                record.volume = str(chapter.volume) if chapter.volume is not None else None
-                record.search_key = normalize_search_text(
-                    f"{record.title or ''} {record.number or ''} {record.volume or ''}"
-                )
-                record.available = chapter.available
-
+    @staticmethod
+    def replace_in_session(session: Session, snapshot: CatalogSnapshot) -> None:
+        """Persiste um snapshot na transação do chamador para commits coerentes."""
+        manga = session.get(MangaRecord, snapshot.manga.id)
+        if manga is None:
+            manga = MangaRecord(id=snapshot.manga.id, title=snapshot.manga.title)
+            session.add(manga)
             session.flush()
-            session.execute(
-                delete(CatalogMembershipRecord).where(
-                    CatalogMembershipRecord.manga_id == snapshot.manga.id
-                )
+        elif manga.provider_id not in {None, snapshot.provider_id}:
+            raise CatalogIdentityConflict("O ID do mangá pertence a outro provedor.")
+        elif manga.provider_id is not None and manga.source_ref != snapshot.source_id:
+            raise CatalogIdentityConflict("O ID do mangá aponta para outra identidade de origem.")
+
+        manga.title = snapshot.manga.title
+        manga.source_ref = snapshot.source_id
+        manga.provider_id = snapshot.provider_id
+        manga.author = snapshot.manga.author
+        manga.search_key = normalize_search_text(
+            f"{snapshot.manga.title} {snapshot.manga.author or ''}"
+        )
+        manga.cover_path = (
+            snapshot.manga.cover_path.as_posix() if snapshot.manga.cover_path is not None else None
+        )
+        manga.language = snapshot.manga.language
+        manga.simulated = snapshot.simulated
+        manga.updated_at = snapshot.updated_at
+
+        max_storage_position = session.scalar(
+            select(func.max(ChapterRecord.position)).where(
+                ChapterRecord.manga_id == snapshot.manga.id
             )
-            session.add_all(
-                CatalogMembershipRecord(
+        )
+        next_storage_position = (
+            max_storage_position if max_storage_position is not None else -1
+        ) + 1
+        for chapter in snapshot.chapters:
+            record = session.get(ChapterRecord, chapter.id)
+            if record is None:
+                record = ChapterRecord(
+                    id=chapter.id,
                     manga_id=snapshot.manga.id,
-                    chapter_id=chapter.id,
-                    position=position,
-                    source_order=chapter.source_order,
+                    position=next_storage_position,
                 )
-                for position, chapter in enumerate(snapshot.chapters)
+                next_storage_position += 1
+                session.add(record)
+            elif record.manga_id != snapshot.manga.id:
+                raise CatalogIdentityConflict("O ID do capítulo pertence a outro mangá.")
+            record.title = chapter.title
+            record.number = str(chapter.number) if chapter.number is not None else None
+            record.volume = str(chapter.volume) if chapter.volume is not None else None
+            record.source_chapter_id = chapter.source_chapter_id
+            record.search_key = normalize_search_text(
+                f"{record.title or ''} {record.number or ''} {record.volume or ''}"
             )
+            record.available = chapter.available
+
+        session.flush()
+        session.execute(
+            delete(CatalogMembershipRecord).where(
+                CatalogMembershipRecord.manga_id == snapshot.manga.id
+            )
+        )
+        session.add_all(
+            CatalogMembershipRecord(
+                manga_id=snapshot.manga.id,
+                chapter_id=chapter.id,
+                position=position,
+                source_order=chapter.source_order,
+            )
+            for position, chapter in enumerate(snapshot.chapters)
+        )
 
     def get(self, manga_id: UUID) -> CatalogSnapshot | None:
         with self._database.unit_of_work() as session:
@@ -136,6 +139,7 @@ class CatalogRepository:
                             volume=Decimal(record.volume) if record.volume is not None else None,
                             available=record.available,
                             source_order=membership.source_order,
+                            source_chapter_id=record.source_chapter_id,
                         )
                     )
                 except (DomainValidationError, ArithmeticError):

@@ -4,7 +4,7 @@ from PySide6.QtCore import Qt
 from PySide6.QtTest import QTest
 
 
-def test_seven_areas_are_navigable_and_library_starts_empty(main_window) -> None:
+def test_eight_areas_are_navigable_and_library_starts_empty(main_window) -> None:
     expected = {
         "library": "Biblioteca",
         "add": "Adicionar mangá",
@@ -13,9 +13,10 @@ def test_seven_areas_are_navigable_and_library_starts_empty(main_window) -> None
         "send": "Enviar ao Kindle",
         "settings": "Configurações",
         "images": "Importar imagens",
+        "updates": "Atualizações",
     }
 
-    assert main_window.page_stack.count() == 7
+    assert main_window.page_stack.count() == 8
     assert main_window.library_view.empty_state.isVisible()
     main_window.set_current_page("downloads")
     assert main_window.downloads_view.empty_state.isVisible()
@@ -37,4 +38,3 @@ def test_library_does_not_insert_demo_records_and_empty_action_navigates(main_wi
         Qt.MouseButton.LeftButton,
     )
     assert main_window.page_title.text() == "Adicionar mangá"
-

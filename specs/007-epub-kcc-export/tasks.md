@@ -6,7 +6,7 @@
 
 - Features anteriores: F001–F006 (contratos, UI, pages, provider, biblioteca local e pipeline de imagens).
 - Reutilizar páginas derivadas e metadados existentes; exportar localmente e nunca transferir sem consentimento separado em F009.
-- Gates obrigatórios: conformidade fixed-layout/Send to Kindle sem alegações não testadas, inicialização KCC sem rede e capacidades/argumentos reais do KCC instalado. Por decisão explícita do usuário, o writer EPUB usa biblioteca padrão e EbookLib não é dependência. Não empacotar KCC.
+- Gates: conformidade fixed-layout/Send to Kindle e teste físico continuam pendentes. A CLI KCC 13.0.4 foi verificada com help e conversões MOBI reais; não empacotar KCC. Por decisão explícita do usuário, o writer EPUB usa biblioteca padrão e EbookLib não é dependência.
 
 ## Fase 1 — Setup
 
@@ -50,10 +50,10 @@
 
 **Objetivo**: Como pessoa usuária, quero usar uma instalação compatível do KCC ou escolher o EPUB nativo, para obter a saída que funciona no meu fluxo sem depender de um conversor indisponível.
 
-**Teste independente**: Simular binários KCC ausente, compatível, com argumentos diferentes, sem opção necessária, com timeout e com saída inválida; conferir o fallback nativo, isolamento do subprocesso, cancelamento e relatório. A etapa final de aceitação compara a saída em um Kindle físico e registra o modelo e a rota testados.
+**Teste independente**: Usar help capturado de KCC 13.0.4 e executar a CLI oficial real em integração Windows com páginas processadas; automatizar ausência/incompatibilidade, timeout, cancelamento, erro de processo e saída inválida. A aceitação final ainda compara a saída em um Kindle físico e registra modelo e rota.
 
-- [ ] T017 [US3] Criar testes do adaptador com binário ausente, versão/help real capturado, timeout, cancelamento e saída inválida em `tests/unit/infrastructure/test_kcc_adapter.py`. **Gate aberto**: não há binário KCC instalado cuja versão/opções e comportamento sem rede possam ser verificados; runner simulado não prova capacidade real.
-- [ ] T018 [US3] Implementar detecção KCC e argumentos exclusivamente verificados na versão instalada, `subprocess` sem shell, timeout/cancelamento e logs redigidos em `infrastructure/exports/kcc_adapter.py`. **Gate aberto**: nenhum executável/capacidade KCC real foi verificado.
+- [x] T017 [US3] Criar testes do adaptador com binário ausente, help oficial capturado, timeout, cancelamento, versão desconhecida e saída inválida em `tests/unit/infrastructure/test_kcc_adapter.py`; registrar origem/hash/assinatura em `tests/fixtures/kcc/13.0.4-windows-amd64-provenance.json` e exercitar a CLI real no teste de integração opcional por `M2K_KCC_EXE`.
+- [x] T018 [US3] Implementar verificação local da CLI KCC 13.0.4, argumentos confirmados no help, staging de cópias, subprocess sem shell, timeout de 15 minutos, cancelamento, saída MOBI validada e ausência de logs de caminho/conteúdo em `src/manga_to_kindle/infrastructure/exports/kcc_adapter.py`.
 - [x] T019 [US3] Criar teste de integração que confirme exportação EPUB nativa sem KCC configurado e sem chamada de rede durante a inicialização em `tests/integration/test_export_fallback.py`.
 - [x] T020 [US3] Documentar limitações de layout fixo/Send to Kindle e indisponibilidade de KCC/USB/AZW3 sem capacidades comprovadas.; arquivos/componentes: `README.md; specs/007-epub-kcc-export/quickstart.md`
 
@@ -69,9 +69,9 @@
 
 ## Dependências e estratégia de execução
 
-- Requer `F001:T017` a `F006:T024`; não criar pipeline de imagem, saída temporária nem registry alternativos. US1 nativo usa biblioteca padrão por decisão explícita do usuário; KCC continua opcional.
+- Requer `F001:T017` a `F006:T024`; não criar pipeline de imagem, saída temporária nem registry alternativos. US1 nativo usa biblioteca padrão por decisão explícita do usuário; KCC continua opcional e não empacotado. Para MOBI, só perfis K810 (600×800) e KPW34 (1072×1448), idioma explícito e sem divisão por tamanho.
 - T001, T003 e T005 antecedem dependências/implementações; todas as opções KCC devem derivar de evidência da versão real.
-- MVP: EPUB não transferido com estrutura validada. Critérios dependentes de licença ou dispositivo permanecem como gates.
+- MVP: EPUB não transferido com estrutura validada e MOBI local criado pela CLI 13.0.4 quando selecionada explicitamente. Critérios dependentes de dispositivo permanecem como gates.
 
 ## Rastreabilidade
 
@@ -83,4 +83,4 @@
 - T001 e T002 são raízes paralelizáveis após as dependências de feature: F001–F006. Em F001, essas raízes não têm dependência externa.
 - T003 depende de T001 e T002. Cada tarefa T004 em diante depende da tarefa imediatamente anterior no mesmo tasks.md; essa ordem conservadora preserva os gates, os testes antes da implementação e as integrações indicadas acima.
 - No MCP, cada dependência aponta para o ID da tarefa equivalente; tarefas-raiz também dependem da última tarefa de integração das features predecessoras listadas.
-- T017 e T018 permanecem pendentes pelo gate de capacidade real do KCC; as demais tarefas do MVP EPUB/CBZ e fluxo local estão concluídas e têm validação registrada no checkpoint.
+- T017 e T018 têm evidência do help e de conversões reais KCC 13.0.4. A validação de Kindle físico/Send to Kindle continua pendente e não é alegada.

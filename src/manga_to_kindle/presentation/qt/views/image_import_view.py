@@ -35,6 +35,7 @@ from manga_to_kindle.domain.image_processing import (
     ImageTransformOptions,
     ReadingDirection,
 )
+from manga_to_kindle.domain.settings import DeviceProfileSettings
 from manga_to_kindle.presentation.qt.workers.adapter import OperationRunner
 from manga_to_kindle.presentation.qt.workers.image_worker import (
     make_image_import_operation,
@@ -77,6 +78,7 @@ class ImageImportView(QWidget):
         self._scan_id: str | None = None
         self._preview_id: str | None = None
         self._import_id: str | None = None
+        self._device_profile = ImageProcessingProfile()
 
         layout = QVBoxLayout(self)
         layout.setContentsMargins(0, 0, 0, 0)
@@ -253,6 +255,36 @@ class ImageImportView(QWidget):
     ) -> None:
         self._importer = importer
         self._repository = repository
+
+    def set_device_profile(self, profile: DeviceProfileSettings) -> None:
+        self._device_profile = ImageProcessingProfile(
+            name=profile.name,
+            width=profile.width,
+            height=profile.height,
+            profile_id=profile.id,
+            ppi=profile.ppi,
+            grayscale_levels=profile.grayscale_levels,
+            quality=profile.quality,
+        )
+        for spin, value in zip(
+            self.margin_spins,
+            (
+                profile.margin_left,
+                profile.margin_top,
+                profile.margin_right,
+                profile.margin_bottom,
+            ),
+            strict=True,
+        ):
+            spin.setValue(value)
+        self.crop_checkbox.setChecked(profile.crop_margins)
+        direction_index = self.direction_combo.findData(profile.direction)
+        if direction_index >= 0:
+            self.direction_combo.setCurrentIndex(direction_index)
+        self.status_label.setText(
+            f"Perfil ativo: {profile.name}, {profile.width} × {profile.height} px, "
+            "escala de cinza."
+        )
         self._reload_targets()
 
     def _reload_targets(self) -> None:
@@ -355,19 +387,24 @@ class ImageImportView(QWidget):
     def _profile(self) -> ImageProcessingProfile:
         left, top, right, bottom = (spin.value() for spin in self.margin_spins)
         return ImageProcessingProfile(
+            name=self._device_profile.name,
+            width=self._device_profile.width,
+            height=self._device_profile.height,
             margin_left=left,
             margin_top=top,
             margin_right=right,
             margin_bottom=bottom,
+            profile_id=self._device_profile.profile_id,
+            ppi=self._device_profile.ppi,
+            grayscale_levels=self._device_profile.grayscale_levels,
+            quality=self._device_profile.quality,
         )
 
     def _options(self) -> ImageTransformOptions:
-        direction = self.direction_combo.currentData()
-        reading_direction = (
-            direction
-            if isinstance(direction, ReadingDirection)
-            else ReadingDirection.RIGHT_TO_LEFT
-        )
+        try:
+            reading_direction = ReadingDirection(str(self.direction_combo.currentData()))
+        except ValueError:
+            reading_direction = ReadingDirection.RIGHT_TO_LEFT
         selected = frozenset(
             str(self.image_list.item(row).data(Qt.ItemDataRole.UserRole))
             for row in range(self.image_list.count())

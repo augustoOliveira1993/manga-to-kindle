@@ -1,0 +1,7 @@
+{
+  "accepted": 250,
+  "temporary_rejection": 451,
+  "permanent_rejection": 550,
+  "disconnect_after_data": true,
+  "message_size_limit_bytes": 50000000
+}

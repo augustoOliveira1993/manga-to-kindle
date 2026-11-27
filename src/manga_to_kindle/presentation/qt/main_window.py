@@ -29,6 +29,7 @@ from manga_to_kindle.presentation.qt.views.image_import_view import ImageImportV
 from manga_to_kindle.presentation.qt.views.library_view import LibraryView
 from manga_to_kindle.presentation.qt.views.manual_send_view import ManualSendView
 from manga_to_kindle.presentation.qt.views.settings_view import SettingsView
+from manga_to_kindle.presentation.qt.views.update_settings_view import UpdateSettingsView
 from manga_to_kindle.presentation.qt.workers.adapter import OperationRunner
 from manga_to_kindle.presentation.qt.workers.demo import CatalogQuery
 
@@ -46,6 +47,12 @@ class MainWindow(QMainWindow):
         ("send", "↗  Enviar ao Kindle", "Enviar ao Kindle", "Fluxo manual oficial"),
         ("settings", "⚙  Configurações", "Configurações", "Aparência e preferências"),
         ("images", "▧  Importar imagens", "Importar imagens", "Origem local autorizada"),
+        (
+            "updates",
+            "◷  Atualizações",
+            "Atualizações",
+            "Monitoramento opt-in; sem download automático",
+        ),
     )
 
     def __init__(
@@ -140,13 +147,12 @@ class MainWindow(QMainWindow):
         self.image_import_view = ImageImportView(self.operation_runner)
         self.conversion_view = ConversionView(self.operation_runner)
         self.manual_send_view = ManualSendView(self.operation_runner)
-        self.settings_view = SettingsView()
+        self.settings_view = SettingsView(self.operation_runner)
+        self.update_settings_view = UpdateSettingsView(self.operation_runner)
         self.add_manga_view.chapter_list.selection_changed.connect(
             self.conversion_view.set_selected_chapters
         )
-        self.library_view.add_manga_requested.connect(
-            lambda: self.set_current_page("add")
-        )
+        self.library_view.add_manga_requested.connect(lambda: self.set_current_page("add"))
         self.conversion_view.manual_send_requested.connect(self._open_manual_send)
         self._page_widgets: Mapping[str, QWidget] = {
             "library": self.library_view,
@@ -156,6 +162,7 @@ class MainWindow(QMainWindow):
             "send": self.manual_send_view,
             "settings": self.settings_view,
             "images": self.image_import_view,
+            "updates": self.update_settings_view,
         }
         for key, _, _, _ in self._PAGES:
             self.page_stack.addWidget(self._page_widgets[key])
@@ -166,8 +173,7 @@ class MainWindow(QMainWindow):
         root_layout.addWidget(content, 1)
         self.setCentralWidget(root)
         navigation_actions = tuple(
-            lambda page=key: self.set_current_page(page)
-            for key, _, _, _ in self._PAGES
+            lambda page=key: self.set_current_page(page) for key, _, _, _ in self._PAGES
         )
         self._navigation_shortcuts = bind_navigation_shortcuts(self, navigation_actions)
         self._apply_theme_stylesheet()
@@ -211,6 +217,7 @@ class MainWindow(QMainWindow):
         self._allow_close = True
 
     def closeEvent(self, event: QCloseEvent) -> None:  # noqa: N802 - Qt override
+        self.update_settings_view.stop_scheduler()
         if self._allow_close:
             event.accept()
             return

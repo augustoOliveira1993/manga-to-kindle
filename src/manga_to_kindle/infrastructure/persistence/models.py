@@ -8,6 +8,7 @@ from uuid import UUID, uuid4
 
 from sqlalchemy import (
     JSON,
+    BigInteger,
     Boolean,
     CheckConstraint,
     DateTime,
@@ -18,6 +19,7 @@ from sqlalchemy import (
     Text,
     UniqueConstraint,
     Uuid,
+    text,
 )
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, relationship
 
@@ -64,6 +66,13 @@ class ChapterRecord(Base):
             name="ck_chapter_display_value",
         ),
         Index("ix_chapter_manga_favorite_position", "manga_id", "favorite", "position"),
+        Index(
+            "uq_chapter_manga_source_id",
+            "manga_id",
+            "source_chapter_id",
+            unique=True,
+            sqlite_where=text("source_chapter_id IS NOT NULL"),
+        ),
     )
 
     id: Mapped[UUID] = mapped_column(Uuid(as_uuid=True), primary_key=True, default=uuid4)
@@ -74,6 +83,7 @@ class ChapterRecord(Base):
     search_key: Mapped[str] = mapped_column(Text, nullable=False, default="")
     number: Mapped[str | None] = mapped_column(String(64))
     volume: Mapped[str | None] = mapped_column(String(64))
+    source_chapter_id: Mapped[str | None] = mapped_column(String(512))
     available: Mapped[bool | None] = mapped_column(Boolean)
     favorite: Mapped[bool] = mapped_column(Boolean, nullable=False, default=False)
     position: Mapped[int] = mapped_column(Integer, nullable=False)
@@ -81,6 +91,92 @@ class ChapterRecord(Base):
 
     manga: Mapped[MangaRecord] = relationship(back_populates="chapters")
     pages: Mapped[list[PageRecord]] = relationship(back_populates="chapter")
+
+
+class UpdatePreferenceRecord(Base):
+    __tablename__ = "update_preference"
+    __table_args__ = (
+        CheckConstraint("enabled IN (0, 1)", name="ck_update_preference_enabled"),
+        CheckConstraint(
+            "interval_seconds IS NULL OR interval_seconds >= 1",
+            name="ck_update_preference_interval",
+        ),
+        CheckConstraint(
+            "enabled = 0 OR interval_seconds IS NOT NULL",
+            name="ck_update_preference_enabled_interval",
+        ),
+    )
+
+    manga_id: Mapped[UUID] = mapped_column(
+        Uuid(as_uuid=True), ForeignKey("manga.id", ondelete="RESTRICT"), primary_key=True
+    )
+    enabled: Mapped[bool] = mapped_column(Boolean, nullable=False, default=False)
+    interval_seconds: Mapped[int | None] = mapped_column(Integer)
+    notifications_enabled: Mapped[bool] = mapped_column(Boolean, nullable=False, default=True)
+    updated_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=utc_now)
+
+
+class UpdateCheckRecord(Base):
+    __tablename__ = "update_check"
+    __table_args__ = (
+        CheckConstraint(
+            "status IN ('succeeded', 'failed', 'rate_limited', 'cancelled', 'unsupported')",
+            name="ck_update_check_status",
+        ),
+        CheckConstraint("chapter_count >= 0", name="ck_update_check_chapter_count"),
+        CheckConstraint(
+            "new_chapter_count >= 0 AND new_chapter_count <= chapter_count",
+            name="ck_update_check_new_count",
+        ),
+        CheckConstraint(
+            "policy_fingerprint IS NULL OR length(policy_fingerprint) = 64",
+            name="ck_update_check_policy_fingerprint",
+        ),
+        Index("ix_update_check_manga_started", "manga_id", "started_at"),
+    )
+
+    id: Mapped[UUID] = mapped_column(Uuid(as_uuid=True), primary_key=True, default=uuid4)
+    manga_id: Mapped[UUID] = mapped_column(
+        Uuid(as_uuid=True), ForeignKey("manga.id", ondelete="RESTRICT"), nullable=False
+    )
+    provider_id: Mapped[str] = mapped_column(String(128), nullable=False)
+    started_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), nullable=False)
+    finished_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
+    status: Mapped[str] = mapped_column(String(16), nullable=False)
+    chapter_count: Mapped[int] = mapped_column(Integer, nullable=False, default=0)
+    new_chapter_count: Mapped[int] = mapped_column(Integer, nullable=False, default=0)
+    safe_error_code: Mapped[str | None] = mapped_column(String(64))
+    retry_after_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
+    policy_fingerprint: Mapped[str | None] = mapped_column(String(64))
+
+
+class ChapterNoticeRecord(Base):
+    __tablename__ = "chapter_notice"
+    __table_args__ = (
+        UniqueConstraint(
+            "manga_id",
+            "provider_id",
+            "source_chapter_id",
+            name="uq_chapter_notice_stable_identity",
+        ),
+        Index("ix_chapter_notice_manga_read", "manga_id", "read_at"),
+    )
+
+    id: Mapped[UUID] = mapped_column(Uuid(as_uuid=True), primary_key=True, default=uuid4)
+    manga_id: Mapped[UUID] = mapped_column(
+        Uuid(as_uuid=True), ForeignKey("manga.id", ondelete="RESTRICT"), nullable=False
+    )
+    provider_id: Mapped[str] = mapped_column(String(128), nullable=False)
+    source_chapter_id: Mapped[str] = mapped_column(String(512), nullable=False)
+    chapter_title_snapshot: Mapped[str] = mapped_column(String(512), nullable=False)
+    chapter_id: Mapped[UUID] = mapped_column(
+        Uuid(as_uuid=True), ForeignKey("chapter.id", ondelete="RESTRICT"), nullable=False
+    )
+    check_id: Mapped[UUID] = mapped_column(
+        Uuid(as_uuid=True), ForeignKey("update_check.id", ondelete="RESTRICT"), nullable=False
+    )
+    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), nullable=False)
+    read_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
 
 
 class PageRecord(Base):
@@ -137,7 +233,11 @@ class ProcessedPageRecord(Base):
     __tablename__ = "processed_page"
     __table_args__ = (
         CheckConstraint("output_order >= 0", name="ck_processed_page_order"),
-        CheckConstraint("width = 600 AND height = 800", name="ck_processed_page_profile_size"),
+        CheckConstraint(
+            "width BETWEEN 1 AND 10000 AND height BETWEEN 1 AND 10000 "
+            "AND width * height <= 50000000",
+            name="ck_processed_page_profile_size",
+        ),
         UniqueConstraint("page_id", "output_order", name="uq_processed_page_order"),
     )
 
@@ -265,6 +365,59 @@ class DeviceProfileRecord(Base):
     updated_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=utc_now)
 
 
+class ApplicationPreferencesRecord(Base):
+    __tablename__ = "application_preferences"
+    __table_args__ = (
+        CheckConstraint("id = 1", name="ck_application_preferences_singleton"),
+        CheckConstraint(
+            "download_concurrency BETWEEN 1 AND 2",
+            name="ck_application_preferences_download_concurrency",
+        ),
+        CheckConstraint(
+            "cache_limit_bytes BETWEEN 104857600 AND 21474836480",
+            name="ck_application_preferences_cache_limit",
+        ),
+        CheckConstraint(
+            "cache_retention_days BETWEEN 1 AND 365",
+            name="ck_application_preferences_cache_retention",
+        ),
+    )
+
+    id: Mapped[int] = mapped_column(Integer, primary_key=True)
+    selected_profile_id: Mapped[UUID] = mapped_column(Uuid(as_uuid=True), nullable=False)
+    download_concurrency: Mapped[int] = mapped_column(Integer, nullable=False, default=2)
+    download_directory: Mapped[str] = mapped_column(Text, nullable=False)
+    export_directory: Mapped[str] = mapped_column(Text, nullable=False)
+    cache_directory: Mapped[str] = mapped_column(Text, nullable=False)
+    cache_limit_bytes: Mapped[int] = mapped_column(BigInteger, nullable=False, default=1073741824)
+    cache_retention_days: Mapped[int] = mapped_column(Integer, nullable=False, default=30)
+    updated_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=utc_now)
+
+
+class CacheManifestRecord(Base):
+    __tablename__ = "cache_manifest"
+    __table_args__ = (
+        UniqueConstraint("root_path", "relative_path", name="uq_cache_manifest_path"),
+        CheckConstraint("length(sha256) = 64", name="ck_cache_manifest_sha256"),
+        CheckConstraint("size_bytes >= 0", name="ck_cache_manifest_size"),
+        CheckConstraint(
+            "category IN ('preview', 'thumbnail')",
+            name="ck_cache_manifest_category",
+        ),
+        Index("ix_cache_manifest_root_accessed", "root_path", "last_accessed_at"),
+    )
+
+    id: Mapped[UUID] = mapped_column(Uuid(as_uuid=True), primary_key=True, default=uuid4)
+    root_path: Mapped[str] = mapped_column(Text, nullable=False)
+    relative_path: Mapped[str] = mapped_column(Text, nullable=False)
+    sha256: Mapped[str] = mapped_column(String(64), nullable=False)
+    size_bytes: Mapped[int] = mapped_column(BigInteger, nullable=False)
+    last_accessed_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), nullable=False)
+    category: Mapped[str] = mapped_column(String(16), nullable=False)
+    in_use: Mapped[bool] = mapped_column(Boolean, nullable=False, default=False)
+    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=utc_now)
+
+
 class ExportRecord(Base):
     __tablename__ = "export"
     __table_args__ = (
@@ -291,7 +444,7 @@ class ExportArtifactRecord(Base):
     __tablename__ = "export_artifact"
     __table_args__ = (
         CheckConstraint("position >= 0", name="ck_export_artifact_position"),
-        CheckConstraint("format IN ('epub', 'cbz')", name="ck_export_artifact_format"),
+        CheckConstraint("format IN ('epub', 'cbz', 'mobi')", name="ck_export_artifact_format"),
         CheckConstraint("length(sha256) = 64", name="ck_export_artifact_sha256"),
         CheckConstraint("size_bytes > 0", name="ck_export_artifact_size"),
         UniqueConstraint("export_id", "position", name="uq_export_artifact_position"),
@@ -350,7 +503,8 @@ class TransferJobRecord(Base):
             name="ck_transfer_job_state",
         ),
         CheckConstraint(
-            "stage IN ('connecting', 'tls', 'authenticating', 'envelope', 'transmitting', 'finished')",
+            "stage IN ('connecting', 'tls', 'authenticating', 'envelope', "
+            "'transmitting', 'finished')",
             name="ck_transfer_job_stage",
         ),
         CheckConstraint("port BETWEEN 1 AND 65535", name="ck_transfer_job_port"),

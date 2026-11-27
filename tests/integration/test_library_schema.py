@@ -1,13 +1,20 @@
 from __future__ import annotations
 
 from pathlib import Path
-from uuid import UUID
+from uuid import UUID, uuid4
 
+import pytest
+from alembic import command
 from sqlalchemy import inspect
 from sqlalchemy.exc import IntegrityError
 
 from manga_to_kindle.infrastructure.persistence.database import SQLiteDatabase
-from manga_to_kindle.infrastructure.persistence.models import ChapterRecord, MangaRecord
+from manga_to_kindle.infrastructure.persistence.models import (
+    ChapterRecord,
+    ExportArtifactRecord,
+    ExportRecord,
+    MangaRecord,
+)
 
 
 def test_library_migration_preserves_catalog_and_enforces_favorites_and_foreign_keys(
@@ -40,11 +47,18 @@ def test_library_migration_preserves_catalog_and_enforces_favorites_and_foreign_
             foreign_key_violations = connection.exec_driver_sql("PRAGMA foreign_key_check").all()
             foreign_keys_enabled = connection.exec_driver_sql("PRAGMA foreign_keys").scalar_one()
 
-    assert upgraded.current_revision() == "0007_transfers"
+    assert upgraded.current_revision() == "0011_mobi_export_artifacts"
     assert manga is not None and manga.title == "Coração Azul" and manga.favorite is False
     assert chapter is not None and chapter.title == "A chegada" and chapter.favorite is False
     assert foreign_keys_enabled == 1
     assert foreign_key_violations == []
+    artifact_constraints = inspect(upgraded.engine).get_check_constraints("export_artifact")
+    format_constraint = next(
+        constraint["sqltext"]
+        for constraint in artifact_constraints
+        if constraint["name"] == "ck_export_artifact_format"
+    )
+    assert "'mobi'" in format_constraint
     assert {"library_preference", "library_deletion_plan", "library_asset"} <= set(
         inspect(upgraded.engine).get_table_names()
     )
@@ -73,4 +87,45 @@ def test_library_foreign_keys_reject_orphan_records_on_each_connection(tmp_path:
             pass
         else:
             raise AssertionError("A conexão SQLite aceitou um capítulo órfão.")
+    database.close()
+
+
+def test_mobi_artifact_prevents_downgrade_that_would_drop_its_format(tmp_path: Path) -> None:
+    database = SQLiteDatabase(tmp_path / "library.sqlite3")
+    database.initialize()
+    export_id = uuid4()
+    artifact_id = uuid4()
+    with database.unit_of_work() as session:
+        session.add(
+            ExportRecord(
+                id=export_id,
+                profile_snapshot={"format": "mobi"},
+                destination=str(tmp_path),
+                state="completed",
+            )
+        )
+        session.add(
+            ExportArtifactRecord(
+                id=artifact_id,
+                export_id=export_id,
+                package_id=uuid4(),
+                position=0,
+                format="mobi",
+                path=str(tmp_path / "chapter.mobi"),
+                sha256="a" * 64,
+                size_bytes=128,
+                chapter_ids=[],
+            )
+        )
+    config = database._migration_config()
+
+    with database.engine.connect() as connection:
+        config.attributes["connection"] = connection
+        with pytest.raises(RuntimeError, match="MOBI export records"):
+            command.downgrade(config, "0010_catalog_updates")
+
+    assert database.current_revision() == "0011_mobi_export_artifacts"
+    with database.unit_of_work() as session:
+        artifact = session.get(ExportArtifactRecord, artifact_id)
+    assert artifact is not None and artifact.format == "mobi"
     database.close()

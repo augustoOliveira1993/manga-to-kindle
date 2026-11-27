@@ -50,6 +50,8 @@ class ImageStore:
         original_bytes: bytes,
         processed_bytes: tuple[bytes, ...],
         duplicate_content: bool,
+        processed_width: int = 600,
+        processed_height: int = 800,
     ) -> StagedImagePage:
         if position < 0 or not processed_bytes or len(processed_bytes) > 2:
             raise ImageStoreError("A página contém resultados inválidos.")
@@ -72,6 +74,8 @@ class ImageStore:
                     staged_path=staged_path,
                     final_path=final_root / "processed" / name,
                     sha256=hashlib.sha256(data).hexdigest(),
+                    width=processed_width,
+                    height=processed_height,
                 )
             )
         return StagedImagePage(

@@ -1,0 +1,17 @@
+{
+  "name": "Leitor 900 × 1200",
+  "model": "Perfil personalizado",
+  "generation": null,
+  "width": 900,
+  "height": 1200,
+  "ppi": null,
+  "grayscale_levels": 16,
+  "grayscale": true,
+  "direction": "rtl",
+  "margin_left": 8,
+  "margin_top": 8,
+  "margin_right": 8,
+  "margin_bottom": 8,
+  "crop_margins": false,
+  "quality": 90
+}

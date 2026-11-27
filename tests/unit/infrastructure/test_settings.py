@@ -19,6 +19,20 @@ def test_defaults_match_the_foundation_policy() -> None:
     assert settings.theme == "light"
 
 
+def test_legacy_settings_fixture_keeps_theme_and_uses_existing_defaults(tmp_path: Path) -> None:
+    fixture = Path(__file__).parents[2] / "fixtures" / "settings" / "legacy_preferences.json"
+    paths = AppPaths.from_root(tmp_path)
+    paths.ensure()
+    paths.settings_file.write_bytes(fixture.read_bytes())
+
+    settings = load_or_create_settings(paths)
+
+    assert settings.theme == "dark"
+    assert settings.log_max_bytes == 5 * 1024 * 1024
+    assert settings.log_backup_count == 3
+    assert paths.settings_file.read_bytes() == fixture.read_bytes()
+
+
 def test_first_load_writes_defaults_atomically(tmp_path: Path) -> None:
     paths = AppPaths.from_root(tmp_path)
     paths.ensure()

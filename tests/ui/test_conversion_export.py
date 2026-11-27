@@ -8,13 +8,13 @@ from PySide6.QtWidgets import QLabel
 from tests.image_support import FIXTURES, make_image_stack, make_new_target
 
 from manga_to_kindle.application.exports.create_export import CreateExport
+from manga_to_kindle.application.transfers.open_manual_flow import OpenManualSend
 from manga_to_kindle.infrastructure.exports.cbz_validator import ValidateCbz
 from manga_to_kindle.infrastructure.exports.cbz_writer import NativeCbzWriter
 from manga_to_kindle.infrastructure.exports.epub_validator import ValidateEpub
 from manga_to_kindle.infrastructure.exports.epub_writer import NativeEpubWriter
 from manga_to_kindle.infrastructure.exports.output_store import ExportOutputStore
 from manga_to_kindle.infrastructure.persistence.export_repository import ExportRepository
-from manga_to_kindle.application.transfers.open_manual_flow import OpenManualSend
 
 
 def _wait_for_operation(window, operation_id: str, qt_core_app) -> None:
@@ -144,9 +144,26 @@ def test_conversion_requires_explicit_language_and_has_no_simulated_formats(
     ]
     view.set_selected_chapters(())
 
-    assert len(formats) == 2
+    assert len(formats) == 3
     assert all("simulad" not in label for label in formats)
     assert not any("azw3" in label for label in formats)
     assert not view.start_button.isEnabled()
     intro = view.findChild(QLabel, "conversionIntro")
     assert intro is not None and "nada é enviado" in intro.text().lower()
+
+
+def test_conversion_shows_external_kcc_controls_only_for_mobi(main_window) -> None:
+    view = main_window.conversion_view
+
+    assert view.kcc_executable_path.isHidden()
+    assert view.choose_kcc_button.isHidden()
+    view.format_combo.setCurrentIndex(view.format_combo.findData("mobi"))
+
+    assert not view.kcc_executable_path.isHidden()
+    assert not view.choose_kcc_button.isHidden()
+    assert view.language_input.isEnabled()
+    assert view.direction_combo.isEnabled()
+
+    view.format_combo.setCurrentIndex(view.format_combo.findData("cbz"))
+    assert view.kcc_executable_path.isHidden()
+    assert view.choose_kcc_button.isHidden()

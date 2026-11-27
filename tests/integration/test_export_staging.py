@@ -24,6 +24,17 @@ def test_output_is_promoted_into_selected_folder_without_overwrite(tmp_path: Pat
     assert not staged.staging_directory.exists()
 
 
+def test_mobi_output_is_supported_by_atomic_local_staging(tmp_path: Path) -> None:
+    store = ExportOutputStore(tmp_path)
+    staged = store.begin(uuid4(), "Coleção — Volume 1.mobi")
+    staged.staged_path.write_bytes(b"verified MOBI output")
+
+    final_path = store.publish(staged)
+
+    assert final_path == tmp_path / "Coleção — Volume 1.mobi"
+    assert final_path.read_bytes() == b"verified MOBI output"
+
+
 def test_existing_output_needs_confirmation_and_is_preserved_on_cancel(tmp_path: Path) -> None:
     destination = tmp_path / "book.epub"
     destination.write_bytes(b"existing")

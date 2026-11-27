@@ -1,0 +1,123 @@
+comic2ebook v13.0.4 - Written by Ciro Mattia Gonano and Pawel Jastrzebski.
+usage: kcc-c2e [options] [input]
+
+MANDATORY:
+  input                 Full path to comic folder or file(s) to be processed.
+
+MAIN:
+  -p, --profile PROFILE
+                        Device profile (Available options: K1, K2, KDX, K34,
+                        K57, KPW, KV, KPW34, K810, KO, K11, KPW5, KPW6, K1920,
+                        KS1860, KS1920, KS1240, KS1324, KS, KCS, KS3, KSCS,
+                        KoMT, KoG, KoGHD, KoA, KoAHD, KoAH2O, KoAO, KoN, KoC,
+                        KoCC, KoL, KoLC, KoF, KoS, KoE, Rmk1, Rmk2, RmkPP,
+                        RmkPPMove, OTHER, 2400x3200, 1860x2480, 1650x2200,
+                        1536x2048, 1404x1872, 1264x1680, 1072x1448)
+                        [Default=KV]
+  -m, --manga-style     Manga style (right-to-left reading and splitting)
+  --lightnovel          Only resize images and preserve original file
+                        structure.
+  --wallpaper           Crop to fill screen.
+  --ebok                Force EBOK tag instead of PDOC for MOBI
+  --invertdirection     Invert page turn direction
+  -q, --hq              Try to increase the quality of magnification
+  -2, --two-panel       Display two not four panels in Panel View mode
+  --vertical4panel      Display side panels first in virtual panel view
+  --legacypanelview     Use legacy panel view method from KCC 6
+  -w, --webtoon         Webtoon processing mode
+  --ts, --targetsize TARGETSIZE
+                        the maximal size of output file in MB. [Default=100MB
+                        for webtoon and 400MB for others]
+
+PROCESSING:
+  -n, --noprocessing    Do not modify image and ignore any profile or
+                        processing option
+  --legacyextract       Use the legacy PDF/EPUB image extraction method from
+                        older KCC versions
+  --pdfwidth            Render vector PDFs to device width instead of height.
+  --smartcovercrop      Attempt to crop main cover from wide image
+  --coverfill           Crop cover to fill screen
+  -u, --upscale         Resize images smaller than device's resolution
+  -s, --stretch         Stretch images to device's resolution
+  -r, --splitter SPLITTER
+                        Double page parsing mode. 0: Split 1: Rotate 2: Both
+                        [Default=0]
+  -g, --gamma GAMMA     Apply gamma correction to linearize the image
+                        [Default=Auto]
+  -c, --cropping CROPPING
+                        Set cropping mode. 0: Disabled 1: Margins 2: Margins +
+                        page numbers [Default=2]
+  --cp, --croppingpower CROPPINGP
+                        Set cropping power [Default=1.0]
+  --preservemargin PRESERVEMARGIN
+                        After calculating crop, back up specified percentage
+                        amount. [Default=0]
+  --cm, --croppingminimum CROPPINGM
+                        Set cropping minimum area ratio [Default=0.0]
+  --ipc, --interpanelcrop INTERPANELCROP
+                        Crop empty sections. 0: Disabled 1: Horizontally 2:
+                        Both [Default=0]
+  --blackborders        Disable autodetection and force black borders
+  --whiteborders        Disable autodetection and force white borders
+  --forcecolor          Don't convert images to grayscale
+  --forcepng            Create PNG files instead JPEG for black and white
+                        images
+  --force-png-rgb       Force color images to be saved as PNG
+  --webp                Replace JPG with lossy WEBP and PNG with lossless WEBP
+  --pnglegacy           Use a more compatible 8 bit png instead of 4 bit
+  --noquantize          Don't quantize to 16 color PNG
+  --mozjpeg             Create JPEG files using mozJpeg
+  --jpeg-quality JPEGQUALITY
+                        The JPEG quality, on a scale from 0 (worst) to 95
+                        (best). Default 85 for most devices.
+  --maximizestrips      Turn 1x4 strips to 2x2 strips
+  -d, --delete          Delete source file(s) or a directory. It's not
+                        recoverable.
+  --tempdir             Create temporary files directory on source file drive.
+
+OUTPUT SETTINGS:
+  -o, --output OUTPUT   Output generated file to specified directory or file
+  -t, --title TITLE     Comic title [Default=filename or directory name]
+  --filename FILENAME   filename without the extension [Default=original
+                        filename]
+  --metadatatitle METADATATITLE
+                        Write title using ComicInfo.xml or other embedded
+                        metadata. 1: Combine Title with default schema 2: Use
+                        Title only
+  --keepcomicinfo KEEPCOMICINFO
+                        Keep any original ComicInfo.xml files
+  -a, --author AUTHOR   Author name [Default=KCC]
+  --language LANGUAGE   EPUB language [Default=en-US]
+  -f, --format FORMAT   Output format (Available options: Auto, MOBI, EPUB,
+                        CBZ, KFX, MOBI+EPUB, PDF) [Default=Auto]
+  --nokepub             If format is EPUB, output file with '.epub' extension
+                        rather than '.kepub.epub'
+  -b, --batchsplit BATCHSPLIT
+                        Split output into multiple files. 0: Don't split 1:
+                        Automatic mode 2: Consider every subdirectory as
+                        separate volume [Default=0]
+  --spreadshift         Shift first page to opposite side in landscape for
+                        spread alignment
+  --onepagelandscape    Show a single centered page in landscape
+  --norotate            Do not rotate double page spreads in spread splitter
+                        option.
+  --rotateright         Rotate double page spreads in opposite direction.
+  --rotatefirst         Put rotated 2 page spread first in spread splitter
+                        option.
+  --autolevel           Set most common dark pixel value to be black point for
+                        leveling.
+  --noautocontrast      Disable autocontrast.
+  --colorautocontrast   Autocontrast color pages too. Skipped for pages
+                        without near blacks or whites.
+  --filefusion          Combines all input files into a single file.
+  --eraserainbow        Erase rainbow effect on color eink screen by
+                        attenuating interfering frequencies
+
+CUSTOM PROFILE:
+  --customwidth CUSTOMWIDTH
+                        Replace screen width provided by device profile
+  --customheight CUSTOMHEIGHT
+                        Replace screen height provided by device profile
+
+OTHER:
+  -h, --help            Show this help message and exit

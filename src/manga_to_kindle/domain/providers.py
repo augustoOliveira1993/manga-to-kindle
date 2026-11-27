@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+from collections.abc import Callable
 from dataclasses import dataclass, field
 from datetime import date
 from enum import StrEnum
@@ -66,6 +67,12 @@ class ProviderCapabilities:
     requests_per_minute: int | None = None
     required_attribution: str | None = None
     removal_policy: str | None = None
+    catalog_query_authorized: bool = False
+    catalog_query_evidence: str | None = None
+    catalog_query_reviewed_on: date | None = None
+    catalog_query_scope: str | None = None
+    periodic_catalog_updates_authorized: bool = False
+    minimum_catalog_update_interval_seconds: int | None = None
 
     def __post_init__(self) -> None:
         if not self.provider_id.strip():
@@ -73,8 +80,7 @@ class ProviderCapabilities:
         if not self.allowed_hosts:
             raise ValueError("O provedor precisa declarar hosts permitidos.")
         normalized_hosts = frozenset(
-            host.encode("idna").decode("ascii").lower().rstrip(".")
-            for host in self.allowed_hosts
+            host.encode("idna").decode("ascii").lower().rstrip(".") for host in self.allowed_hosts
         )
         object.__setattr__(self, "allowed_hosts", normalized_hosts)
         if not self.allowed_schemes or not self.allowed_schemes <= {"http", "https"}:
@@ -91,6 +97,27 @@ class ProviderCapabilities:
             )
         ):
             raise ValueError("Download exige evidência, revisão e escopo autorizados.")
+        if self.catalog_query_authorized and not all(
+            (
+                self.catalog_query_evidence,
+                self.catalog_query_reviewed_on,
+                self.catalog_query_scope,
+            )
+        ):
+            raise ValueError("Consulta de catálogo exige evidência, revisão e escopo autorizados.")
+        if self.catalog_query_authorized and self.requests_per_minute is None:
+            raise ValueError("Consulta de catálogo exige limite de requisições documentado.")
+        if self.periodic_catalog_updates_authorized and not self.catalog_query_enabled:
+            raise ValueError("Atualização periódica exige consulta de catálogo autorizada.")
+        if self.minimum_catalog_update_interval_seconds is not None and (
+            type(self.minimum_catalog_update_interval_seconds) is not int
+            or self.minimum_catalog_update_interval_seconds < 1
+        ):
+            raise ValueError("O intervalo mínimo da fonte precisa ser positivo.")
+        if self.periodic_catalog_updates_authorized and (
+            self.minimum_catalog_update_interval_seconds is None
+        ):
+            raise ValueError("Atualização periódica exige intervalo mínimo documentado.")
 
     @property
     def download_enabled(self) -> bool:
@@ -100,6 +127,31 @@ class ProviderCapabilities:
                 self.authorization_reviewed_on,
                 self.authorization_scope,
             )
+        )
+
+    @property
+    def catalog_query_enabled(self) -> bool:
+        return (
+            not self.simulated
+            and self.metadata
+            and self.chapters
+            and self.catalog_query_authorized
+            and self.requests_per_minute is not None
+            and all(
+                (
+                    self.catalog_query_evidence,
+                    self.catalog_query_reviewed_on,
+                    self.catalog_query_scope,
+                )
+            )
+        )
+
+    @property
+    def periodic_catalog_updates_enabled(self) -> bool:
+        return (
+            self.catalog_query_enabled
+            and self.periodic_catalog_updates_authorized
+            and self.minimum_catalog_update_interval_seconds is not None
         )
 
 
@@ -116,6 +168,18 @@ class ProviderPageReference:
             raise ValueError("A referência de página precisa de ID e posição válida.")
         if not self.source_reference.strip():
             raise ValueError("A referência de origem não pode ser vazia.")
+
+
+@dataclass(frozen=True, slots=True)
+class ChapterCatalogResponse:
+    """Snapshot de resposta; paginação incompleta nunca pode substituir o catálogo local."""
+
+    chapters: tuple[Chapter, ...]
+    complete: bool
+
+    def __post_init__(self) -> None:
+        if type(self.complete) is not bool:
+            raise ValueError("A resposta precisa declarar se o catálogo está completo.")
 
 
 class ProviderErrorCode(StrEnum):
@@ -224,3 +288,15 @@ class MangaProvider(Protocol):
     def get_chapters(self, manga: Manga) -> tuple[Chapter, ...]: ...
 
     def get_pages(self, chapter: Chapter) -> tuple[ProviderPageReference, ...]: ...
+
+
+@runtime_checkable
+class CatalogUpdateProvider(MangaProvider, Protocol):
+    """Contrato opcional de consulta completa para a atualização F010."""
+
+    def get_chapter_catalog(
+        self,
+        manga: Manga,
+        *,
+        is_cancelled: Callable[[], bool] | None = None,
+    ) -> ChapterCatalogResponse: ...

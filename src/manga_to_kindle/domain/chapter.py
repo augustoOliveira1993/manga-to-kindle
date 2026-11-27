@@ -19,6 +19,7 @@ class Chapter:
     volume: Decimal | None = None
     available: bool | None = None
     source_order: int | None = None
+    source_chapter_id: str | None = None
 
     def __post_init__(self) -> None:
         if self.position < 0:
@@ -31,6 +32,12 @@ class Chapter:
             raise DomainValidationError("O volume do capítulo precisa ser finito.")
         if self.source_order is not None and self.source_order < 0:
             raise DomainValidationError("A ordem declarada pela fonte não pode ser negativa.")
+        if self.source_chapter_id is not None and (
+            not self.source_chapter_id.strip()
+            or len(self.source_chapter_id) > 512
+            or any(ord(character) < 32 for character in self.source_chapter_id)
+        ):
+            raise DomainValidationError("A identidade estável da fonte é inválida.")
         if self.available is not None and not isinstance(self.available, bool):
             raise DomainValidationError("A disponibilidade precisa ser booleana ou ausente.")
         if self.title is None and self.number is None:

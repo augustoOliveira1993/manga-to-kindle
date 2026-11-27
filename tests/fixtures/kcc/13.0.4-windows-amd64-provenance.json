@@ -1,0 +1,42 @@
+{
+  "product": "Kindle Comic Converter",
+  "version": "13.0.4",
+  "release_url": "https://github.com/ciromattia/kcc/releases/tag/v13.0.4",
+  "asset": "tool_cli_c2e_13.0.4_AMD64.exe",
+  "platform": "Windows x64",
+  "sha256": "AC245FE431063875CBE5290731094356655ACCCE3217048AE3ECB7E63F210C22",
+  "authenticode": {
+    "status": "Valid",
+    "signer": "CN=SignPath Foundation, O=SignPath Foundation, L=Lewes, S=Delaware, C=US",
+    "thumbprint": "E4BF93A16549F881534568592D65FE1222C88630"
+  },
+  "help_fixture": "13.0.4-windows-amd64-help.txt",
+  "help_fixture_sha256": "EF64CF369A4583F9B835460A7FF65C7B1FF2F31B57A7DDABA91E78946F8B9653",
+  "observed_real_conversions": [
+    {
+      "profile": "K810",
+      "format": "MOBI",
+      "pages": 3,
+      "exit_code": 0,
+      "output": "realistic-input.mobi",
+      "mobi_signature_at_byte_60": "BOOKMOBI"
+    },
+    {
+      "profile": "KPW34",
+      "format": "MOBI",
+      "pages": 3,
+      "exit_code": 0,
+      "output": "validacao-paperwhite.mobi",
+      "mobi_signature_at_byte_60": "BOOKMOBI"
+    },
+    {
+      "profile": "K810",
+      "format": "EPUB",
+      "pages": 3,
+      "exit_code": 0,
+      "output": "realistic-input.epub"
+    }
+  ],
+  "validation_date": "2026-11-26",
+  "binary_committed_or_bundled": false
+}

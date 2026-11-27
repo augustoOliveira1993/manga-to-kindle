@@ -99,7 +99,8 @@ class SmtpProfile:
                 raise DomainValidationError("A referência de credencial não é válida.") from None
         if not self.sender_authorized or not self.recipient_confirmed:
             raise DomainValidationError(
-                "A autorização do remetente e do destino precisa ser confirmada pela pessoa usuária."
+                "A autorização do remetente e do destino precisa ser confirmada "
+                "pela pessoa usuária."
             )
 
 
@@ -146,7 +147,12 @@ def _valid_email(value: str) -> bool:
         and domain
         and "@" not in domain
         and re.fullmatch(r"[A-Za-z0-9.!#$%&'*+/=?^_`{|}~-]+", local)
-        and re.fullmatch(r"(?=.{1,253}$)(?:[A-Za-z0-9](?:[A-Za-z0-9-]{0,61}[A-Za-z0-9])?\.)+[A-Za-z]{2,63}", domain)
+        and re.fullmatch(
+            r"(?=.{1,253}$)"
+            r"(?:[A-Za-z0-9](?:[A-Za-z0-9-]{0,61}[A-Za-z0-9])?\.)+"
+            r"[A-Za-z]{2,63}",
+            domain,
+        )
     )
 
 
@@ -155,5 +161,10 @@ def _valid_host(value: str) -> bool:
         value
         and value == value.strip()
         and len(value) <= 253
-        and re.fullmatch(r"(?=.{1,253}$)(?:[A-Za-z0-9](?:[A-Za-z0-9-]{0,61}[A-Za-z0-9])?\.)*[A-Za-z0-9](?:[A-Za-z0-9-]{0,61}[A-Za-z0-9])?", value)
+        and re.fullmatch(
+            r"(?=.{1,253}$)"
+            r"(?:[A-Za-z0-9](?:[A-Za-z0-9-]{0,61}[A-Za-z0-9])?\.)*"
+            r"[A-Za-z0-9](?:[A-Za-z0-9-]{0,61}[A-Za-z0-9])?",
+            value,
+        )
     )

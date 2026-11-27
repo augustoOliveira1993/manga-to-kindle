@@ -17,6 +17,7 @@ from manga_to_kindle.domain.image_processing import ReadingDirection
 class ExportFormat(StrEnum):
     EPUB = "epub"
     CBZ = "cbz"
+    MOBI = "mobi"
 
 
 class ExportGrouping(StrEnum):

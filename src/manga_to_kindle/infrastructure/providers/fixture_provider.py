@@ -73,6 +73,7 @@ class FixtureProvider:
                 title=title,
                 number=Decimal(number) if number is not None else None,
                 source_order=source_order,
+                source_chapter_id=source_id,
             )
             for position, (source_id, number, title, source_order) in enumerate(_CHAPTERS)
         )

@@ -4,7 +4,7 @@
 
 **Criado**: 2026-11-25
 
-**Status**: Rascunho
+**Status**: Implementação local concluída; validação manual Windows e de serviço externo pendente.
 
 **Entrada**: Após uma exportação local válida, oferecer abertura da pasta de saída e da página oficial Send to Kindle para envio manual. Opcionalmente permitir envio SMTP com configuração escolhida pela pessoa usuária, endereço Kindle e remetente autorizados, confirmação explícita para cada tentativa e credenciais guardadas no cofre do Windows. Informar aceitação pelo servidor sem alegar entrega ao dispositivo. Não automatizar login Amazon nem presumir uma API pública de envio.
 

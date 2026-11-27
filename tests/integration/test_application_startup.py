@@ -26,6 +26,8 @@ def test_startup_creates_and_reuses_local_state_without_network(
     assert paths.database_file.is_file()
     assert paths.config.is_dir()
     assert paths.data.is_dir()
+    assert (paths.data / "downloads").is_dir()
+    assert (paths.data / "exports").is_dir()
     assert paths.logs.is_dir()
     assert paths.cache.is_dir()
     second.shutdown()

@@ -47,3 +47,14 @@ class ProviderRegistry:
         if len(matches) > 1:
             raise AmbiguousProvider()
         return matches[0]
+
+    def by_id(self, provider_id: str) -> MangaProvider:
+        """Resolve somente um provedor previamente registrado pelo ID persistido."""
+        matches = tuple(
+            provider for provider in self._providers if provider.provider_id == provider_id
+        )
+        if not matches:
+            raise UnsupportedSource()
+        if len(matches) > 1:
+            raise AmbiguousProvider()
+        return matches[0]

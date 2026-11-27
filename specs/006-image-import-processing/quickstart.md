@@ -14,7 +14,7 @@ O segundo comando é o comando exato para iniciar a aplicação. A F006 usa Pill
 ## Roteiro manual
 
 1. Abra **Importar imagens** e selecione `examples/demo-import/pasta`. Clique em **Verificar e pré-visualizar**.
-2. Confira a ordem `01.png`, `02.jpg`, `10.webp`, as dimensões, a contagem de itens ignorados e a prévia 600×800 em escala de cinza. Mova uma página para cima/baixo e confira que a posição confirmada muda.
+2. Confira a ordem `01.png`, `02.jpg`, `10.webp`, as dimensões, a contagem de itens ignorados e a prévia em escala de cinza. O padrão Básico 10ª continua em 600×800. Para exercitar F011, selecione Paperwhite 10ª em Configurações antes de começar a importação e confira a prévia em 1072×1448. Mova uma página para cima/baixo e confira que a posição confirmada muda.
 3. Preencha um novo título de mangá e capítulo usando nomes de teste e marque a confirmação de autorização local. Clique em **Importar para este dispositivo** e aguarde o progresso terminar.
 4. Reinicie a aplicação e selecione o capítulo local já importado. Importe novamente a mesma pasta: o resultado deve ser idempotente, sem duplicar páginas. A pasta de origem deve permanecer com os mesmos arquivos e bytes.
 5. Repita com `examples/demo-import/demo.cbz` para exercitar o leitor CBZ. O aplicativo não deve extrair os nomes do arquivo para o perfil nem fazer conexões de rede.
@@ -23,7 +23,7 @@ O segundo comando é o comando exato para iniciar a aplicação. A F006 usa Pill
 8. Cancele uma leitura/importação longa se houver um conjunto grande disponível. A operação deve terminar sem publicar lote parcial; reabra o app para confirmar que a recuperação não apaga dados anteriores.
 9. Confira que nenhum conteúdo é enviado: tudo fica no perfil local e a interface exige confirmação explícita antes de processar.
 
-Os arquivos em `examples/demo-import` são ilustrações geométricas sintéticas. Eles não são copiados automaticamente para o perfil. Para exercitar recorte, use uma cópia descartável de uma imagem de teste e preserve os originais.
+Os arquivos em `examples/demo-import` são ilustrações geométricas sintéticas. Eles não são copiados automaticamente para o perfil. F011 fornece perfis configuráveis usados por novas importações; cada derivado mantém snapshot de identidade e parâmetros, e a migração `0009_profile_dimensions` mantém o padrão 600×800 aceitando as dimensões validadas do perfil. Para exercitar recorte, use uma cópia descartável de uma imagem de teste e preserve os originais.
 
 ## Verificação automatizada executada
 

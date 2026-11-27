@@ -4,7 +4,12 @@ from datetime import UTC, datetime
 from pathlib import Path
 from uuid import uuid4
 
-from manga_to_kindle.domain.transfers import ExportTransferArtifact, SmtpProfile, TlsMode, TransferState
+from manga_to_kindle.domain.transfers import (
+    ExportTransferArtifact,
+    SmtpProfile,
+    TlsMode,
+    TransferState,
+)
 from manga_to_kindle.infrastructure.persistence.database import SQLiteDatabase
 from manga_to_kindle.infrastructure.persistence.models import (
     ExportArtifactRecord,
@@ -115,8 +120,13 @@ def test_startup_reconciliation_marks_post_data_attempt_unknown_and_never_retrie
     repository.update_attempt(job_id, TransferState.TRANSMITTING, "transmitting")
 
     assert repository.reconcile_interrupted() == 1
-    history = repository.list_history()
+    database.close()
+
+    reopened_database = SQLiteDatabase(tmp_path / "state.sqlite3")
+    reopened_database.initialize()
+    reopened_repository = TransferRepository(reopened_database)
+    history = reopened_repository.list_history()
     assert history[0].job.state is TransferState.UNKNOWN
     assert history[0].job.error_code == "APP_INTERRUPTED"
-    assert repository.reconcile_interrupted() == 0
-    database.close()
+    assert reopened_repository.reconcile_interrupted() == 0
+    reopened_database.close()

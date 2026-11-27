@@ -145,6 +145,8 @@ class ImportImages:
                     original_bytes=original,
                     processed_bytes=processed,
                     duplicate_content=image.sha256 in seen_hashes,
+                    processed_width=selected_profile.width,
+                    processed_height=selected_profile.height,
                 )
                 seen_hashes.add(image.sha256)
                 staged_pages.append(staged)

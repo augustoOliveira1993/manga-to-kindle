@@ -76,7 +76,7 @@ class ExportRepository:
                 if any(not processed_by_page[page.id] for page in pages):
                     continue
                 if any(
-                    record.width != 600 or record.height != 800
+                    not _valid_processed_dimensions(record.width, record.height)
                     for processed in processed_by_page.values()
                     for record in processed
                 ):
@@ -136,9 +136,12 @@ class ExportRepository:
                         raise ExportSourceUnavailable(
                             "Todas as páginas precisam ter um derivado processado em F006."
                         )
-                    if any(item.width != 600 or item.height != 800 for item in derivatives):
+                    if any(
+                        not _valid_processed_dimensions(item.width, item.height)
+                        for item in derivatives
+                    ):
                         raise ExportSourceUnavailable(
-                            "O perfil de saída disponível é de 600 × 800 pixels."
+                            "Uma página processada tem dimensões inválidas para exportação."
                         )
                     assets = tuple(
                         ExportAsset(
@@ -272,7 +275,10 @@ class ExportRepository:
             records = session.execute(
                 select(ExportArtifactRecord)
                 .join(ExportRecord, ExportRecord.id == ExportArtifactRecord.export_id)
-                .where(ExportRecord.state == "completed")
+                .where(
+                    ExportRecord.state == "completed",
+                    ExportArtifactRecord.format == "epub",
+                )
                 .order_by(ExportArtifactRecord.created_at.desc(), ExportArtifactRecord.position)
             ).scalars()
             return tuple(_transfer_artifact(record) for record in records)
@@ -284,6 +290,7 @@ class ExportRepository:
                 .join(ExportRecord, ExportRecord.id == ExportArtifactRecord.export_id)
                 .where(
                     ExportArtifactRecord.id == artifact_id,
+                    ExportArtifactRecord.format == "epub",
                     ExportRecord.state == "completed",
                 )
             ).scalar_one_or_none()
@@ -310,6 +317,10 @@ def _optional_decimal(value: str | None) -> Decimal | None:
     if not decimal.is_finite():
         raise ExportSourceUnavailable("O número/volume salvo do capítulo é inválido.")
     return decimal
+
+
+def _valid_processed_dimensions(width: int, height: int) -> bool:
+    return 1 <= width <= 10_000 and 1 <= height <= 10_000 and width * height <= 50_000_000
 
 
 def _transfer_artifact(record: ExportArtifactRecord) -> ExportTransferArtifact:

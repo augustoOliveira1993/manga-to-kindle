@@ -1,0 +1,786 @@
+{
+  "schema_version": "1.0",
+  "evidence_kind": "package metadata candidates; not legal approval",
+  "source_sbom": "dependency-inventory.cdx.json",
+  "source_sbom_sha256": "3b1062c4955593f745aaac5ed8035596f6c58bb3e95f814d66f56313339448b8",
+  "components": [
+    {
+      "name": "alembic",
+      "version": "1.20.1",
+      "pypi_project_version": "https://pypi.org/project/alembic/1.20.1/",
+      "license_review_status": "pending",
+      "metadata_status": "matched-installed-distribution",
+      "declared_license_metadata": {
+        "field": "License-Expression",
+        "value": "MIT"
+      },
+      "license_file_paths": [
+        "alembic-1.20.1.dist-info/licenses/LICENSE"
+      ],
+      "upstream_urls": [
+        {
+          "label": "Changelog",
+          "url": "https://alembic.sqlalchemy.org/en/latest/changelog.html"
+        },
+        {
+          "label": "Documentation",
+          "url": "https://alembic.sqlalchemy.org/en/latest/"
+        },
+        {
+          "label": "Homepage",
+          "url": "https://alembic.sqlalchemy.org"
+        },
+        {
+          "label": "Issue Tracker",
+          "url": "https://github.com/sqlalchemy/alembic/issues/"
+        },
+        {
+          "label": "Source",
+          "url": "https://github.com/sqlalchemy/alembic/"
+        }
+      ]
+    },
+    {
+      "name": "altgraph",
+      "version": "0.17.5",
+      "pypi_project_version": "https://pypi.org/project/altgraph/0.17.5/",
+      "license_review_status": "pending",
+      "metadata_status": "matched-installed-distribution",
+      "declared_license_metadata": {
+        "field": "License",
+        "value": "MIT"
+      },
+      "license_file_paths": [
+        "altgraph-0.17.5.dist-info/LICENSE"
+      ],
+      "upstream_urls": [
+        {
+          "label": "Documentation",
+          "url": "https://altgraph.readthedocs.io/en/latest/"
+        },
+        {
+          "label": "Home-page",
+          "url": "https://altgraph.readthedocs.io"
+        },
+        {
+          "label": "Issue tracker",
+          "url": "https://github.com/ronaldoussoren/altgraph/issues"
+        },
+        {
+          "label": "Repository",
+          "url": "https://github.com/ronaldoussoren/altgraph"
+        }
+      ]
+    },
+    {
+      "name": "annotated-types",
+      "version": "0.8.0",
+      "pypi_project_version": "https://pypi.org/project/annotated-types/0.8.0/",
+      "license_review_status": "pending",
+      "metadata_status": "matched-installed-distribution",
+      "declared_license_metadata": {
+        "field": "License-Expression",
+        "value": "MIT"
+      },
+      "license_file_paths": [
+        "annotated_types-0.8.0.dist-info/licenses/LICENSE"
+      ],
+      "upstream_urls": [
+        {
+          "label": "Changelog",
+          "url": "https://github.com/annotated-types/annotated-types/releases"
+        },
+        {
+          "label": "Homepage",
+          "url": "https://github.com/annotated-types/annotated-types"
+        },
+        {
+          "label": "Source",
+          "url": "https://github.com/annotated-types/annotated-types"
+        }
+      ]
+    },
+    {
+      "name": "macholib",
+      "version": "1.16.4",
+      "pypi_project_version": "https://pypi.org/project/macholib/1.16.4/",
+      "license_review_status": "pending",
+      "metadata_status": "not-installed-on-build-host",
+      "declared_license_metadata": null,
+      "license_file_paths": []
+    },
+    {
+      "name": "mako",
+      "version": "1.4.3",
+      "pypi_project_version": "https://pypi.org/project/mako/1.4.3/",
+      "license_review_status": "pending",
+      "metadata_status": "matched-installed-distribution",
+      "declared_license_metadata": {
+        "field": "License-Expression",
+        "value": "MIT"
+      },
+      "license_file_paths": [
+        "mako-1.4.3.dist-info/licenses/LICENSE"
+      ],
+      "upstream_urls": [
+        {
+          "label": "Documentation",
+          "url": "https://docs.makotemplates.org"
+        },
+        {
+          "label": "Homepage",
+          "url": "https://www.makotemplates.org/"
+        },
+        {
+          "label": "Issue Tracker",
+          "url": "https://github.com/sqlalchemy/mako"
+        }
+      ]
+    },
+    {
+      "name": "markupsafe",
+      "version": "3.0.4",
+      "pypi_project_version": "https://pypi.org/project/markupsafe/3.0.4/",
+      "license_review_status": "pending",
+      "metadata_status": "matched-installed-distribution",
+      "declared_license_metadata": {
+        "field": "License-Expression",
+        "value": "BSD-3-Clause"
+      },
+      "license_file_paths": [
+        "markupsafe-3.0.4.dist-info/licenses/LICENSE.txt"
+      ],
+      "upstream_urls": [
+        {
+          "label": "Changes",
+          "url": "https://markupsafe.palletsprojects.com/page/changes/"
+        },
+        {
+          "label": "Chat",
+          "url": "https://discord.gg/pallets"
+        },
+        {
+          "label": "Documentation",
+          "url": "https://markupsafe.palletsprojects.com/"
+        },
+        {
+          "label": "Donate",
+          "url": "https://palletsprojects.com/donate"
+        },
+        {
+          "label": "Source",
+          "url": "https://github.com/pallets/markupsafe/"
+        }
+      ]
+    },
+    {
+      "name": "packaging",
+      "version": "26.4",
+      "pypi_project_version": "https://pypi.org/project/packaging/26.4/",
+      "license_review_status": "pending",
+      "metadata_status": "matched-installed-distribution",
+      "declared_license_metadata": {
+        "field": "License-Expression",
+        "value": "Apache-2.0 OR BSD-2-Clause"
+      },
+      "license_file_paths": [
+        "packaging-26.4.dist-info/licenses/LICENSE",
+        "packaging-26.4.dist-info/licenses/LICENSE.APACHE",
+        "packaging-26.4.dist-info/licenses/LICENSE.BSD"
+      ],
+      "upstream_urls": [
+        {
+          "label": "Documentation",
+          "url": "https://packaging.pypa.io/"
+        },
+        {
+          "label": "Source",
+          "url": "https://github.com/pypa/packaging"
+        }
+      ]
+    },
+    {
+      "name": "pefile",
+      "version": "2024.8.26",
+      "pypi_project_version": "https://pypi.org/project/pefile/2024.8.26/",
+      "license_review_status": "pending",
+      "metadata_status": "matched-installed-distribution",
+      "declared_license_metadata": {
+        "field": "License",
+        "value": "MIT"
+      },
+      "license_file_paths": [
+        "pefile-2024.8.26.dist-info/LICENSE"
+      ],
+      "upstream_urls": [
+        {
+          "label": "Home-page",
+          "url": "https://github.com/erocarrera/pefile"
+        }
+      ]
+    },
+    {
+      "name": "pillow",
+      "version": "13.0.0",
+      "pypi_project_version": "https://pypi.org/project/pillow/13.0.0/",
+      "license_review_status": "pending",
+      "metadata_status": "matched-installed-distribution",
+      "declared_license_metadata": {
+        "field": "License-Expression",
+        "value": "MIT-CMU"
+      },
+      "license_file_paths": [
+        "pillow-13.0.0.dist-info/licenses/LICENSE"
+      ],
+      "upstream_urls": [
+        {
+          "label": "Changelog",
+          "url": "https://github.com/python-pillow/Pillow/releases"
+        },
+        {
+          "label": "Documentation",
+          "url": "https://pillow.readthedocs.io"
+        },
+        {
+          "label": "Funding",
+          "url": "https://tidelift.com/lifter/search/pypi/pillow"
+        },
+        {
+          "label": "Homepage",
+          "url": "https://python-pillow.org"
+        },
+        {
+          "label": "Mastodon",
+          "url": "https://fosstodon.org/@pillow"
+        },
+        {
+          "label": "Release notes",
+          "url": "https://pillow.readthedocs.io/en/stable/releasenotes/index.html"
+        },
+        {
+          "label": "Security",
+          "url": "https://pillow.readthedocs.io/en/stable/handbook/security.html"
+        },
+        {
+          "label": "Source",
+          "url": "https://github.com/python-pillow/Pillow"
+        }
+      ]
+    },
+    {
+      "name": "pydantic",
+      "version": "2.14.4",
+      "pypi_project_version": "https://pypi.org/project/pydantic/2.14.4/",
+      "license_review_status": "pending",
+      "metadata_status": "matched-installed-distribution",
+      "declared_license_metadata": {
+        "field": "License-Expression",
+        "value": "MIT"
+      },
+      "license_file_paths": [
+        "pydantic-2.14.4.dist-info/licenses/LICENSE"
+      ],
+      "upstream_urls": [
+        {
+          "label": "Changelog",
+          "url": "https://pydantic.dev/docs/validation/latest/get-started/changelog/"
+        },
+        {
+          "label": "Documentation",
+          "url": "https://pydantic.dev/docs/validation/latest/get-started/"
+        },
+        {
+          "label": "Funding",
+          "url": "https://github.com/sponsors/samuelcolvin"
+        },
+        {
+          "label": "Homepage",
+          "url": "https://github.com/pydantic/pydantic"
+        },
+        {
+          "label": "Source",
+          "url": "https://github.com/pydantic/pydantic"
+        }
+      ]
+    },
+    {
+      "name": "pydantic-core",
+      "version": "2.50.5",
+      "pypi_project_version": "https://pypi.org/project/pydantic-core/2.50.5/",
+      "license_review_status": "pending",
+      "metadata_status": "matched-installed-distribution",
+      "declared_license_metadata": {
+        "field": "License-Expression",
+        "value": "MIT"
+      },
+      "license_file_paths": [
+        "pydantic_core-2.50.5.dist-info/licenses/LICENSE"
+      ],
+      "upstream_urls": [
+        {
+          "label": "Funding",
+          "url": "https://github.com/sponsors/samuelcolvin"
+        },
+        {
+          "label": "Home-page",
+          "url": "https://github.com/pydantic/pydantic"
+        },
+        {
+          "label": "Homepage",
+          "url": "https://github.com/pydantic"
+        },
+        {
+          "label": "Source",
+          "url": "https://github.com/pydantic/pydantic/tree/main/pydantic-core"
+        }
+      ]
+    },
+    {
+      "name": "pyinstaller",
+      "version": "6.22.3",
+      "pypi_project_version": "https://pypi.org/project/pyinstaller/6.22.3/",
+      "license_review_status": "pending",
+      "metadata_status": "matched-installed-distribution",
+      "declared_license_metadata": {
+        "field": "License",
+        "value": "GPLv2-or-later with a special exception which allows to use PyInstaller to build and distribute non-free programs (including commercial ones)"
+      },
+      "license_file_paths": [
+        "pyinstaller-6.22.3.dist-info/licenses/COPYING.txt"
+      ],
+      "upstream_urls": [
+        {
+          "label": "Documentation",
+          "url": "https://pyinstaller.org"
+        },
+        {
+          "label": "Homepage",
+          "url": "https://pyinstaller.org"
+        },
+        {
+          "label": "Release Notes",
+          "url": "https://pyinstaller.org/en/stable/CHANGES.html"
+        },
+        {
+          "label": "Source Code",
+          "url": "https://github.com/pyinstaller/pyinstaller"
+        }
+      ]
+    },
+    {
+      "name": "pyinstaller-hooks-contrib",
+      "version": "2026.10",
+      "pypi_project_version": "https://pypi.org/project/pyinstaller-hooks-contrib/2026.10/",
+      "license_review_status": "pending",
+      "metadata_status": "matched-installed-distribution",
+      "declared_license_metadata": {
+        "field": "Classifier",
+        "value": [
+          "OSI Approved :: Apache Software License",
+          "OSI Approved :: GNU General Public License v2 (GPLv2)"
+        ]
+      },
+      "license_file_paths": [
+        "pyinstaller_hooks_contrib-2026.10.dist-info/licenses/LICENSE"
+      ],
+      "upstream_urls": [
+        {
+          "label": "Home-page",
+          "url": "https://github.com/pyinstaller/pyinstaller-hooks-contrib"
+        }
+      ]
+    },
+    {
+      "name": "pyside6",
+      "version": "6.12.0",
+      "pypi_project_version": "https://pypi.org/project/pyside6/6.12.0/",
+      "license_review_status": "pending",
+      "metadata_status": "matched-installed-distribution",
+      "declared_license_metadata": {
+        "field": "License",
+        "value": "LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only"
+      },
+      "license_file_paths": [
+        "pyside6-6.12.0.dist-info/licenses/LicenseRef-Qt-Commercial.txt"
+      ],
+      "upstream_urls": [
+        {
+          "label": "Changelog",
+          "url": "https://code.qt.io/cgit/pyside/pyside-setup.git/tree/doc/changelogs"
+        },
+        {
+          "label": "Documentation",
+          "url": "https://doc.qt.io/qtforpython"
+        },
+        {
+          "label": "Homepage",
+          "url": "https://pyside.org"
+        },
+        {
+          "label": "Repository",
+          "url": "https://code.qt.io/cgit/pyside/pyside-setup.git/"
+        },
+        {
+          "label": "Tracker",
+          "url": "https://qt-project.atlassian.net/browse/PYSIDE"
+        }
+      ]
+    },
+    {
+      "name": "pyside6-addons",
+      "version": "6.12.0",
+      "pypi_project_version": "https://pypi.org/project/pyside6-addons/6.12.0/",
+      "license_review_status": "pending",
+      "metadata_status": "matched-installed-distribution",
+      "declared_license_metadata": {
+        "field": "License",
+        "value": "LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only"
+      },
+      "license_file_paths": [
+        "pyside6_addons-6.12.0.dist-info/licenses/LicenseRef-Qt-Commercial.txt"
+      ],
+      "upstream_urls": [
+        {
+          "label": "Changelog",
+          "url": "https://code.qt.io/cgit/pyside/pyside-setup.git/tree/doc/changelogs"
+        },
+        {
+          "label": "Documentation",
+          "url": "https://doc.qt.io/qtforpython"
+        },
+        {
+          "label": "Homepage",
+          "url": "https://pyside.org"
+        },
+        {
+          "label": "Repository",
+          "url": "https://code.qt.io/cgit/pyside/pyside-setup.git/"
+        },
+        {
+          "label": "Tracker",
+          "url": "https://qt-project.atlassian.net/browse/PYSIDE"
+        }
+      ]
+    },
+    {
+      "name": "pyside6-essentials",
+      "version": "6.12.0",
+      "pypi_project_version": "https://pypi.org/project/pyside6-essentials/6.12.0/",
+      "license_review_status": "pending",
+      "metadata_status": "matched-installed-distribution",
+      "declared_license_metadata": {
+        "field": "License",
+        "value": "LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only"
+      },
+      "license_file_paths": [
+        "pyside6_essentials-6.12.0.dist-info/licenses/LicenseRef-Qt-Commercial.txt"
+      ],
+      "upstream_urls": [
+        {
+          "label": "Changelog",
+          "url": "https://code.qt.io/cgit/pyside/pyside-setup.git/tree/doc/changelogs"
+        },
+        {
+          "label": "Documentation",
+          "url": "https://doc.qt.io/qtforpython"
+        },
+        {
+          "label": "Homepage",
+          "url": "https://pyside.org"
+        },
+        {
+          "label": "Repository",
+          "url": "https://code.qt.io/cgit/pyside/pyside-setup.git/"
+        },
+        {
+          "label": "Tracker",
+          "url": "https://qt-project.atlassian.net/browse/PYSIDE"
+        }
+      ]
+    },
+    {
+      "name": "pyside6-pdf",
+      "version": "6.12.0.140",
+      "pypi_project_version": "https://pypi.org/project/pyside6-pdf/6.12.0.140/",
+      "license_review_status": "pending",
+      "metadata_status": "matched-installed-distribution",
+      "declared_license_metadata": {
+        "field": "License",
+        "value": "LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only"
+      },
+      "license_file_paths": [
+        "pyside6_pdf-6.12.0.140.dist-info/licenses/LicenseRef-Qt-Commercial.txt"
+      ],
+      "upstream_urls": [
+        {
+          "label": "Changelog",
+          "url": "https://code.qt.io/cgit/pyside/pyside-setup.git/tree/doc/changelogs"
+        },
+        {
+          "label": "Documentation",
+          "url": "https://doc.qt.io/qtforpython"
+        },
+        {
+          "label": "Homepage",
+          "url": "https://pyside.org"
+        },
+        {
+          "label": "Repository",
+          "url": "https://code.qt.io/cgit/pyside/pyside-setup.git/"
+        },
+        {
+          "label": "Tracker",
+          "url": "https://qt-project.atlassian.net/browse/PYSIDE"
+        }
+      ]
+    },
+    {
+      "name": "pyside6-webengine",
+      "version": "6.12.0.140",
+      "pypi_project_version": "https://pypi.org/project/pyside6-webengine/6.12.0.140/",
+      "license_review_status": "pending",
+      "metadata_status": "matched-installed-distribution",
+      "declared_license_metadata": {
+        "field": "License",
+        "value": "LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only"
+      },
+      "license_file_paths": [
+        "pyside6_webengine-6.12.0.140.dist-info/licenses/LicenseRef-Qt-Commercial.txt"
+      ],
+      "upstream_urls": [
+        {
+          "label": "Changelog",
+          "url": "https://code.qt.io/cgit/pyside/pyside-setup.git/tree/doc/changelogs"
+        },
+        {
+          "label": "Documentation",
+          "url": "https://doc.qt.io/qtforpython"
+        },
+        {
+          "label": "Homepage",
+          "url": "https://pyside.org"
+        },
+        {
+          "label": "Repository",
+          "url": "https://code.qt.io/cgit/pyside/pyside-setup.git/"
+        },
+        {
+          "label": "Tracker",
+          "url": "https://qt-project.atlassian.net/browse/PYSIDE"
+        }
+      ]
+    },
+    {
+      "name": "pywin32-ctypes",
+      "version": "0.2.3",
+      "pypi_project_version": "https://pypi.org/project/pywin32-ctypes/0.2.3/",
+      "license_review_status": "pending",
+      "metadata_status": "matched-installed-distribution",
+      "declared_license_metadata": {
+        "field": "License",
+        "value": "BSD-3-Clause"
+      },
+      "license_file_paths": [
+        "pywin32_ctypes-0.2.3.dist-info/LICENSE.txt"
+      ],
+      "upstream_urls": [
+        {
+          "label": "Home-page",
+          "url": "https://github.com/enthought/pywin32-ctypes"
+        }
+      ]
+    },
+    {
+      "name": "setuptools",
+      "version": "84.2.1",
+      "pypi_project_version": "https://pypi.org/project/setuptools/84.2.1/",
+      "license_review_status": "pending",
+      "metadata_status": "matched-installed-distribution",
+      "declared_license_metadata": {
+        "field": "License-Expression",
+        "value": "MIT"
+      },
+      "license_file_paths": [
+        "setuptools-84.2.1.dist-info/licenses/LICENSE",
+        "setuptools/_vendor/autocommand-2.2.2.dist-info/LICENSE",
+        "setuptools/_vendor/backports.tarfile-1.2.0.dist-info/LICENSE",
+        "setuptools/_vendor/importlib_metadata-8.7.1.dist-info/licenses/LICENSE",
+        "setuptools/_vendor/jaraco.text-4.0.0.dist-info/LICENSE",
+        "setuptools/_vendor/jaraco_context-6.1.0.dist-info/licenses/LICENSE",
+        "setuptools/_vendor/jaraco_functools-4.4.0.dist-info/licenses/LICENSE",
+        "setuptools/_vendor/more_itertools-10.8.0.dist-info/licenses/LICENSE",
+        "setuptools/_vendor/packaging-26.3.dist-info/licenses/LICENSE",
+        "setuptools/_vendor/packaging-26.3.dist-info/licenses/LICENSE.APACHE",
+        "setuptools/_vendor/packaging-26.3.dist-info/licenses/LICENSE.BSD",
+        "setuptools/_vendor/platformdirs-4.4.0.dist-info/licenses/LICENSE",
+        "setuptools/_vendor/tomli-2.4.0.dist-info/licenses/LICENSE",
+        "setuptools/_vendor/wheel-0.46.3.dist-info/licenses/LICENSE.txt",
+        "setuptools/_vendor/zipp-3.23.0.dist-info/licenses/LICENSE",
+        "setuptools/config/_validate_pyproject/NOTICE",
+        "setuptools/config/NOTICE"
+      ],
+      "upstream_urls": [
+        {
+          "label": "Changelog",
+          "url": "https://setuptools.pypa.io/en/stable/history.html"
+        },
+        {
+          "label": "Documentation",
+          "url": "https://setuptools.pypa.io/"
+        },
+        {
+          "label": "Source",
+          "url": "https://github.com/pypa/setuptools"
+        }
+      ]
+    },
+    {
+      "name": "shiboken6",
+      "version": "6.12.0",
+      "pypi_project_version": "https://pypi.org/project/shiboken6/6.12.0/",
+      "license_review_status": "pending",
+      "metadata_status": "matched-installed-distribution",
+      "declared_license_metadata": {
+        "field": "License",
+        "value": "LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only"
+      },
+      "license_file_paths": [
+        "shiboken6-6.12.0.dist-info/licenses/LicenseRef-Qt-Commercial.txt"
+      ],
+      "upstream_urls": [
+        {
+          "label": "Changelog",
+          "url": "https://code.qt.io/cgit/pyside/pyside-setup.git/tree/doc/changelogs"
+        },
+        {
+          "label": "Documentation",
+          "url": "https://doc.qt.io/qtforpython"
+        },
+        {
+          "label": "Homepage",
+          "url": "https://pyside.org"
+        },
+        {
+          "label": "Repository",
+          "url": "https://code.qt.io/cgit/pyside/pyside-setup.git/"
+        },
+        {
+          "label": "Tracker",
+          "url": "https://qt-project.atlassian.net/browse/PYSIDE"
+        }
+      ]
+    },
+    {
+      "name": "sqlalchemy",
+      "version": "2.1.9",
+      "pypi_project_version": "https://pypi.org/project/sqlalchemy/2.1.9/",
+      "license_review_status": "pending",
+      "metadata_status": "matched-installed-distribution",
+      "declared_license_metadata": {
+        "field": "License-Expression",
+        "value": "MIT"
+      },
+      "license_file_paths": [
+        "sqlalchemy-2.1.9.dist-info/licenses/LICENSE"
+      ],
+      "upstream_urls": [
+        {
+          "label": "Changelog",
+          "url": "https://docs.sqlalchemy.org/latest/changelog/index.html"
+        },
+        {
+          "label": "Discussions",
+          "url": "https://github.com/sqlalchemy/sqlalchemy/discussions"
+        },
+        {
+          "label": "Documentation",
+          "url": "https://docs.sqlalchemy.org"
+        },
+        {
+          "label": "Homepage",
+          "url": "https://www.sqlalchemy.org"
+        },
+        {
+          "label": "Issue Tracker",
+          "url": "https://github.com/sqlalchemy/sqlalchemy/issues"
+        },
+        {
+          "label": "Source Code",
+          "url": "https://github.com/sqlalchemy/sqlalchemy"
+        }
+      ]
+    },
+    {
+      "name": "typing-extensions",
+      "version": "4.16.0",
+      "pypi_project_version": "https://pypi.org/project/typing-extensions/4.16.0/",
+      "license_review_status": "pending",
+      "metadata_status": "matched-installed-distribution",
+      "declared_license_metadata": {
+        "field": "License-Expression",
+        "value": "PSF-2.0"
+      },
+      "license_file_paths": [
+        "typing_extensions-4.16.0.dist-info/licenses/LICENSE"
+      ],
+      "upstream_urls": [
+        {
+          "label": "Bug Tracker",
+          "url": "https://github.com/python/typing_extensions/issues"
+        },
+        {
+          "label": "Changes",
+          "url": "https://github.com/python/typing_extensions/blob/main/CHANGELOG.md"
+        },
+        {
+          "label": "Documentation",
+          "url": "https://typing-extensions.readthedocs.io/"
+        },
+        {
+          "label": "Home",
+          "url": "https://github.com/python/typing_extensions"
+        },
+        {
+          "label": "Q & A",
+          "url": "https://github.com/python/typing/discussions"
+        },
+        {
+          "label": "Repository",
+          "url": "https://github.com/python/typing_extensions"
+        }
+      ]
+    },
+    {
+      "name": "typing-inspection",
+      "version": "0.4.5",
+      "pypi_project_version": "https://pypi.org/project/typing-inspection/0.4.5/",
+      "license_review_status": "pending",
+      "metadata_status": "matched-installed-distribution",
+      "declared_license_metadata": {
+        "field": "License-Expression",
+        "value": "MIT"
+      },
+      "license_file_paths": [
+        "typing_inspection-0.4.5.dist-info/licenses/LICENSE"
+      ],
+      "upstream_urls": [
+        {
+          "label": "Changelog",
+          "url": "https://github.com/pydantic/typing-inspection/blob/main/HISTORY.md"
+        },
+        {
+          "label": "Documentation",
+          "url": "https://pydantic.github.io/typing-inspection/dev/"
+        },
+        {
+          "label": "Homepage",
+          "url": "https://github.com/pydantic/typing-inspection"
+        },
+        {
+          "label": "Source",
+          "url": "https://github.com/pydantic/typing-inspection"
+        }
+      ]
+    }
+  ]
+}

@@ -81,7 +81,7 @@ Como pessoa mantenedora, quero reconstruir e verificar o pacote, identificar sua
 - Ícone, metadados PE, produto, editor, versão de arquivo, versão de produto e versão do instalador divergem.
 - Versão de PyInstaller ou hooks da dependência alteram os arquivos empacotados, omitem DLL/plugin Qt, locale ou runtime necessário.
 - Dependência transitiva muda de licença, contém aviso de redistribuição ou licença não compatível com o produto.
-- EbookLib continua bloqueado por `B007-EBOOKLIB-LICENSE`; KCC ou Inno Setup exigem licença/permissão não aprovada para o modo de distribuição.
+- F007 usa writer EPUB próprio da biblioteca padrão; EbookLib não é dependência nem componente empacotado. KCC ou Inno Setup exigem revisão/licença específica antes de inclusão.
 - Navegador padrão não existe, KCC não está instalado, versão/opções não foram verificadas ou usuário não aceita tráfego opcional do KCC.
 - Instalador opcional não está disponível ou sua licença não foi revisada para o modelo de distribuição; o pacote portátil precisa continuar documentado/testável.
 - Atualização é downgrade ou pula versões com migrações incompatíveis; versão nova não deve corromper uma base que exige abertura por versão mais recente.
@@ -163,7 +163,7 @@ Como pessoa mantenedora, quero reconstruir e verificar o pacote, identificar sua
 - A documentação de Inno Setup consultada em 2026-11-25 lista 7.1.1 e informa que usuários comerciais devem adquirir licença. O modelo de distribuição do projeto não foi definido; a aprovação/compra aplicável é gate antes de executar o compilador em release comercial.
 - A matriz de arquiteturas de processador ainda requer decisão humana; até essa decisão e os testes correspondentes, a release não pode declarar suporte a uma arquitetura específica além do sistema operacional-alvo da constituição.
 - No checkout revisado em 2026-11-25 não foram encontrados arquivos de implementação Python, `pyproject.toml`, `uv.lock`, configuração PyInstaller ou script Inno Setup; o `README.md` contém somente títulos. O conjunto de dependências, a arquitetura implementada e a build real ainda não são verificáveis.
-- EbookLib continua sujeito ao bloqueio `B007-EBOOKLIB-LICENSE` de F007. A distribuição não remove esse bloqueio; a release não pode empacotar uma dependência não aprovada.
+- F007 usa writer EPUB da biblioteca padrão e não empacota EbookLib. KCC e Inno Setup continuam fora do pacote até revisão específica.
 - KCC é uma instalação externa opcional conforme F007; navegador é fornecido pelo sistema. Ambos ficam fora do pacote até revisão específica e decisão explícita.
 - O projeto ainda não possui `docs/roadmap.md` neste checkout. F012 encerra a sequência conhecida F001–F011 sem inferir conteúdo do roadmap ausente.
 - Os testes de instalador, migração, desinstalação e Windows limpo não foram executados durante esta etapa de especificação; todos constam pendentes na checklist de release.
@@ -179,7 +179,7 @@ Como pessoa mantenedora, quero reconstruir e verificar o pacote, identificar sua
 - F004 — Catálogo: persistência e consulta da Biblioteca que devem sobreviver à atualização.
 - F005 — Downloads: concorrência e progresso persistidos; arquivos permanecem na raiz de dados.
 - F006 — Processamento: originais e derivados locais preservados.
-- F007 — Exportação: saída local, KCC externo opcional e bloqueio `B007-EBOOKLIB-LICENSE`.
+- F007 — Exportação: saída local com writer da biblioteca padrão; KCC externo é opcional e não foi empacotado.
 - F008 — Biblioteca local: referências/checksums, migrações, exclusão somente confirmada e arquivos externos protegidos.
 - F009 — Envio: credenciais no cofre e sem segredos em logs/configuração que a distribuição não pode copiar.
 - F010 — Atualização de capítulos: agenda local e avisos persistidos que devem ser preservados sem executar consultas durante instalação/update.
@@ -188,7 +188,7 @@ Como pessoa mantenedora, quero reconstruir e verificar o pacote, identificar sua
 
 ### Bloqueios de Release
 
-- **B012-IMPLEMENTATION-BASELINE**: A distribuição real depende da implementação F001–F011, de um conjunto de dependências resolvido em `uv.lock`, de compatibilidade PySide6/Qt comprovada e de um build limpo de Windows. Esses artefatos não existem neste checkout; não selecionar opções CLI, hooks ou DLLs por suposição. O gate só pode ser removido após a base existir e passar pela matriz limpa de instalação/atualização/desinstalação.
+- **B012-IMPLEMENTATION-BASELINE**: F001–F011, `pyproject.toml`, `uv.lock`, configuração PyInstaller e um bundle inicializado neste Windows 10 x64 já existem. Continuam pendentes o build a partir de checkout limpo e a compatibilidade em cada par Windows/arquitetura aprovado; até executar esses critérios, o artefato local é um rascunho e não uma release.
 - **B012-ARCH-MATRIX**: A arquitetura-alvo (x64, ARM64 e/ou x86) aguarda decisão humana. A lista de releases e VMs de teste deve ser fechada depois dessa resposta.
 
 ### Riscos e Mitigações
@@ -211,7 +211,7 @@ Como pessoa mantenedora, quero reconstruir e verificar o pacote, identificar sua
 - Atualização automática em background, canal de atualização online, auto-download ou execução automática de instaladores.
 - Distribuição macOS/Linux, Microsoft Store, winget/chocolatey, MSI, assinatura de driver ou atualização do Windows.
 - Fornecer, empacotar, instalar ou atualizar navegadores, KCC, fontes de mangá ou conteúdo de terceiros.
-- Resolver por esta feature a compatibilidade de licença AGPL do EbookLib; `B007-EBOOKLIB-LICENSE` permanece gate independente.
+- Alterar a decisão de F007 sobre writer da biblioteca padrão; EbookLib permanece fora do escopo e do artefato.
 - Coletar telemetria, crash dumps com conteúdo, dados pessoais ou credenciais de release.
 - Limpar ou compactar biblioteca durante update/uninstall; mover raiz de dados entre volumes ou perfis.
 - Garantir que qualquer antivírus/SmartScreen aprove artefato unsigned em todos os equipamentos.
@@ -227,4 +227,4 @@ Usar Pytest e build tooling em ambiente Windows limpo/controlado com versões re
 - PyInstaller, [Licença](https://www.pyinstaller.org/en/latest/license.html) — documentação descreve licenciamento dual: GPL-2.0 com exceção para construir produtos comerciais e Apache-2.0 aplicada a certos arquivos.
 - Inno Setup, [Downloads oficiais](https://jrsoftware.org/inno-setup/downloads) — consulta em 2026-11-25 lista Inno Setup 7.1.1 (2026-10-28) e 6.7.4; versões/licenças devem ser revalidadas antes do uso.
 - Inno Setup, [Informações do projeto e licença](https://jrsoftware.org/inno-setup) e [Licenças comerciais](https://jrsoftware.org/inno-setup/purchase) — descreve restrições de distribuição e solicita licença comercial para usuários comerciais.
-- F007, [Especificação EPUB/KCC](../007-epub-kcc-export/spec.md) — conserva os gates `B007-EBOOKLIB-LICENSE` e `B007-KCC-CAPABILITY`, e exclui empacotamento automático de KCC.
+- F007, [Especificação EPUB/KCC](../007-epub-kcc-export/spec.md) — usa writer da biblioteca padrão e conserva os gates de KCC/dispositivo; exclui empacotamento automático de KCC.

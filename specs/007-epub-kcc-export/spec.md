@@ -4,9 +4,9 @@
 
 **Criado**: 2026-11-25
 
-**Status**: Rascunho
+**Status**: Implementação local concluída; validação física pendente
 
-**Entrada**: Exportar páginas ilustradas como EPUB com metadados, capa, sumário, ordem e direção configurável; permitir saída por capítulo ou volume, divisão por tamanho e CBZ opcional. Gerar EPUB 3 nativamente com serialização XML e ZIP da biblioteca padrão Python, sem biblioteca EPUB de terceiros. Oferecer adaptador opcional para KCC CLI somente com versão/opções verificadas na instalação real. Validar estrutura e testar manualmente em Kindle real; não prometer compatibilidade de layout fixo com Send to Kindle sem evidência. Considerar alternativa local compatível com USB somente se o conversor suportar e validar o formato.
+**Entrada**: Exportar páginas ilustradas como EPUB com metadados, capa, sumário, ordem e direção configurável; permitir saída por capítulo ou volume, divisão por tamanho e CBZ opcional. Gerar EPUB 3 nativamente com serialização XML e ZIP da biblioteca padrão Python, sem biblioteca EPUB de terceiros. Oferecer saída MOBI opcional pela CLI KCC 13.0.4 somente com perfil, argumentos e arquivo de saída verificados. Validar estrutura e testar manualmente em Kindle real; não prometer compatibilidade de layout fixo com Send to Kindle sem evidência. KCC não é instalado ou empacotado pelo aplicativo.
 
 ## Histórias de Usuário e Testes (obrigatório)
 
@@ -40,19 +40,19 @@ Como pessoa usuária, quero dividir resultados acima de um tamanho escolhido e o
 3. **Dado** que uma única página não cabe no limite, **quando** a divisão é tentada, **então** o aplicativo não trunca o conteúdo e solicita um limite maior ou a desativação da divisão.
 4. **Dado** a opção CBZ habilitada, **quando** a exportação termina, **então** o pacote contém as páginas processadas com nomes que preservam sua sequência; a interface avisa que leitores CBZ determinam sua própria direção de navegação.
 
-### História 3 — Usar KCC quando compatível ou EPUB nativo (Prioridade: P2)
+### História 3 — Usar KCC para MOBI ou EPUB nativo (Prioridade: P2)
 
-Como pessoa usuária, quero usar uma instalação compatível do KCC ou escolher o EPUB nativo, para obter a saída que funciona no meu fluxo sem depender de um conversor indisponível.
+Como pessoa usuária, quero usar a CLI local KCC 13.0.4 para criar MOBI ou escolher EPUB/CBZ nativo, para obter uma cópia local sem depender de instalação automática.
 
-**Por que esta prioridade**: KCC pode oferecer formatos de leitor e fluxos adicionais, mas precisa ser opcional, verificável e não pode tornar a exportação EPUB dependente dele.
+**Por que esta prioridade**: A CLI KCC oferece saída MOBI opcional, mas precisa ser selecionada explicitamente, verificada e não pode tornar EPUB/CBZ dependentes dela.
 
-**Teste independente**: Simular binários KCC ausente, compatível, com argumentos diferentes, sem opção necessária, com timeout e com saída inválida; conferir o fallback nativo, isolamento do subprocesso, cancelamento e relatório. A etapa final de aceitação compara a saída em um Kindle físico e registra o modelo e a rota testados.
+**Teste independente**: Validar help real capturado, incompatibilidade, ausência, timeout/cancelamento e arquivo inválido; rodar a CLI oficial KCC 13.0.4 com imagens processadas em perfil descartável; conferir publicação e preservação dos originais. A etapa final de aceitação compara a saída em um Kindle físico e registra o modelo e a rota testados.
 
 **Cenários de aceitação**:
 
-1. **Dado** KCC não instalado, **quando** a pessoa usuária inicia a exportação, **então** o EPUB nativo permanece disponível e nenhuma instalação é baixada automaticamente.
-2. **Dado** uma instalação detectada, **quando** o aplicativo verifica capacidades, **então** apresenta somente formatos e opções confirmados para aquela versão.
-3. **Dado** uma opção requerida ausente, formato incompatível, risco de conexão não autorizado ou falha do KCC, **quando** a pessoa usuária tenta conversão externa, **então** o adaptador não executa argumentos adivinhados e oferece EPUB nativo se ainda viável.
+1. **Dado** KCC não instalado, **quando** a pessoa usuária inicia a exportação, **então** EPUB e CBZ nativos permanecem disponíveis e nenhuma instalação é baixada automaticamente.
+2. **Dado** a CLI selecionada, **quando** o aplicativo verifica capacidades, **então** só aceita KCC 13.0.4 e oferece MOBI para perfis K810 (600×800) e KPW34 (1072×1448).
+3. **Dado** versão incompatível, formato/perfil sem validação, ausência de idioma, limite de tamanho aplicado a MOBI ou falha KCC, **quando** a pessoa usuária tenta conversão, **então** o adaptador não executa argumentos adivinhados, preserva arquivos e informa a incompatibilidade; EPUB nativo permanece uma opção separada.
 4. **Dado** o EPUB de layout fixo finalizado, **quando** a equipe valida compatibilidade, **então** o resultado só é anunciado como testado para a combinação de arquivo, dispositivo, firmware e rota realmente ensaiada.
 
 ### Casos extremos
@@ -68,7 +68,7 @@ Como pessoa usuária, quero usar uma instalação compatível do KCC ou escolher
 - Parte de volume teria que cortar capítulo; uma página individual excede o limite; várias partes precisam ser nomeadas sem colisões.
 - KCC não é encontrado, encontrado mas não executável, versão desconhecida, ajuda não legível, argumento mudou ou opção de saída não existe.
 - KCC escreve arquivos ao lado da entrada, retorna código de saída inconsistente, cria vários resultados inesperados, falha sem mensagem, trava ou ultrapassa timeout.
-- KCC inicia verificação externa de versão/avisos; a pessoa usuária não autorizou conexão.
+- A CLI selecionada não é KCC 13.0.4, ou o help não declara todas as opções obrigatórias.
 - KCC traz padrões de título/autor/arquivo que não correspondem aos metadados fornecidos.
 - KCC tenta excluir entrada, diretório ou arquivo original; arquivos de estágio ficam em volume diferente do destino final.
 - Arquivo KCC termina com extensão que não revela seu tipo real, inclusive artefato dual MOBI/AZW3 com extensão MOBI.
@@ -91,24 +91,24 @@ Como pessoa usuária, quero usar uma instalação compatível do KCC ou escolher
 - **RF-009**: O EPUB deve incluir conteúdo de página em layout fixo com dimensão coerente com o DeviceProfile selecionado, capa, direção e ordem registradas. Cada página do livro deve corresponder a uma página processada, sem anexar recursos externos.
 - **RF-010**: O resultado EPUB 3 nativo deve ser gerado por writer próprio que use apenas `zipfile` e `xml.etree.ElementTree` da biblioteca padrão Python 3.12. O pacote deve seguir a estrutura normativa, inclusive layout fixo, sem dependência de biblioteca EPUB de terceiros. A implementação deve ser coberta por testes de contrato e validada com EPUBCheck antes da publicação.
 - **RF-011**: A estrutura final deve ser validada antes de aparecer como concluída: contêiner EPUB íntegro, metadados obrigatórios, capa, recursos referenciados presentes, sumário navegável, spine ordenado e sem referências externas ou scripts. Títulos e autores devem ser escapados como texto, não interpretados como marcação. A suíte de aceitação deve executar EPUBCheck em versão registrada e não aceitar erros de conformidade.
-- **RF-012**: O EPUB nativo é o fallback quando KCC estiver ausente, incompatível, cancelado, tiver falhado ou não possuir argumento confirmado para a opção solicitada. Nenhum resultado parcial do KCC pode substituir um EPUB nativo válido.
+- **RF-012**: EPUB nativo permanece independente do KCC. Falha ao solicitar MOBI deve falhar sem publicação parcial; a pessoa pode iniciar outra exportação EPUB ou CBZ.
 - **RF-013**: O CBZ é opcional e deve conter os derivados processados selecionados, em sequência estável indicada por nomes ordenáveis, sem alterar ou converter os originais. CBZ não deve ser apresentado como portador universal da direção de navegação; leitores determinam sua própria configuração, e direção KCC só pode ser aplicada quando verificada para a versão/formato.
 - **RF-014**: A pessoa usuária pode informar um tamanho máximo por arquivo de saída. A divisão deve medir o tamanho final, manter páginas inteiras e criar partes numeradas em fronteiras de capítulo quando possível e de página quando necessário. Nenhuma parte deve exceder o limite; se uma página sozinha exceder, a operação deve parar sem truncamento.
-- **RF-015**: A divisão por tamanho deve ser aplicada apenas aos formatos cuja implementação detectada a suporte. Se uma opção KCC necessária não existir na versão instalada, a aplicação deve oferecer a divisão nativa suportada ou informar que a combinação solicitada não é compatível.
-- **RF-016**: O adaptador KCC deve ser opcional, detectável por caminho configurado ou instalação disponível, sem baixar ou instalar KCC automaticamente. A detecção não deve iniciar conversão nem gerar tráfego externo.
-- **RF-017**: Antes de usar KCC, o adaptador deve identificar a instalação e as capacidades da versão concreta por evidência local verificável, como versão e ajuda dessa instalação, e validar cada argumento requerido. Opções presentes somente em outra versão, no código da aplicação ou em tutoriais antigos não são suficientes.
-- **RF-018**: Se as capacidades necessárias não puderem ser verificadas com segurança, o KCC deve ser marcado como incompatível para aquela solicitação; o aplicativo não pode construir argumentos CLI por suposição. Padrões do conversor que inventem título/autor ou usem nome de arquivo como metadado não podem ser aceitos; se a versão detectada não permitir fornecer metadados conhecidos e omitir autor ausente, usar EPUB nativo.
-- **RF-019**: O subprocesso deve receber argumentos separados, sem shell. Entrada, saída e temporários devem ficar em áreas locais gerenciadas pela operação; nenhuma opção que exclua ou altere arquivos de entrada pode ser usada. Opções de saída só podem ser utilizadas se comprovadas na ajuda/documentação da versão detectada.
-- **RF-020**: A execução KCC deve ter timeout finito configurável, padrão de 15 minutos e faixa permitida de 1 a 60 minutos, além de cancelamento. Após cancelamento, o processo deve terminar em até 5 segundos; se não encerrar nesse prazo, deve ser forçado a terminar. Resultados temporários incompletos são descartados, e originais/resultados já existentes permanecem preservados.
-- **RF-021**: Se KCC iniciar conexões externas de versão ou anúncio, nenhuma execução/probe deve ocorrer sem aviso e autorização explícita por execução; quando a conexão não puder ser evitada e não for autorizada, usar EPUB nativo ou informar bloqueio. A aplicação não deve enviar conteúdo do livro a esses serviços.
-- **RF-022**: A versão detectada do KCC deve ser usada para limitar formatos oferecidos. A alternativa USB deve aparecer somente quando o conversor produzir um artefato cujo suporte/estrutura tenha sido verificado; a extensão real do conversor deve ser preservada e não alterada para sugerir outro formato.
-- **RF-023**: Enquanto a versão detectada documentar saída MOBI/AZW3 dual com extensão MOBI, a interface pode identificá-la como artefato dual para uso USB, mas não deve renomeá-la para .azw3 ou afirmar que é AZW3 puro sem validação.
+- **RF-015**: A divisão por tamanho está habilitada para EPUB/CBZ nativos. Em MOBI, a UI exige que o limite esteja desativado porque o comportamento de divisão KCC não foi validado.
+- **RF-016**: O adaptador KCC é opcional e exige caminho escolhido pela pessoa usuária; nunca baixa, instala ou empacota KCC. Não há detecção/executável automático.
+- **RF-017**: Antes de MOBI, o adaptador executa `--help` local e exige versão 13.0.4 e todas as opções usadas, incluindo formato MOBI, perfil, direção, saída, título, nome, idioma e autor.
+- **RF-018**: Se versão, help, perfil ou opção não corresponder, a conversão deve parar sem argumentos adivinhados. Idioma deve ser informado; autor ausente é passado vazio para evitar o padrão KCC.
+- **RF-019**: O subprocesso recebe argumentos separados e `shell=False`. Ele lê somente cópias numeradas das páginas em staging; nunca recebe caminho de originais e nunca usa opção destrutiva. Entrada/saída ficam isoladas no staging da exportação.
+- **RF-020**: A execução KCC tem timeout de 15 minutos e cancelamento. Cancelamento tenta encerrar por até 3 segundos e então força o encerramento; os temporários são descartados e originais/resultados existentes permanecem preservados.
+- **RF-021**: A integração aceita somente a CLI `c2e` 13.0.4 verificada; não usa GUI KCC, verificação de versão/anúncios, instalador ou serviço externo. Qualquer versão diferente é rejeitada e precisa ser revista antes de suportar.
+- **RF-022**: MOBI é o único formato KCC exposto. Arquivo preserva extensão `.mobi`; não se afirma AZW3 puro, entrega USB ou compatibilidade com Kindle até validação física.
+- **RF-023**: A interface não identifica MOBI como artefato dual nem o renomeia para `.azw3` sem teste correspondente.
 - **RF-024**: A aplicação não deve enviar livros a Kindle, Send to Kindle, e-mail, nuvem ou terceiros. Exportar significa gravar no destino local escolhido. Qualquer transferência futura exige autorização explícita separada.
 - **RF-025**: A exportação deve gravar em temporários próprios, validar o pacote e finalizar atomicamente. Nomes gerados devem ser sanitizados e não podem conter componentes de caminho fornecidos por metadados. Nunca deve sobrescrever arquivo existente sem confirmação específica; erro ou cancelamento não pode marcar Export como concluído.
 - **RF-026**: ExportJob e progresso devem ser persistidos conforme F001, com estados terminais imutáveis, cancelamento, erros tipados e recuperação de resultados temporários após encerramento inesperado.
-- **RF-027**: Logs devem incluir apenas estado, versão do conversor, código de saída e categoria de erro sanitizados; não registrar páginas, corpo do EPUB, título/autor, caminho absoluto, argumentos completos ou parâmetros que identifiquem conteúdo.
+- **RF-027**: O adaptador não registra stdout/stderr, páginas, título/autor, caminho absoluto, argumentos ou conteúdo; erros exibidos usam códigos e mensagens genéricas sanitizadas.
 - **RF-028**: Geração, validação e subprocessos devem executar fora da thread gráfica; a interface deve mostrar progresso, permitir cancelamento e continuar responsiva.
-- **RF-029**: Testes automatizados devem cobrir EPUB nativo, metadados faltantes, ordem/RTL, sumário/capa, volume, divisão por tamanho, CBZ, validação estrutural, KCC ausente/compatível/incompatível, argumentos variáveis, timeout, cancelamento, arquivos temporários e ausência de transferência.
+- **RF-029**: Testes automatizados devem cobrir EPUB/CBZ, ordem/direção, metadados, divisão, KCC ausente/incompatível, help real capturado, argumentos sem shell, timeout/cancelamento, MOBI inválido e integração com CLI oficial real quando `M2K_KCC_EXE` for definido.
 - **RF-030**: A aceitação manual deve abrir em um Kindle físico um EPUB e, quando suportado, artefato KCC para USB; a verificação de fixed layout deve ensaiar separadamente Send to Kindle. Evidência deve registrar arquivo e checksum, versão de saída, modelo/geração do dispositivo, firmware, rota de transferência e resultado de capa, sumário, RTL, páginas e navegação.
 - **RF-031**: EPUB com fixed layout não pode ser anunciado como compatível com Send to Kindle até o teste manual dessa rota passar. Se falhar ou não for testado, a interface/documentação deve declarar compatibilidade não verificada e oferecer somente alternativas locais efetivamente validadas.
 - **RF-032**: README e documentação devem explicar formatos, agrupamento, tamanho, RTL, KCC opcional, instalação externa, restrições de rede/licença, validação e diferença entre exportar localmente e transferir para dispositivo.
@@ -182,8 +182,8 @@ Como pessoa usuária, quero usar uma instalação compatível do KCC ou escolher
 
 - **B007-EBOOKLIB-LICENSE**: Resolvido em 25/11/2026 por decisão explícita do usuário de alterar a arquitetura para um writer próprio com a biblioteca padrão. EbookLib não será adicionado ao lock nem à distribuição.
 - **B007-EPUB-FXL**: O writer próprio deve emitir as propriedades e dimensões fixed-layout definidas no EPUB 3.3 e passar EPUBCheck 5.4.0; até essa validação, não anunciar saída conformante ou compatibilidade com Send to Kindle.
-- **B007-KCC-NETWORK**: A fonte oficial atual do KCC informa conexões de rede para verificação de versão/avisos durante inicialização. Não executar KCC nem consultar sua ajuda sem aviso; usar somente se a versão instalada oferecer modo sem conexões verificável ou após autorização explícita por execução. Se não autorizado, manter o fallback local.
-- **B007-KCC-CAPABILITY**: Cada formato/opção solicitado depende de compatibilidade comprovada para a versão executável detectada. Ausência de confirmação bloqueia somente esse adaptador/formato, não a geração EPUB nativa aprovada.
+- **B007-KCC-NETWORK**: O app chama apenas a CLI oficial `c2e` 13.0.4 escolhida explicitamente, nunca a GUI que contém verificações de versão/avisos. O entrypoint e o caminho de conversão locais foram revisados; nenhuma instalação, download, atualização ou conteúdo é enviado pelo app. Mudança de versão não é aceita sem rever o caminho de execução e a rede.
+- **B007-KCC-CAPABILITY**: Help e conversões reais confirmaram somente MOBI, perfis K810/KPW34, direção, idioma, título/autor, filename e diretório de saída. Outros formatos/perfis/opções continuam bloqueados até nova evidência.
 
 ### Riscos e Mitigações
 

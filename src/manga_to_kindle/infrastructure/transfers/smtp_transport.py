@@ -9,17 +9,20 @@ import stat
 from collections.abc import Callable
 from email.message import EmailMessage
 from pathlib import Path
-from typing import Protocol
 
-from manga_to_kindle.domain.transfers import SmtpProfile, SmtpTransportResult, TlsMode, TransferState
+from manga_to_kindle.application.transfers.ports import (
+    MAX_KINDLE_EMAIL_BYTES,
+    CancellationPort,
+    estimate_message_size,
+)
+from manga_to_kindle.domain.transfers import (
+    SmtpProfile,
+    SmtpTransportResult,
+    TlsMode,
+    TransferState,
+)
 
-MAX_KINDLE_EMAIL_BYTES = 50_000_000
 CONNECTION_TIMEOUT_SECONDS = 20
-
-
-class CancellationPort(Protocol):
-    @property
-    def cancelled(self) -> bool: ...
 
 
 class SmtpTransport:
@@ -74,7 +77,11 @@ class SmtpTransport:
             report_stage("tls", "Negociando TLS validado")
             smtp = _connect(profile)
             size_option = smtp.esmtp_features.get("size", "").strip()
-            size_limit = int(size_option) if size_option.isascii() and size_option.isdecimal() else 0
+            size_limit = (
+                int(size_option)
+                if size_option.isascii() and size_option.isdecimal()
+                else 0
+            )
             if size_limit and len(message_bytes) > size_limit:
                 return SmtpTransportResult(
                     TransferState.FAILED_BEFORE_SUBMISSION,
@@ -145,15 +152,6 @@ class SmtpTransport:
                         smtp.close()
                     except OSError:
                         pass
-
-
-def estimate_message_size(file_size: int, filename: str) -> int:
-    if file_size <= 0:
-        return 0
-    encoded_chars = 4 * ((file_size + 2) // 3)
-    line_break_bytes = 2 * ((encoded_chars + 75) // 76)
-    header_and_body_allowance = 8192 + (len(filename.encode("utf-8")) * 3)
-    return encoded_chars + line_break_bytes + header_and_body_allowance
 
 
 class _PayloadTooLarge(ValueError):

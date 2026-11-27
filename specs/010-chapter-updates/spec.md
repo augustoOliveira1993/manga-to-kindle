@@ -4,7 +4,7 @@
 
 **Criado**: 2026-11-25
 
-**Status**: Rascunho
+**Status**: Infraestrutura local implementada; integração com fonte real bloqueada por autorização e limites ainda indisponíveis.
 
 **Entrada**: Permitir atualização manual do catálogo de capítulos e verificação periódica opcional enquanto o aplicativo estiver aberto. Respeitar capacidades, termos e limites declarados por cada fonte, identificar capítulos novos por identidade estável e emitir notificações locais. Não baixar nem enviar capítulos automaticamente. Testar catálogo alterado, duplicatas, indisponibilidade e desativação.
 

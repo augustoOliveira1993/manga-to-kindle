@@ -6,8 +6,11 @@ from dataclasses import dataclass
 from typing import Protocol
 from uuid import uuid4
 
+from manga_to_kindle.application.transfers.ports import (
+    CredentialVault,
+    VaultUnavailable,
+)
 from manga_to_kindle.domain.transfers import SmtpProfile, TlsMode
-from manga_to_kindle.infrastructure.security.credential_vault import VaultUnavailable
 
 
 class SmtpProfileRepository(Protocol):
@@ -18,12 +21,8 @@ class SmtpProfileRepository(Protocol):
     def remove_profile(self) -> str | None: ...
 
 
-class CredentialVault(Protocol):
-    def store(self, credential_ref: str, secret: str) -> None: ...
-
-    def get(self, credential_ref: str) -> str: ...
-
-    def delete(self, credential_ref: str) -> None: ...
+class SmtpConnectionPort(Protocol):
+    def test_connection(self, profile: SmtpProfile, password: str | None) -> None: ...
 
 
 class SmtpProfileConfigurationError(RuntimeError):
@@ -90,7 +89,8 @@ class SaveSmtpProfile:
                 credential_ref = current.credential_ref
             else:
                 raise SmtpProfileConfigurationError(
-                    "Informe a senha para a nova conta SMTP; segredos não são recuperados para a tela."
+                    "Informe a senha para a nova conta SMTP; segredos não são "
+                    "recuperados para a tela."
                 )
         elif password:
             raise SmtpProfileConfigurationError("Informe o usuário SMTP antes de salvar a senha.")
@@ -139,6 +139,36 @@ class RemoveSmtpProfile:
         except VaultUnavailable:
             return False
         return True
+
+
+class TestSmtpConnection:
+    __test__ = False
+
+    def __init__(
+        self,
+        repository: SmtpProfileRepository,
+        vault: CredentialVault,
+        transport: SmtpConnectionPort,
+    ) -> None:
+        self._repository = repository
+        self._vault = vault
+        self._transport = transport
+
+    def execute(self) -> None:
+        profile = self._repository.get_profile()
+        if profile is None:
+            raise SmtpProfileConfigurationError("Salve um perfil SMTP antes de testar a conexão.")
+        password = None
+        try:
+            if profile.credential_ref is not None:
+                password = self._vault.get(profile.credential_ref)
+            self._transport.test_connection(profile, password)
+        except Exception:
+            raise SmtpProfileConfigurationError(
+                "Não foi possível testar a conexão SMTP com TLS. Confira host, porta e credenciais."
+            ) from None
+        finally:
+            password = None
 
 
 def _same_authentication_target(

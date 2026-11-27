@@ -4,18 +4,11 @@ from __future__ import annotations
 
 import ctypes
 import os
-import re
 from ctypes import wintypes
 from typing import Protocol
 from uuid import UUID
 
-
-class VaultUnavailable(RuntimeError):
-    code = "CREDENTIAL_VAULT_UNAVAILABLE"
-
-
-class CredentialMissing(RuntimeError):
-    code = "CREDENTIAL_MISSING"
+from manga_to_kindle.application.transfers.ports import CredentialMissing, VaultUnavailable
 
 
 class _CredentialApi(Protocol):
@@ -55,7 +48,9 @@ class WindowsCredentialVault:
         try:
             return raw.decode("utf-8", errors="strict")
         except UnicodeDecodeError:
-            raise VaultUnavailable("A credencial SMTP do cofre não tem codificação válida.") from None
+            raise VaultUnavailable(
+                "A credencial SMTP do cofre não tem codificação válida."
+            ) from None
 
     def delete(self, credential_ref: str) -> None:
         self._api.delete(_target_name(credential_ref))
@@ -99,7 +94,9 @@ class _WinCredentialApi:
         try:
             self._library = ctypes.WinDLL("Advapi32.dll", use_last_error=True)
         except (AttributeError, OSError):
-            raise VaultUnavailable("O cofre de credenciais do Windows não está disponível.") from None
+            raise VaultUnavailable(
+                "O cofre de credenciais do Windows não está disponível."
+            ) from None
         self._library.CredWriteW.argtypes = [ctypes.POINTER(_CREDENTIALW), wintypes.DWORD]
         self._library.CredWriteW.restype = wintypes.BOOL
         self._library.CredReadW.argtypes = [

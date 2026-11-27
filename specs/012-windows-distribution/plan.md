@@ -15,16 +15,16 @@ Empacotar o aplicativo desktop local para Windows 10/11 com PyInstaller, usando 
 **Dependências principais**:
 
 - Runtime: PySide6; SQLAlchemy 2; Alembic para migrações versionadas; Pydantic v2 para validar os contratos de metadados/manifests onde houver entrada JSON.
-- Funcionalidades anteriores: Pillow na feature de imagens; HTTPX/BeautifulSoup4 somente para provedores autorizados que os exijam; EbookLib continua bloqueado por `B007-EBOOKLIB-LICENSE`; KCC permanece instalação externa opcional conforme F007.
+- Funcionalidades anteriores: Pillow na feature de imagens; provedores externos permanecem bloqueados até validação de autorização; F007 usa writer EPUB próprio da biblioteca padrão e não empacota EbookLib; KCC permanece instalação externa opcional.
 - Build: PyInstaller, em versão fixada no grupo de dependências de build e no lock.
 - Desenvolvimento: uv, Ruff, MyPy e Pytest em grupos separados do runtime.
 - Não incluir KCC, navegadores ou ferramentas de desenvolvimento no pacote padrão. Playwright, HTTPX e BeautifulSoup4 não são dependências desta feature.
 
-Versões exatas não podem ser fixadas ainda: não existem `pyproject.toml`, `uv.lock` nem implementação neste checkout. O planejamento define a estratégia; a escolha e resolução das versões ocorrem quando F001–F011 fornecerem uma base instalável.
+O checkout atual tem `pyproject.toml`, `uv.lock` e implementação F001–F011. O ambiente local usa Python 3.12.16 e o grupo de build fixa PyInstaller 6.22.3. O bundle nativo Windows 10 x64 já foi compilado e iniciado; ainda faltam build de checkout limpo e validação por cada par Windows/arquitetura aprovado antes de declarar uma matriz de suporte.
 
 **Persistência**: SQLite sob a raiz de dados local estabelecida em F001/F008. SQLAlchemy 2 fornece mapeamento tipado; Alembic fornece revisões ordenadas e tabela de versão. PyInstaller e o instalador não alteram o banco. No primeiro início após upgrade, a aplicação cria e verifica backup antes de executar migrações.
 
-**Testes**: Pytest para contratos, metadados, caminhos, proveniência, processo de upgrade e recuperação; Ruff e MyPy para o código do produto; VMs descartáveis limpas para Windows 10/11 em cada arquitetura aprovada. Testes em VM e release manual permanecem pendentes até existir build executável.
+**Testes**: Pytest cobre contratos, metadados, caminhos, ciclo do instalador e startup do bundle/ZIP real em perfil temporário; Ruff e MyPy cobrem o código do produto. Instalação em VMs descartáveis limpas de Windows 10/11 por arquitetura aprovada continua pendente e é gate de release.
 
 **Plataforma-alvo**: Windows 10/11. A arquitetura do processador é entrada obrigatória da matriz de release e permanece pendente (`B012-ARCH-MATRIX`); nenhum par não aprovado/testado pode ser anunciado.
 
@@ -46,9 +46,9 @@ Versões exatas não podem ser fixadas ainda: não existem `pyproject.toml`, `uv
 | Dados locais, migrações, atomicidade e recuperação | Raiz de usuário separada da instalação; backup SQLite verificado antes de migração; atualização não apaga a cópia recuperável; desinstalação padrão preserva dados. | Conforme |
 | Erros, logs, segurança e privacidade | Logs sem segredos/conteúdo; mensagens acionáveis; manifest contém apenas proveniência de build e dados de pacote, sem caminho pessoal do builder. | Conforme |
 | Testes, documentação e dependências verificadas | Pytest/Ruff/MyPy; lock uv; inventário de licenças; README, AGENTS, avisos e checklist de release. | Conforme após implementação |
-| Base anterior disponível | F012 depende de F001–F011, mas não há código, `pyproject.toml`, `uv.lock` ou build neste checkout. | **Gate bloqueado**: `B012-IMPLEMENTATION-BASELINE` |
+| Base anterior disponível | F001–F011, `pyproject.toml`, `uv.lock`, build PyInstaller e startup local do bundle existem neste checkout. | Implementação local disponível; build de checkout limpo e validação na matriz ainda bloqueiam release. |
 | Matriz de arquitetura aprovada | Spec deixa x64/ARM64/x86 para decisão humana e exige teste por par Windows/arquitetura. | **Gate aberto**: `B012-ARCH-MATRIX` |
-| Licenças e ferramentas opcionais | Inno Setup é opcional; EbookLib/KCC mantêm gates de F007; navegador não é empacotado. | **Gate de release**: revisão e evidência antes de incluir qualquer componente |
+| Licenças e ferramentas opcionais | Inno Setup é opcional; F007 usa writer da biblioteca padrão; KCC e navegador não são empacotados. | **Gate de release**: revisar e documentar cada componente incluído |
 
 O plano documental pode ser concluído sem executar build. A implementação/release não pode declarar sucesso até os gates acima serem resolvidos. A matriz será um parâmetro do desenho dos manifestos e da checklist; este plano não escolhe arquitetura por inferência.
 
@@ -93,7 +93,7 @@ Nenhum teste, build, lint ou typecheck foi executado nesta etapa de planejamento
 | PyInstaller | Bundle Windows `onedir`. | Fixar versão e licença; executar build no Windows-alvo; nunca inventar hooks/hidden imports. |
 | Ruff, MyPy, Pytest | Desenvolvimento, qualidade estática e testes. | Grupo dev, não empacotado. |
 | Pillow | Processamento F006 e conversão de ícone se necessário. | Empacotar somente quando F006 e análise de dependências confirmarem uso. |
-| EbookLib | Export EPUB F007. | Bloqueado por `B007-EBOOKLIB-LICENSE`. |
+| EbookLib | Não usado; F007 gera EPUB com writer da biblioteca padrão. | Fora do lock e do artefato. |
 | KCC / navegador | Integrações opcionais conforme F007/F009. | Externos e ausentes do bundle padrão; sem instalação/download automático. |
 | HTTPX / BeautifulSoup4 / Playwright | Provedores autorizados ou automação apenas quando a feature exigir. | Não necessários à F012; Playwright/browser fora do pacote. |
 | Inno Setup | Instalador opcional para usuário. | Aprovação/licença para o modelo concreto antes de compilar ou redistribuir. |

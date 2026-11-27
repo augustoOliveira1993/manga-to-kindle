@@ -35,6 +35,10 @@ from manga_to_kindle.domain.exports import (
     ExportRequest,
 )
 from manga_to_kindle.domain.image_processing import ReadingDirection
+from manga_to_kindle.domain.settings import (
+    BASIC_10_PROFILE_ID,
+    DeviceProfileSettings,
+)
 from manga_to_kindle.presentation.qt.workers.adapter import (
     BackgroundOperation,
     CancellationToken,
@@ -52,6 +56,18 @@ _ERROR_MESSAGES = {
     "EXPORT_PACKAGE_TOO_LARGE": "Um pacote excedeu o limite. Aumente-o e tente novamente.",
     "EPUB_VALIDATION_FAILED": "O EPUB não passou pela validação estrutural local.",
     "CBZ_VALIDATION_FAILED": "O CBZ não passou pela validação de páginas e ordem.",
+    "KCC_EXECUTABLE_UNAVAILABLE": "Selecione um executável KCC CLI 13.0.4 válido.",
+    "KCC_VERSION_UNSUPPORTED": (
+        "A versão KCC selecionada não corresponde à versão 13.0.4 verificada."
+    ),
+    "KCC_PROFILE_UNSUPPORTED": "MOBI com KCC requer perfil 600 × 800 ou 1072 × 1448.",
+    "KCC_LANGUAGE_REQUIRED": "Informe um idioma de metadados para criar o MOBI.",
+    "KCC_SIZE_LIMIT_UNSUPPORTED": "A divisão por tamanho não foi validada para MOBI.",
+    "EXPORT_OPTION_UNSUPPORTED": "Uma opção escolhida não é compatível com este formato.",
+    "KCC_TIMEOUT": "A conversão KCC excedeu o tempo limite e foi encerrada.",
+    "KCC_CONVERSION_FAILED": "O KCC não concluiu a conversão MOBI.",
+    "KCC_OUTPUT_INVALID": "O KCC não gerou um arquivo MOBI válido.",
+    "KCC_SOURCE_CHANGED": "Uma página processada mudou; atualize e tente novamente.",
     "EXPORT_CANCELLED": "Exportação cancelada; arquivos de origem preservados.",
 }
 
@@ -68,6 +84,8 @@ class ConversionView(QWidget):
         self._pending_selected_ids: tuple[UUID, ...] = ()
         self._load_operation_id: str | None = None
         self._export_operation_id: str | None = None
+        self._device_profiles: dict[UUID, DeviceProfileSettings] = {}
+        self._default_output_directory: Path | None = None
 
         outer_layout = QVBoxLayout(self)
         outer_layout.setContentsMargins(0, 0, 0, 0)
@@ -81,8 +99,8 @@ class ConversionView(QWidget):
         layout.setSpacing(12)
         intro = QLabel(
             "Crie cópias locais a partir das páginas importadas e processadas. "
-            "Nada é enviado ao Kindle ou à rede. EPUB fixo ainda requer validação manual "
-            "no leitor; KCC não está configurado."
+            "Nada é enviado ao Kindle ou à rede. EPUB fixo requer validação manual no leitor. "
+            "MOBI usa uma instalação local compatível do KCC 13.0.4."
         )
         intro.setObjectName("conversionIntro")
         intro.setWordWrap(True)
@@ -126,7 +144,23 @@ class ConversionView(QWidget):
         self.format_combo.setAccessibleName("Formato de arquivo local")
         self.format_combo.addItem("EPUB 3 — layout fixo", ExportFormat.EPUB.value)
         self.format_combo.addItem("CBZ — páginas processadas", ExportFormat.CBZ.value)
+        self.format_combo.addItem("MOBI — KCC CLI 13.0.4", ExportFormat.MOBI.value)
         form.addRow("Formato", self.format_combo)
+
+        kcc_row = QHBoxLayout()
+        self.kcc_executable_path = QLineEdit()
+        self.kcc_executable_path.setObjectName("kccExecutablePath")
+        self.kcc_executable_path.setReadOnly(True)
+        self.kcc_executable_path.setPlaceholderText("Selecione a CLI local do KCC 13.0.4")
+        self.kcc_executable_path.setAccessibleName("Caminho do executável KCC CLI local")
+        self.kcc_label = QLabel("KCC local")
+        self.kcc_label.setObjectName("kccExecutableLabel")
+        self.choose_kcc_button = QPushButton("Selecionar KCC…")
+        self.choose_kcc_button.setObjectName("chooseKccExecutable")
+        self.choose_kcc_button.setAccessibleName("Selecionar executável KCC CLI")
+        kcc_row.addWidget(self.kcc_executable_path, 1)
+        kcc_row.addWidget(self.choose_kcc_button)
+        form.addRow(self.kcc_label, kcc_row)
 
         self.grouping_combo = QComboBox()
         self.grouping_combo.setObjectName("conversionGrouping")
@@ -137,7 +171,7 @@ class ConversionView(QWidget):
 
         self.direction_combo = QComboBox()
         self.direction_combo.setObjectName("conversionDirection")
-        self.direction_combo.setAccessibleName("Direção declarada no EPUB")
+        self.direction_combo.setAccessibleName("Direção de leitura para EPUB ou KCC")
         self.direction_combo.addItem(
             "Direita para esquerda (RTL)", ReadingDirection.RIGHT_TO_LEFT.value
         )
@@ -148,7 +182,7 @@ class ConversionView(QWidget):
 
         self.language_input = QLineEdit()
         self.language_input.setObjectName("conversionLanguage")
-        self.language_input.setAccessibleName("Idioma obrigatório do EPUB")
+        self.language_input.setAccessibleName("Idioma obrigatório nos metadados EPUB/MOBI")
         self.language_input.setPlaceholderText("Ex.: pt-BR")
         form.addRow("Idioma EPUB", self.language_input)
 
@@ -191,7 +225,7 @@ class ConversionView(QWidget):
         self.start_button = QPushButton("Criar arquivos locais")
         self.start_button.setObjectName("startLocalExport")
         self.start_button.setProperty("primaryAction", True)
-        self.start_button.setAccessibleName("Criar EPUB ou CBZ local")
+        self.start_button.setAccessibleName("Criar EPUB, CBZ ou MOBI local")
         self.cancel_button = QPushButton("Cancelar exportação")
         self.cancel_button.setObjectName("cancelLocalExport")
         self.cancel_button.setEnabled(False)
@@ -205,11 +239,13 @@ class ConversionView(QWidget):
         outer_layout.addWidget(self.content_scroll_area)
 
         self.choose_folder_button.clicked.connect(self.choose_folder)
+        self.choose_kcc_button.clicked.connect(self.choose_kcc_executable)
         self.refresh_button.clicked.connect(self.refresh_chapters)
         self.start_button.clicked.connect(self.start_export)
         self.cancel_button.clicked.connect(self.cancel_export)
         self.send_to_kindle_button.clicked.connect(self.manual_send_requested.emit)
         self.profile_combo.currentIndexChanged.connect(self._validate_draft)
+        self.profile_combo.currentIndexChanged.connect(self._apply_profile_direction)
         self.format_combo.currentIndexChanged.connect(self._validate_draft)
         self.format_combo.currentIndexChanged.connect(self._update_format_controls)
         self.grouping_combo.currentIndexChanged.connect(self._validate_draft)
@@ -217,12 +253,14 @@ class ConversionView(QWidget):
         self.language_input.textChanged.connect(self._validate_draft)
         self.max_size_spin.valueChanged.connect(self._validate_draft)
         self.output_path.textChanged.connect(self._validate_draft)
+        self.kcc_executable_path.textChanged.connect(self._validate_draft)
         runner.started.connect(self._on_started)
         runner.progress.connect(self._on_progress)
         runner.succeeded.connect(self._on_succeeded)
         runner.failed.connect(self._on_failed)
         runner.cancelled.connect(self._on_cancelled)
         runner.finished.connect(self._on_finished)
+        self._update_format_controls()
         self._validate_draft()
 
     @property
@@ -244,18 +282,55 @@ class ConversionView(QWidget):
         self._workflow = workflow
         self.refresh_chapters()
 
+    def set_device_profiles(
+        self,
+        profiles: tuple[DeviceProfileSettings, ...],
+        selected_profile_id: UUID,
+    ) -> None:
+        self._device_profiles = {profile.id: profile for profile in profiles}
+        self.profile_combo.blockSignals(True)
+        self.profile_combo.clear()
+        for profile in profiles:
+            self.profile_combo.addItem(
+                f"{profile.width} × {profile.height} — {profile.name}",
+                profile.id,
+            )
+        selected_index = self.profile_combo.findData(selected_profile_id)
+        self.profile_combo.setCurrentIndex(max(0, selected_index))
+        self.profile_combo.blockSignals(False)
+        self._apply_profile_direction()
+        self._validate_draft()
+
+    def set_default_output_directory(self, path: Path) -> None:
+        self._default_output_directory = path
+        if not self.output_path.text().strip() and path.is_dir():
+            self.output_path.setText(str(path))
+
     def set_selected_chapters(self, chapter_ids: tuple[UUID, ...]) -> None:
         self._pending_selected_ids = chapter_ids
         self._apply_pending_selection()
 
     def choose_folder(self) -> None:
+        initial_path = self.output_path.text().strip()
+        if not initial_path and self._default_output_directory is not None:
+            initial_path = str(self._default_output_directory)
         directory = QFileDialog.getExistingDirectory(
             self,
             "Escolher pasta de saída",
-            self.output_path.text(),
+            initial_path,
         )
         if directory:
             self.output_path.setText(directory)
+
+    def choose_kcc_executable(self) -> None:
+        path, _selected_filter = QFileDialog.getOpenFileName(
+            self,
+            "Selecionar a CLI KCC 13.0.4",
+            self.kcc_executable_path.text().strip(),
+            "Executável KCC CLI (*.exe);;Todos os arquivos (*.*)",
+        )
+        if path:
+            self.kcc_executable_path.setText(path)
 
     def refresh_chapters(self) -> None:
         if self._repository is None or self._load_operation_id is not None:
@@ -285,10 +360,26 @@ class ConversionView(QWidget):
         except (TypeError, ValueError):
             return
         language = self.language_input.text().strip() or None
-        profile = DeviceProfile(
-            "Páginas processadas F006",
-            preferences={"width": 600, "height": 800},
-        )
+        selected_profile_id = self.profile_combo.currentData()
+        profile_settings = self._device_profiles.get(selected_profile_id)
+        if profile_settings is None:
+            profile = DeviceProfile(
+                "Páginas processadas F006",
+                id=BASIC_10_PROFILE_ID,
+                preferences={"width": 600, "height": 800},
+            )
+        else:
+            profile = DeviceProfile(
+                profile_settings.name,
+                id=profile_settings.id,
+                preferences={
+                    "width": profile_settings.width,
+                    "height": profile_settings.height,
+                    "profile_id": str(profile_settings.id),
+                    "direction": profile_settings.direction.value,
+                    "quality": profile_settings.quality,
+                },
+            )
         request = ExportRequest(
             chapter_ids=self.selected_chapter_ids,
             output_directory=Path(self.output_path.text()).expanduser().absolute(),
@@ -296,21 +387,41 @@ class ConversionView(QWidget):
             format=format_value,
             grouping=grouping,
             direction=direction,
-            language=language if format_value is ExportFormat.EPUB else None,
+            language=language
+            if format_value in {ExportFormat.EPUB, ExportFormat.MOBI}
+            else None,
             max_size_bytes=(self.max_size_spin.value() * 1024 * 1024)
-            if self.max_size_spin.value()
+            if self.max_size_spin.value() and format_value is not ExportFormat.MOBI
             else None,
         )
         workflow = self._workflow
+        kcc_executable = (
+            Path(self.kcc_executable_path.text().strip()).expanduser().absolute()
+            if format_value is ExportFormat.MOBI
+            else None
+        )
 
         def export(cancellation: CancellationToken, report: ProgressReporter) -> ExportResult:
-            return workflow.execute(request, cancellation=cancellation, report_progress=report)
+            return workflow.execute(
+                request,
+                cancellation=cancellation,
+                report_progress=report,
+                kcc_executable=kcc_executable,
+            )
 
         operation: BackgroundOperation = export
         self._export_operation_id = self._runner.start(operation)
         self._set_busy(True)
         self.status_label.setText("Preparando arquivos locais…")
         self.progress_bar.setValue(0)
+
+    def _apply_profile_direction(self) -> None:
+        profile = self._device_profiles.get(self.profile_combo.currentData())
+        if profile is None:
+            return
+        direction_index = self.direction_combo.findData(profile.direction.value)
+        if direction_index >= 0:
+            self.direction_combo.setCurrentIndex(direction_index)
 
     def cancel_export(self) -> None:
         if self._export_operation_id is not None:
@@ -346,10 +457,24 @@ class ConversionView(QWidget):
             choice.volume is None for choice in selected
         ):
             message = "Agrupamento por volume requer volume conhecido em todos os capítulos."
-        elif format_value == ExportFormat.EPUB.value and not _valid_language(
-            self.language_input.text()
+        elif (
+            format_value in {ExportFormat.EPUB.value, ExportFormat.MOBI.value}
+            and not _valid_language(self.language_input.text())
         ):
-            message = "Informe um idioma válido para EPUB, por exemplo pt-BR."
+            message = "Informe um idioma válido para os metadados, por exemplo pt-BR."
+        elif format_value == ExportFormat.MOBI.value and not _valid_kcc_executable(
+            self.kcc_executable_path.text()
+        ):
+            message = "Selecione a CLI KCC 13.0.4; ela será executada localmente ao exportar."
+        elif format_value == ExportFormat.MOBI.value and self.max_size_spin.value() > 0:
+            message = (
+                "Desative o limite por arquivo; a divisão por tamanho não foi validada para MOBI."
+            )
+        elif (
+            format_value == ExportFormat.MOBI.value
+            and self._selected_profile_dimensions() not in {(600, 800), (1072, 1448)}
+        ):
+            message = "MOBI com KCC requer perfil 600 × 800 ou 1072 × 1448."
         else:
             message = (
                 "Pronto para criar arquivos locais. Arquivos existentes não serão substituídos."
@@ -406,11 +531,13 @@ class ConversionView(QWidget):
         for widget in (
             self.chapter_list,
             self.choose_folder_button,
+            self.choose_kcc_button,
             self.profile_combo,
             self.format_combo,
             self.grouping_combo,
             self.direction_combo,
             self.language_input,
+            self.kcc_executable_path,
             self.max_size_spin,
             self.refresh_button,
         ):
@@ -503,10 +630,35 @@ class ConversionView(QWidget):
             self._set_busy(False)
 
     def _update_format_controls(self, *_args: object) -> None:
-        is_epub = self.format_combo.currentData() == ExportFormat.EPUB.value
-        self.direction_combo.setEnabled(is_epub and self._export_operation_id is None)
-        self.language_input.setEnabled(is_epub and self._export_operation_id is None)
+        is_epub_or_mobi = self.format_combo.currentData() in {
+            ExportFormat.EPUB.value,
+            ExportFormat.MOBI.value,
+        }
+        is_mobi = self.format_combo.currentData() == ExportFormat.MOBI.value
+        self.direction_combo.setEnabled(is_epub_or_mobi and self._export_operation_id is None)
+        self.language_input.setEnabled(is_epub_or_mobi and self._export_operation_id is None)
+        self.kcc_executable_path.setVisible(is_mobi)
+        self.kcc_label.setVisible(is_mobi)
+        self.choose_kcc_button.setVisible(is_mobi)
+        self.kcc_executable_path.setEnabled(is_mobi and self._export_operation_id is None)
+        self.choose_kcc_button.setEnabled(is_mobi and self._export_operation_id is None)
+
+    def _selected_profile_dimensions(self) -> tuple[int, int]:
+        selected = self._device_profiles.get(self.profile_combo.currentData())
+        if selected is None:
+            return 600, 800
+        return selected.width, selected.height
 
 
 def _valid_language(value: str) -> bool:
     return re.fullmatch(r"[A-Za-z]{2,3}(?:-[A-Za-z0-9]{2,8})*", value.strip()) is not None
+
+
+def _valid_kcc_executable(value: str) -> bool:
+    if not value.strip():
+        return False
+    try:
+        candidate = Path(value).expanduser()
+        return candidate.is_file() and not candidate.is_symlink()
+    except OSError:
+        return False

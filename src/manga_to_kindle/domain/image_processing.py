@@ -142,12 +142,32 @@ class ImageProcessingProfile:
     margin_top: int = 0
     margin_right: int = 0
     margin_bottom: int = 0
+    profile_id: UUID | None = None
+    ppi: int | None = None
+    grayscale_levels: int = 16
+    quality: int = 90
 
     def __post_init__(self) -> None:
-        if self.name != "Kindle Básico 10ª geração":
-            raise DomainValidationError("O perfil de processamento não é compatível.")
-        if (self.width, self.height) != (600, 800):
-            raise DomainValidationError("O perfil inicial precisa medir 600×800 pixels.")
+        if not self.name.strip() or len(self.name) > 128:
+            raise DomainValidationError("O perfil de processamento precisa de um nome válido.")
+        if self.profile_id is not None and not isinstance(self.profile_id, UUID):
+            raise DomainValidationError("O identificador do perfil de processamento é inválido.")
+        if self.ppi is not None and (
+            type(self.ppi) is not int or not 1 <= self.ppi <= 1200
+        ):
+            raise DomainValidationError("A densidade precisa ficar entre 1 e 1.200 ppi.")
+        if type(self.grayscale_levels) is not int or not 2 <= self.grayscale_levels <= 256:
+            raise DomainValidationError("Os níveis de cinza estão fora do intervalo permitido.")
+        if type(self.quality) is not int or not 1 <= self.quality <= 100:
+            raise DomainValidationError("A qualidade precisa ficar entre 1 e 100.")
+        if (
+            type(self.width) is not int
+            or type(self.height) is not int
+            or not 1 <= self.width <= 10_000
+            or not 1 <= self.height <= 10_000
+            or self.width * self.height > 50_000_000
+        ):
+            raise DomainValidationError("As dimensões precisam respeitar os limites do perfil.")
         margins = (self.margin_left, self.margin_top, self.margin_right, self.margin_bottom)
         if any(margin < 0 or margin > 40 for margin in margins):
             raise DomainValidationError("As margens precisam ficar entre 0 e 40 pixels.")

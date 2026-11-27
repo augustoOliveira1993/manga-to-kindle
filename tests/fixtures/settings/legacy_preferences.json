@@ -1,0 +1,5 @@
+{
+  "log_max_bytes": 5242880,
+  "log_backup_count": 3,
+  "theme": "dark"
+}

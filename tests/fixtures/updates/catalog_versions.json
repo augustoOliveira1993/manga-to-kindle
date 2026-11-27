@@ -1,0 +1,42 @@
+{
+  "previous": [
+    {
+      "id": "00000000-0000-0000-0000-000000000001",
+      "source_chapter_id": "contract:chapter-1",
+      "title": "Nome anterior",
+      "number": "1",
+      "source_order": 0
+    },
+    {
+      "id": "00000000-0000-0000-0000-000000000002",
+      "source_chapter_id": "contract:special-a",
+      "title": "Especial A",
+      "number": null,
+      "source_order": 4
+    }
+  ],
+  "incoming": [
+    {
+      "id": "00000000-0000-0000-0000-000000000011",
+      "source_chapter_id": "contract:chapter-1",
+      "title": "Título revisado",
+      "number": "1",
+      "source_order": 0
+    },
+    {
+      "id": "00000000-0000-0000-0000-000000000012",
+      "source_chapter_id": "contract:chapter-2",
+      "title": "Capítulo 2",
+      "number": "2",
+      "source_order": 1
+    },
+    {
+      "id": "00000000-0000-0000-0000-000000000013",
+      "source_chapter_id": "contract:special-a",
+      "title": "Especial A",
+      "number": null,
+      "source_order": 4
+    }
+  ],
+  "expected_new_ids": ["contract:chapter-2"]
+}

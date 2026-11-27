@@ -1,0 +1,3851 @@
+{
+  "schema_version": "1.0",
+  "evidence_kind": "PyInstaller COLLECT TOC and installed distribution metadata; origin/license candidates, not legal approval",
+  "build_toc_name": "COLLECT-00.toc",
+  "file_count": 222,
+  "mapped_file_count": 222,
+  "unresolved_file_count": 0,
+  "provenance_status": "mapped",
+  "license_review_status": "pending",
+  "components": [
+    {
+      "name": "Manga to Kindle application",
+      "version": null,
+      "origin_status": "application-source",
+      "source_root_kind": "project-source",
+      "license_metadata_candidate": null,
+      "license_file_path_candidates": [],
+      "project_url_candidate": null,
+      "bundle_paths": [
+        "_internal/manga_to_kindle/infrastructure/persistence/migrations/__init__.py",
+        "_internal/manga_to_kindle/infrastructure/persistence/migrations/env.py",
+        "_internal/manga_to_kindle/infrastructure/persistence/migrations/versions/0001_initial_schema.py",
+        "_internal/manga_to_kindle/infrastructure/persistence/migrations/versions/0002_catalog_snapshot.py",
+        "_internal/manga_to_kindle/infrastructure/persistence/migrations/versions/0003_download_queue.py",
+        "_internal/manga_to_kindle/infrastructure/persistence/migrations/versions/0004_image_import.py",
+        "_internal/manga_to_kindle/infrastructure/persistence/migrations/versions/0005_export_artifacts.py",
+        "_internal/manga_to_kindle/infrastructure/persistence/migrations/versions/0006_library.py",
+        "_internal/manga_to_kindle/infrastructure/persistence/migrations/versions/0007_transfers.py",
+        "_internal/manga_to_kindle/infrastructure/persistence/migrations/versions/0008_settings.py",
+        "_internal/manga_to_kindle/infrastructure/persistence/migrations/versions/0009_profile_dimensions.py",
+        "_internal/manga_to_kindle/infrastructure/persistence/migrations/versions/0010_catalog_updates.py",
+        "_internal/manga_to_kindle/infrastructure/persistence/migrations/versions/0011_mobi_export_artifacts.py",
+        "_internal/manga_to_kindle/infrastructure/persistence/migrations/versions/__init__.py"
+      ]
+    },
+    {
+      "name": "MarkupSafe",
+      "version": "3.0.4",
+      "origin_status": "distribution-metadata-match",
+      "source_root_kind": "python-package",
+      "license_metadata_candidate": {
+        "field": "License-Expression",
+        "value": "BSD-3-Clause"
+      },
+      "license_file_path_candidates": [
+        "markupsafe-3.0.4.dist-info/licenses/LICENSE.txt"
+      ],
+      "project_url_candidate": "https://pypi.org/project/MarkupSafe/3.0.4/",
+      "bundle_paths": [
+        "_internal/markupsafe-3.0.4.dist-info/INSTALLER",
+        "_internal/markupsafe-3.0.4.dist-info/METADATA",
+        "_internal/markupsafe-3.0.4.dist-info/RECORD",
+        "_internal/markupsafe-3.0.4.dist-info/REQUESTED",
+        "_internal/markupsafe-3.0.4.dist-info/WHEEL",
+        "_internal/markupsafe-3.0.4.dist-info/licenses/LICENSE.txt",
+        "_internal/markupsafe-3.0.4.dist-info/top_level.txt",
+        "_internal/markupsafe/_speedups.cp312-win_amd64.pyd"
+      ]
+    },
+    {
+      "name": "pillow",
+      "version": "13.0.0",
+      "origin_status": "distribution-metadata-match",
+      "source_root_kind": "python-package",
+      "license_metadata_candidate": {
+        "field": "License-Expression",
+        "value": "MIT-CMU"
+      },
+      "license_file_path_candidates": [
+        "pillow-13.0.0.dist-info/licenses/LICENSE"
+      ],
+      "project_url_candidate": "https://pypi.org/project/pillow/13.0.0/",
+      "bundle_paths": [
+        "_internal/PIL/_avif.cp312-win_amd64.pyd",
+        "_internal/PIL/_imaging.cp312-win_amd64.pyd",
+        "_internal/PIL/_imagingcms.cp312-win_amd64.pyd",
+        "_internal/PIL/_imagingft.cp312-win_amd64.pyd",
+        "_internal/PIL/_imagingtk.cp312-win_amd64.pyd",
+        "_internal/PIL/_webp.cp312-win_amd64.pyd"
+      ]
+    },
+    {
+      "name": "pydantic",
+      "version": "2.14.4",
+      "origin_status": "distribution-metadata-match",
+      "source_root_kind": "python-package",
+      "license_metadata_candidate": {
+        "field": "License-Expression",
+        "value": "MIT"
+      },
+      "license_file_path_candidates": [
+        "pydantic-2.14.4.dist-info/licenses/LICENSE"
+      ],
+      "project_url_candidate": "https://pypi.org/project/pydantic/2.14.4/",
+      "bundle_paths": [
+        "_internal/pydantic-2.14.4.dist-info/INSTALLER",
+        "_internal/pydantic-2.14.4.dist-info/METADATA",
+        "_internal/pydantic-2.14.4.dist-info/RECORD",
+        "_internal/pydantic-2.14.4.dist-info/REQUESTED",
+        "_internal/pydantic-2.14.4.dist-info/WHEEL",
+        "_internal/pydantic-2.14.4.dist-info/licenses/LICENSE"
+      ]
+    },
+    {
+      "name": "pydantic_core",
+      "version": "2.50.5",
+      "origin_status": "distribution-metadata-match",
+      "source_root_kind": "python-package",
+      "license_metadata_candidate": {
+        "field": "License-Expression",
+        "value": "MIT"
+      },
+      "license_file_path_candidates": [
+        "pydantic_core-2.50.5.dist-info/licenses/LICENSE"
+      ],
+      "project_url_candidate": "https://pypi.org/project/pydantic_core/2.50.5/",
+      "bundle_paths": [
+        "_internal/pydantic_core/_pydantic_core.cp312-win_amd64.pyd"
+      ]
+    },
+    {
+      "name": "pyinstaller",
+      "version": "6.22.3",
+      "origin_status": "pyinstaller-build-output",
+      "source_root_kind": "python-package",
+      "license_metadata_candidate": {
+        "field": "License",
+        "value": "GPLv2-or-later with a special exception which allows to use PyInstaller to build and distribute non-free programs (including commercial ones)"
+      },
+      "license_file_path_candidates": [
+        "pyinstaller-6.22.3.dist-info/licenses/COPYING.txt"
+      ],
+      "project_url_candidate": "https://pypi.org/project/pyinstaller/6.22.3/",
+      "bundle_paths": [
+        "MangaToKindle.exe",
+        "_internal/base_library.zip"
+      ]
+    },
+    {
+      "name": "PySide6_Addons",
+      "version": "6.12.0",
+      "origin_status": "distribution-metadata-match",
+      "source_root_kind": "python-package",
+      "license_metadata_candidate": {
+        "field": "License",
+        "value": "LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only"
+      },
+      "license_file_path_candidates": [
+        "pyside6_addons-6.12.0.dist-info/licenses/LicenseRef-Qt-Commercial.txt"
+      ],
+      "project_url_candidate": "https://pypi.org/project/PySide6_Addons/6.12.0/",
+      "bundle_paths": [
+        "_internal/PySide6/Qt6VirtualKeyboard.dll"
+      ]
+    },
+    {
+      "name": "PySide6_Essentials",
+      "version": "6.12.0",
+      "origin_status": "distribution-metadata-match",
+      "source_root_kind": "python-package",
+      "license_metadata_candidate": {
+        "field": "License",
+        "value": "LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only"
+      },
+      "license_file_path_candidates": [
+        "pyside6_essentials-6.12.0.dist-info/licenses/LicenseRef-Qt-Commercial.txt"
+      ],
+      "project_url_candidate": "https://pypi.org/project/PySide6_Essentials/6.12.0/",
+      "bundle_paths": [
+        "_internal/PySide6/MSVCP140.dll",
+        "_internal/PySide6/MSVCP140_1.dll",
+        "_internal/PySide6/MSVCP140_2.dll",
+        "_internal/PySide6/Qt6Core.dll",
+        "_internal/PySide6/Qt6Gui.dll",
+        "_internal/PySide6/Qt6Network.dll",
+        "_internal/PySide6/Qt6OpenGL.dll",
+        "_internal/PySide6/Qt6Qml.dll",
+        "_internal/PySide6/Qt6QmlMeta.dll",
+        "_internal/PySide6/Qt6QmlModels.dll",
+        "_internal/PySide6/Qt6QmlWorkerScript.dll",
+        "_internal/PySide6/Qt6Quick.dll",
+        "_internal/PySide6/Qt6Svg.dll",
+        "_internal/PySide6/Qt6Widgets.dll",
+        "_internal/PySide6/QtCore.pyd",
+        "_internal/PySide6/QtGui.pyd",
+        "_internal/PySide6/QtNetwork.pyd",
+        "_internal/PySide6/QtWidgets.pyd",
+        "_internal/PySide6/VCRUNTIME140.dll",
+        "_internal/PySide6/VCRUNTIME140_1.dll",
+        "_internal/PySide6/opengl32sw.dll",
+        "_internal/PySide6/plugins/generic/qtuiotouchplugin.dll",
+        "_internal/PySide6/plugins/iconengines/qsvgicon.dll",
+        "_internal/PySide6/plugins/imageformats/qgif.dll",
+        "_internal/PySide6/plugins/imageformats/qicns.dll",
+        "_internal/PySide6/plugins/imageformats/qico.dll",
+        "_internal/PySide6/plugins/imageformats/qjpeg.dll",
+        "_internal/PySide6/plugins/imageformats/qpdf.dll",
+        "_internal/PySide6/plugins/imageformats/qsvg.dll",
+        "_internal/PySide6/plugins/imageformats/qtga.dll",
+        "_internal/PySide6/plugins/imageformats/qtiff.dll",
+        "_internal/PySide6/plugins/imageformats/qwbmp.dll",
+        "_internal/PySide6/plugins/imageformats/qwebp.dll",
+        "_internal/PySide6/plugins/networkinformation/qnetworklistmanager.dll",
+        "_internal/PySide6/plugins/platforminputcontexts/qtvirtualkeyboardplugin.dll",
+        "_internal/PySide6/plugins/platforms/qdirect2d.dll",
+        "_internal/PySide6/plugins/platforms/qminimal.dll",
+        "_internal/PySide6/plugins/platforms/qoffscreen.dll",
+        "_internal/PySide6/plugins/platforms/qwindows.dll",
+        "_internal/PySide6/plugins/styles/qmodernwindowsstyle.dll",
+        "_internal/PySide6/plugins/tls/qcertonlybackend.dll",
+        "_internal/PySide6/plugins/tls/qopensslbackend.dll",
+        "_internal/PySide6/plugins/tls/qschannelbackend.dll",
+        "_internal/PySide6/pyside6.abi3.dll",
+        "_internal/PySide6/translations/qt_ar.qm",
+        "_internal/PySide6/translations/qt_bg.qm",
+        "_internal/PySide6/translations/qt_ca.qm",
+        "_internal/PySide6/translations/qt_cs.qm",
+        "_internal/PySide6/translations/qt_da.qm",
+        "_internal/PySide6/translations/qt_de.qm",
+        "_internal/PySide6/translations/qt_en.qm",
+        "_internal/PySide6/translations/qt_es.qm",
+        "_internal/PySide6/translations/qt_fa.qm",
+        "_internal/PySide6/translations/qt_fi.qm",
+        "_internal/PySide6/translations/qt_fr.qm",
+        "_internal/PySide6/translations/qt_gd.qm",
+        "_internal/PySide6/translations/qt_gl.qm",
+        "_internal/PySide6/translations/qt_he.qm",
+        "_internal/PySide6/translations/qt_help_ar.qm",
+        "_internal/PySide6/translations/qt_help_bg.qm",
+        "_internal/PySide6/translations/qt_help_ca.qm",
+        "_internal/PySide6/translations/qt_help_cs.qm",
+        "_internal/PySide6/translations/qt_help_da.qm",
+        "_internal/PySide6/translations/qt_help_de.qm",
+        "_internal/PySide6/translations/qt_help_en.qm",
+        "_internal/PySide6/translations/qt_help_es.qm",
+        "_internal/PySide6/translations/qt_help_fr.qm",
+        "_internal/PySide6/translations/qt_help_gl.qm",
+        "_internal/PySide6/translations/qt_help_hr.qm",
+        "_internal/PySide6/translations/qt_help_hu.qm",
+        "_internal/PySide6/translations/qt_help_it.qm",
+        "_internal/PySide6/translations/qt_help_ja.qm",
+        "_internal/PySide6/translations/qt_help_ka.qm",
+        "_internal/PySide6/translations/qt_help_kk.qm",
+        "_internal/PySide6/translations/qt_help_ko.qm",
+        "_internal/PySide6/translations/qt_help_nl.qm",
+        "_internal/PySide6/translations/qt_help_nn.qm",
+        "_internal/PySide6/translations/qt_help_pl.qm",
+        "_internal/PySide6/translations/qt_help_pt_BR.qm",
+        "_internal/PySide6/translations/qt_help_ru.qm",
+        "_internal/PySide6/translations/qt_help_sk.qm",
+        "_internal/PySide6/translations/qt_help_sl.qm",
+        "_internal/PySide6/translations/qt_help_sv.qm",
+        "_internal/PySide6/translations/qt_help_tr.qm",
+        "_internal/PySide6/translations/qt_help_uk.qm",
+        "_internal/PySide6/translations/qt_help_zh_CN.qm",
+        "_internal/PySide6/translations/qt_help_zh_TW.qm",
+        "_internal/PySide6/translations/qt_hr.qm",
+        "_internal/PySide6/translations/qt_hu.qm",
+        "_internal/PySide6/translations/qt_it.qm",
+        "_internal/PySide6/translations/qt_ja.qm",
+        "_internal/PySide6/translations/qt_ka.qm",
+        "_internal/PySide6/translations/qt_kk.qm",
+        "_internal/PySide6/translations/qt_ko.qm",
+        "_internal/PySide6/translations/qt_lg.qm",
+        "_internal/PySide6/translations/qt_lt.qm",
+        "_internal/PySide6/translations/qt_lv.qm",
+        "_internal/PySide6/translations/qt_nl.qm",
+        "_internal/PySide6/translations/qt_nn.qm",
+        "_internal/PySide6/translations/qt_pl.qm",
+        "_internal/PySide6/translations/qt_pt_BR.qm",
+        "_internal/PySide6/translations/qt_pt_PT.qm",
+        "_internal/PySide6/translations/qt_ru.qm",
+        "_internal/PySide6/translations/qt_sk.qm",
+        "_internal/PySide6/translations/qt_sl.qm",
+        "_internal/PySide6/translations/qt_sv.qm",
+        "_internal/PySide6/translations/qt_tr.qm",
+        "_internal/PySide6/translations/qt_uk.qm",
+        "_internal/PySide6/translations/qt_zh_CN.qm",
+        "_internal/PySide6/translations/qt_zh_TW.qm",
+        "_internal/PySide6/translations/qtbase_ar.qm",
+        "_internal/PySide6/translations/qtbase_bg.qm",
+        "_internal/PySide6/translations/qtbase_ca.qm",
+        "_internal/PySide6/translations/qtbase_cs.qm",
+        "_internal/PySide6/translations/qtbase_da.qm",
+        "_internal/PySide6/translations/qtbase_de.qm",
+        "_internal/PySide6/translations/qtbase_en.qm",
+        "_internal/PySide6/translations/qtbase_es.qm",
+        "_internal/PySide6/translations/qtbase_fa.qm",
+        "_internal/PySide6/translations/qtbase_fi.qm",
+        "_internal/PySide6/translations/qtbase_fr.qm",
+        "_internal/PySide6/translations/qtbase_gd.qm",
+        "_internal/PySide6/translations/qtbase_he.qm",
+        "_internal/PySide6/translations/qtbase_hr.qm",
+        "_internal/PySide6/translations/qtbase_hu.qm",
+        "_internal/PySide6/translations/qtbase_it.qm",
+        "_internal/PySide6/translations/qtbase_ja.qm",
+        "_internal/PySide6/translations/qtbase_ka.qm",
+        "_internal/PySide6/translations/qtbase_kk.qm",
+        "_internal/PySide6/translations/qtbase_ko.qm",
+        "_internal/PySide6/translations/qtbase_lg.qm",
+        "_internal/PySide6/translations/qtbase_lv.qm",
+        "_internal/PySide6/translations/qtbase_nl.qm",
+        "_internal/PySide6/translations/qtbase_nn.qm",
+        "_internal/PySide6/translations/qtbase_pl.qm",
+        "_internal/PySide6/translations/qtbase_pt_BR.qm",
+        "_internal/PySide6/translations/qtbase_ru.qm",
+        "_internal/PySide6/translations/qtbase_sk.qm",
+        "_internal/PySide6/translations/qtbase_sv.qm",
+        "_internal/PySide6/translations/qtbase_tr.qm",
+        "_internal/PySide6/translations/qtbase_uk.qm",
+        "_internal/PySide6/translations/qtbase_zh_CN.qm",
+        "_internal/PySide6/translations/qtbase_zh_TW.qm"
+      ]
+    },
+    {
+      "name": "PySide6_Pdf",
+      "version": "6.12.0.140",
+      "origin_status": "distribution-metadata-match",
+      "source_root_kind": "python-package",
+      "license_metadata_candidate": {
+        "field": "License",
+        "value": "LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only"
+      },
+      "license_file_path_candidates": [
+        "pyside6_pdf-6.12.0.140.dist-info/licenses/LicenseRef-Qt-Commercial.txt"
+      ],
+      "project_url_candidate": "https://pypi.org/project/PySide6_Pdf/6.12.0.140/",
+      "bundle_paths": [
+        "_internal/PySide6/Qt6Pdf.dll"
+      ]
+    },
+    {
+      "name": "Python runtime",
+      "version": "3.12.16",
+      "origin_status": "python-runtime-path",
+      "source_root_kind": "python-runtime",
+      "license_metadata_candidate": null,
+      "license_file_path_candidates": [],
+      "project_url_candidate": null,
+      "bundle_paths": [
+        "_internal/VCRUNTIME140.dll",
+        "_internal/VCRUNTIME140_1.dll",
+        "_internal/_asyncio.pyd",
+        "_internal/_bz2.pyd",
+        "_internal/_ctypes.pyd",
+        "_internal/_decimal.pyd",
+        "_internal/_elementtree.pyd",
+        "_internal/_hashlib.pyd",
+        "_internal/_lzma.pyd",
+        "_internal/_multiprocessing.pyd",
+        "_internal/_overlapped.pyd",
+        "_internal/_queue.pyd",
+        "_internal/_socket.pyd",
+        "_internal/_sqlite3.pyd",
+        "_internal/_ssl.pyd",
+        "_internal/_uuid.pyd",
+        "_internal/_wmi.pyd",
+        "_internal/_zoneinfo.pyd",
+        "_internal/libcrypto-3-x64.dll",
+        "_internal/libffi-8.dll",
+        "_internal/libssl-3-x64.dll",
+        "_internal/pyexpat.pyd",
+        "_internal/python3.dll",
+        "_internal/python312.dll",
+        "_internal/select.pyd",
+        "_internal/sqlite3.dll",
+        "_internal/unicodedata.pyd"
+      ]
+    },
+    {
+      "name": "shiboken6",
+      "version": "6.12.0",
+      "origin_status": "distribution-metadata-match",
+      "source_root_kind": "python-package",
+      "license_metadata_candidate": {
+        "field": "License",
+        "value": "LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only"
+      },
+      "license_file_path_candidates": [
+        "shiboken6-6.12.0.dist-info/licenses/LicenseRef-Qt-Commercial.txt"
+      ],
+      "project_url_candidate": "https://pypi.org/project/shiboken6/6.12.0/",
+      "bundle_paths": [
+        "_internal/shiboken6/MSVCP140.dll",
+        "_internal/shiboken6/Shiboken.pyd",
+        "_internal/shiboken6/VCRUNTIME140.dll",
+        "_internal/shiboken6/VCRUNTIME140_1.dll",
+        "_internal/shiboken6/shiboken6.abi3.dll"
+      ]
+    },
+    {
+      "name": "SQLAlchemy",
+      "version": "2.1.9",
+      "origin_status": "distribution-metadata-match",
+      "source_root_kind": "python-package",
+      "license_metadata_candidate": {
+        "field": "License-Expression",
+        "value": "MIT"
+      },
+      "license_file_path_candidates": [
+        "sqlalchemy-2.1.9.dist-info/licenses/LICENSE"
+      ],
+      "project_url_candidate": "https://pypi.org/project/SQLAlchemy/2.1.9/",
+      "bundle_paths": [
+        "_internal/sqlalchemy/engine/_processors_cy.cp312-win_amd64.pyd",
+        "_internal/sqlalchemy/engine/_result_cy.cp312-win_amd64.pyd",
+        "_internal/sqlalchemy/engine/_row_cy.cp312-win_amd64.pyd",
+        "_internal/sqlalchemy/engine/_util_cy.cp312-win_amd64.pyd",
+        "_internal/sqlalchemy/sql/_cache_key_cy.cp312-win_amd64.pyd",
+        "_internal/sqlalchemy/sql/_util_cy.cp312-win_amd64.pyd",
+        "_internal/sqlalchemy/util/_collections_cy.cp312-win_amd64.pyd",
+        "_internal/sqlalchemy/util/_immutabledict_cy.cp312-win_amd64.pyd"
+      ]
+    }
+  ],
+  "files": [
+    {
+      "bundle_path": "MangaToKindle.exe",
+      "pyinstaller_kind": "EXECUTABLE",
+      "source_basename": "MangaToKindle.exe",
+      "origin_status": "pyinstaller-build-output",
+      "source_root_kind": "python-package",
+      "component_name": "pyinstaller",
+      "version": "6.22.3",
+      "project_url_candidate": "https://pypi.org/project/pyinstaller/6.22.3/",
+      "license_metadata_candidate": {
+        "field": "License",
+        "value": "GPLv2-or-later with a special exception which allows to use PyInstaller to build and distribute non-free programs (including commercial ones)"
+      },
+      "license_file_path_candidates": [
+        "pyinstaller-6.22.3.dist-info/licenses/COPYING.txt"
+      ]
+    },
+    {
+      "bundle_path": "_internal/PIL/_avif.cp312-win_amd64.pyd",
+      "pyinstaller_kind": "EXTENSION",
+      "source_basename": "_avif.cp312-win_amd64.pyd",
+      "origin_status": "distribution-metadata-match",
+      "source_root_kind": "python-package",
+      "component_name": "pillow",
+      "version": "13.0.0",
+      "project_url_candidate": "https://pypi.org/project/pillow/13.0.0/",
+      "license_metadata_candidate": {
+        "field": "License-Expression",
+        "value": "MIT-CMU"
+      },
+      "license_file_path_candidates": [
+        "pillow-13.0.0.dist-info/licenses/LICENSE"
+      ]
+    },
+    {
+      "bundle_path": "_internal/PIL/_imaging.cp312-win_amd64.pyd",
+      "pyinstaller_kind": "EXTENSION",
+      "source_basename": "_imaging.cp312-win_amd64.pyd",
+      "origin_status": "distribution-metadata-match",
+      "source_root_kind": "python-package",
+      "component_name": "pillow",
+      "version": "13.0.0",
+      "project_url_candidate": "https://pypi.org/project/pillow/13.0.0/",
+      "license_metadata_candidate": {
+        "field": "License-Expression",
+        "value": "MIT-CMU"
+      },
+      "license_file_path_candidates": [
+        "pillow-13.0.0.dist-info/licenses/LICENSE"
+      ]
+    },
+    {
+      "bundle_path": "_internal/PIL/_imagingcms.cp312-win_amd64.pyd",
+      "pyinstaller_kind": "EXTENSION",
+      "source_basename": "_imagingcms.cp312-win_amd64.pyd",
+      "origin_status": "distribution-metadata-match",
+      "source_root_kind": "python-package",
+      "component_name": "pillow",
+      "version": "13.0.0",
+      "project_url_candidate": "https://pypi.org/project/pillow/13.0.0/",
+      "license_metadata_candidate": {
+        "field": "License-Expression",
+        "value": "MIT-CMU"
+      },
+      "license_file_path_candidates": [
+        "pillow-13.0.0.dist-info/licenses/LICENSE"
+      ]
+    },
+    {
+      "bundle_path": "_internal/PIL/_imagingft.cp312-win_amd64.pyd",
+      "pyinstaller_kind": "EXTENSION",
+      "source_basename": "_imagingft.cp312-win_amd64.pyd",
+      "origin_status": "distribution-metadata-match",
+      "source_root_kind": "python-package",
+      "component_name": "pillow",
+      "version": "13.0.0",
+      "project_url_candidate": "https://pypi.org/project/pillow/13.0.0/",
+      "license_metadata_candidate": {
+        "field": "License-Expression",
+        "value": "MIT-CMU"
+      },
+      "license_file_path_candidates": [
+        "pillow-13.0.0.dist-info/licenses/LICENSE"
+      ]
+    },
+    {
+      "bundle_path": "_internal/PIL/_imagingtk.cp312-win_amd64.pyd",
+      "pyinstaller_kind": "EXTENSION",
+      "source_basename": "_imagingtk.cp312-win_amd64.pyd",
+      "origin_status": "distribution-metadata-match",
+      "source_root_kind": "python-package",
+      "component_name": "pillow",
+      "version": "13.0.0",
+      "project_url_candidate": "https://pypi.org/project/pillow/13.0.0/",
+      "license_metadata_candidate": {
+        "field": "License-Expression",
+        "value": "MIT-CMU"
+      },
+      "license_file_path_candidates": [
+        "pillow-13.0.0.dist-info/licenses/LICENSE"
+      ]
+    },
+    {
+      "bundle_path": "_internal/PIL/_webp.cp312-win_amd64.pyd",
+      "pyinstaller_kind": "EXTENSION",
+      "source_basename": "_webp.cp312-win_amd64.pyd",
+      "origin_status": "distribution-metadata-match",
+      "source_root_kind": "python-package",
+      "component_name": "pillow",
+      "version": "13.0.0",
+      "project_url_candidate": "https://pypi.org/project/pillow/13.0.0/",
+      "license_metadata_candidate": {
+        "field": "License-Expression",
+        "value": "MIT-CMU"
+      },
+      "license_file_path_candidates": [
+        "pillow-13.0.0.dist-info/licenses/LICENSE"
+      ]
+    },
+    {
+      "bundle_path": "_internal/PySide6/MSVCP140.dll",
+      "pyinstaller_kind": "BINARY",
+      "source_basename": "msvcp140.dll",
+      "origin_status": "distribution-metadata-match",
+      "source_root_kind": "python-package",
+      "component_name": "PySide6_Essentials",
+      "version": "6.12.0",
+      "project_url_candidate": "https://pypi.org/project/PySide6_Essentials/6.12.0/",
+      "license_metadata_candidate": {
+        "field": "License",
+        "value": "LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only"
+      },
+      "license_file_path_candidates": [
+        "pyside6_essentials-6.12.0.dist-info/licenses/LicenseRef-Qt-Commercial.txt"
+      ]
+    },
+    {
+      "bundle_path": "_internal/PySide6/MSVCP140_1.dll",
+      "pyinstaller_kind": "BINARY",
+      "source_basename": "msvcp140_1.dll",
+      "origin_status": "distribution-metadata-match",
+      "source_root_kind": "python-package",
+      "component_name": "PySide6_Essentials",
+      "version": "6.12.0",
+      "project_url_candidate": "https://pypi.org/project/PySide6_Essentials/6.12.0/",
+      "license_metadata_candidate": {
+        "field": "License",
+        "value": "LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only"
+      },
+      "license_file_path_candidates": [
+        "pyside6_essentials-6.12.0.dist-info/licenses/LicenseRef-Qt-Commercial.txt"
+      ]
+    },
+    {
+      "bundle_path": "_internal/PySide6/MSVCP140_2.dll",
+      "pyinstaller_kind": "BINARY",
+      "source_basename": "msvcp140_2.dll",
+      "origin_status": "distribution-metadata-match",
+      "source_root_kind": "python-package",
+      "component_name": "PySide6_Essentials",
+      "version": "6.12.0",
+      "project_url_candidate": "https://pypi.org/project/PySide6_Essentials/6.12.0/",
+      "license_metadata_candidate": {
+        "field": "License",
+        "value": "LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only"
+      },
+      "license_file_path_candidates": [
+        "pyside6_essentials-6.12.0.dist-info/licenses/LicenseRef-Qt-Commercial.txt"
+      ]
+    },
+    {
+      "bundle_path": "_internal/PySide6/Qt6Core.dll",
+      "pyinstaller_kind": "BINARY",
+      "source_basename": "Qt6Core.dll",
+      "origin_status": "distribution-metadata-match",
+      "source_root_kind": "python-package",
+      "component_name": "PySide6_Essentials",
+      "version": "6.12.0",
+      "project_url_candidate": "https://pypi.org/project/PySide6_Essentials/6.12.0/",
+      "license_metadata_candidate": {
+        "field": "License",
+        "value": "LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only"
+      },
+      "license_file_path_candidates": [
+        "pyside6_essentials-6.12.0.dist-info/licenses/LicenseRef-Qt-Commercial.txt"
+      ]
+    },
+    {
+      "bundle_path": "_internal/PySide6/Qt6Gui.dll",
+      "pyinstaller_kind": "BINARY",
+      "source_basename": "Qt6Gui.dll",
+      "origin_status": "distribution-metadata-match",
+      "source_root_kind": "python-package",
+      "component_name": "PySide6_Essentials",
+      "version": "6.12.0",
+      "project_url_candidate": "https://pypi.org/project/PySide6_Essentials/6.12.0/",
+      "license_metadata_candidate": {
+        "field": "License",
+        "value": "LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only"
+      },
+      "license_file_path_candidates": [
+        "pyside6_essentials-6.12.0.dist-info/licenses/LicenseRef-Qt-Commercial.txt"
+      ]
+    },
+    {
+      "bundle_path": "_internal/PySide6/Qt6Network.dll",
+      "pyinstaller_kind": "BINARY",
+      "source_basename": "Qt6Network.dll",
+      "origin_status": "distribution-metadata-match",
+      "source_root_kind": "python-package",
+      "component_name": "PySide6_Essentials",
+      "version": "6.12.0",
+      "project_url_candidate": "https://pypi.org/project/PySide6_Essentials/6.12.0/",
+      "license_metadata_candidate": {
+        "field": "License",
+        "value": "LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only"
+      },
+      "license_file_path_candidates": [
+        "pyside6_essentials-6.12.0.dist-info/licenses/LicenseRef-Qt-Commercial.txt"
+      ]
+    },
+    {
+      "bundle_path": "_internal/PySide6/Qt6OpenGL.dll",
+      "pyinstaller_kind": "BINARY",
+      "source_basename": "Qt6OpenGL.dll",
+      "origin_status": "distribution-metadata-match",
+      "source_root_kind": "python-package",
+      "component_name": "PySide6_Essentials",
+      "version": "6.12.0",
+      "project_url_candidate": "https://pypi.org/project/PySide6_Essentials/6.12.0/",
+      "license_metadata_candidate": {
+        "field": "License",
+        "value": "LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only"
+      },
+      "license_file_path_candidates": [
+        "pyside6_essentials-6.12.0.dist-info/licenses/LicenseRef-Qt-Commercial.txt"
+      ]
+    },
+    {
+      "bundle_path": "_internal/PySide6/Qt6Pdf.dll",
+      "pyinstaller_kind": "BINARY",
+      "source_basename": "Qt6Pdf.dll",
+      "origin_status": "distribution-metadata-match",
+      "source_root_kind": "python-package",
+      "component_name": "PySide6_Pdf",
+      "version": "6.12.0.140",
+      "project_url_candidate": "https://pypi.org/project/PySide6_Pdf/6.12.0.140/",
+      "license_metadata_candidate": {
+        "field": "License",
+        "value": "LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only"
+      },
+      "license_file_path_candidates": [
+        "pyside6_pdf-6.12.0.140.dist-info/licenses/LicenseRef-Qt-Commercial.txt"
+      ]
+    },
+    {
+      "bundle_path": "_internal/PySide6/Qt6Qml.dll",
+      "pyinstaller_kind": "BINARY",
+      "source_basename": "Qt6Qml.dll",
+      "origin_status": "distribution-metadata-match",
+      "source_root_kind": "python-package",
+      "component_name": "PySide6_Essentials",
+      "version": "6.12.0",
+      "project_url_candidate": "https://pypi.org/project/PySide6_Essentials/6.12.0/",
+      "license_metadata_candidate": {
+        "field": "License",
+        "value": "LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only"
+      },
+      "license_file_path_candidates": [
+        "pyside6_essentials-6.12.0.dist-info/licenses/LicenseRef-Qt-Commercial.txt"
+      ]
+    },
+    {
+      "bundle_path": "_internal/PySide6/Qt6QmlMeta.dll",
+      "pyinstaller_kind": "BINARY",
+      "source_basename": "Qt6QmlMeta.dll",
+      "origin_status": "distribution-metadata-match",
+      "source_root_kind": "python-package",
+      "component_name": "PySide6_Essentials",
+      "version": "6.12.0",
+      "project_url_candidate": "https://pypi.org/project/PySide6_Essentials/6.12.0/",
+      "license_metadata_candidate": {
+        "field": "License",
+        "value": "LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only"
+      },
+      "license_file_path_candidates": [
+        "pyside6_essentials-6.12.0.dist-info/licenses/LicenseRef-Qt-Commercial.txt"
+      ]
+    },
+    {
+      "bundle_path": "_internal/PySide6/Qt6QmlModels.dll",
+      "pyinstaller_kind": "BINARY",
+      "source_basename": "Qt6QmlModels.dll",
+      "origin_status": "distribution-metadata-match",
+      "source_root_kind": "python-package",
+      "component_name": "PySide6_Essentials",
+      "version": "6.12.0",
+      "project_url_candidate": "https://pypi.org/project/PySide6_Essentials/6.12.0/",
+      "license_metadata_candidate": {
+        "field": "License",
+        "value": "LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only"
+      },
+      "license_file_path_candidates": [
+        "pyside6_essentials-6.12.0.dist-info/licenses/LicenseRef-Qt-Commercial.txt"
+      ]
+    },
+    {
+      "bundle_path": "_internal/PySide6/Qt6QmlWorkerScript.dll",
+      "pyinstaller_kind": "BINARY",
+      "source_basename": "Qt6QmlWorkerScript.dll",
+      "origin_status": "distribution-metadata-match",
+      "source_root_kind": "python-package",
+      "component_name": "PySide6_Essentials",
+      "version": "6.12.0",
+      "project_url_candidate": "https://pypi.org/project/PySide6_Essentials/6.12.0/",
+      "license_metadata_candidate": {
+        "field": "License",
+        "value": "LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only"
+      },
+      "license_file_path_candidates": [
+        "pyside6_essentials-6.12.0.dist-info/licenses/LicenseRef-Qt-Commercial.txt"
+      ]
+    },
+    {
+      "bundle_path": "_internal/PySide6/Qt6Quick.dll",
+      "pyinstaller_kind": "BINARY",
+      "source_basename": "Qt6Quick.dll",
+      "origin_status": "distribution-metadata-match",
+      "source_root_kind": "python-package",
+      "component_name": "PySide6_Essentials",
+      "version": "6.12.0",
+      "project_url_candidate": "https://pypi.org/project/PySide6_Essentials/6.12.0/",
+      "license_metadata_candidate": {
+        "field": "License",
+        "value": "LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only"
+      },
+      "license_file_path_candidates": [
+        "pyside6_essentials-6.12.0.dist-info/licenses/LicenseRef-Qt-Commercial.txt"
+      ]
+    },
+    {
+      "bundle_path": "_internal/PySide6/Qt6Svg.dll",
+      "pyinstaller_kind": "BINARY",
+      "source_basename": "Qt6Svg.dll",
+      "origin_status": "distribution-metadata-match",
+      "source_root_kind": "python-package",
+      "component_name": "PySide6_Essentials",
+      "version": "6.12.0",
+      "project_url_candidate": "https://pypi.org/project/PySide6_Essentials/6.12.0/",
+      "license_metadata_candidate": {
+        "field": "License",
+        "value": "LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only"
+      },
+      "license_file_path_candidates": [
+        "pyside6_essentials-6.12.0.dist-info/licenses/LicenseRef-Qt-Commercial.txt"
+      ]
+    },
+    {
+      "bundle_path": "_internal/PySide6/Qt6VirtualKeyboard.dll",
+      "pyinstaller_kind": "BINARY",
+      "source_basename": "Qt6VirtualKeyboard.dll",
+      "origin_status": "distribution-metadata-match",
+      "source_root_kind": "python-package",
+      "component_name": "PySide6_Addons",
+      "version": "6.12.0",
+      "project_url_candidate": "https://pypi.org/project/PySide6_Addons/6.12.0/",
+      "license_metadata_candidate": {
+        "field": "License",
+        "value": "LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only"
+      },
+      "license_file_path_candidates": [
+        "pyside6_addons-6.12.0.dist-info/licenses/LicenseRef-Qt-Commercial.txt"
+      ]
+    },
+    {
+      "bundle_path": "_internal/PySide6/Qt6Widgets.dll",
+      "pyinstaller_kind": "BINARY",
+      "source_basename": "Qt6Widgets.dll",
+      "origin_status": "distribution-metadata-match",
+      "source_root_kind": "python-package",
+      "component_name": "PySide6_Essentials",
+      "version": "6.12.0",
+      "project_url_candidate": "https://pypi.org/project/PySide6_Essentials/6.12.0/",
+      "license_metadata_candidate": {
+        "field": "License",
+        "value": "LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only"
+      },
+      "license_file_path_candidates": [
+        "pyside6_essentials-6.12.0.dist-info/licenses/LicenseRef-Qt-Commercial.txt"
+      ]
+    },
+    {
+      "bundle_path": "_internal/PySide6/QtCore.pyd",
+      "pyinstaller_kind": "EXTENSION",
+      "source_basename": "QtCore.pyd",
+      "origin_status": "distribution-metadata-match",
+      "source_root_kind": "python-package",
+      "component_name": "PySide6_Essentials",
+      "version": "6.12.0",
+      "project_url_candidate": "https://pypi.org/project/PySide6_Essentials/6.12.0/",
+      "license_metadata_candidate": {
+        "field": "License",
+        "value": "LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only"
+      },
+      "license_file_path_candidates": [
+        "pyside6_essentials-6.12.0.dist-info/licenses/LicenseRef-Qt-Commercial.txt"
+      ]
+    },
+    {
+      "bundle_path": "_internal/PySide6/QtGui.pyd",
+      "pyinstaller_kind": "EXTENSION",
+      "source_basename": "QtGui.pyd",
+      "origin_status": "distribution-metadata-match",
+      "source_root_kind": "python-package",
+      "component_name": "PySide6_Essentials",
+      "version": "6.12.0",
+      "project_url_candidate": "https://pypi.org/project/PySide6_Essentials/6.12.0/",
+      "license_metadata_candidate": {
+        "field": "License",
+        "value": "LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only"
+      },
+      "license_file_path_candidates": [
+        "pyside6_essentials-6.12.0.dist-info/licenses/LicenseRef-Qt-Commercial.txt"
+      ]
+    },
+    {
+      "bundle_path": "_internal/PySide6/QtNetwork.pyd",
+      "pyinstaller_kind": "EXTENSION",
+      "source_basename": "QtNetwork.pyd",
+      "origin_status": "distribution-metadata-match",
+      "source_root_kind": "python-package",
+      "component_name": "PySide6_Essentials",
+      "version": "6.12.0",
+      "project_url_candidate": "https://pypi.org/project/PySide6_Essentials/6.12.0/",
+      "license_metadata_candidate": {
+        "field": "License",
+        "value": "LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only"
+      },
+      "license_file_path_candidates": [
+        "pyside6_essentials-6.12.0.dist-info/licenses/LicenseRef-Qt-Commercial.txt"
+      ]
+    },
+    {
+      "bundle_path": "_internal/PySide6/QtWidgets.pyd",
+      "pyinstaller_kind": "EXTENSION",
+      "source_basename": "QtWidgets.pyd",
+      "origin_status": "distribution-metadata-match",
+      "source_root_kind": "python-package",
+      "component_name": "PySide6_Essentials",
+      "version": "6.12.0",
+      "project_url_candidate": "https://pypi.org/project/PySide6_Essentials/6.12.0/",
+      "license_metadata_candidate": {
+        "field": "License",
+        "value": "LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only"
+      },
+      "license_file_path_candidates": [
+        "pyside6_essentials-6.12.0.dist-info/licenses/LicenseRef-Qt-Commercial.txt"
+      ]
+    },
+    {
+      "bundle_path": "_internal/PySide6/VCRUNTIME140.dll",
+      "pyinstaller_kind": "BINARY",
+      "source_basename": "vcruntime140.dll",
+      "origin_status": "distribution-metadata-match",
+      "source_root_kind": "python-package",
+      "component_name": "PySide6_Essentials",
+      "version": "6.12.0",
+      "project_url_candidate": "https://pypi.org/project/PySide6_Essentials/6.12.0/",
+      "license_metadata_candidate": {
+        "field": "License",
+        "value": "LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only"
+      },
+      "license_file_path_candidates": [
+        "pyside6_essentials-6.12.0.dist-info/licenses/LicenseRef-Qt-Commercial.txt"
+      ]
+    },
+    {
+      "bundle_path": "_internal/PySide6/VCRUNTIME140_1.dll",
+      "pyinstaller_kind": "BINARY",
+      "source_basename": "vcruntime140_1.dll",
+      "origin_status": "distribution-metadata-match",
+      "source_root_kind": "python-package",
+      "component_name": "PySide6_Essentials",
+      "version": "6.12.0",
+      "project_url_candidate": "https://pypi.org/project/PySide6_Essentials/6.12.0/",
+      "license_metadata_candidate": {
+        "field": "License",
+        "value": "LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only"
+      },
+      "license_file_path_candidates": [
+        "pyside6_essentials-6.12.0.dist-info/licenses/LicenseRef-Qt-Commercial.txt"
+      ]
+    },
+    {
+      "bundle_path": "_internal/PySide6/opengl32sw.dll",
+      "pyinstaller_kind": "BINARY",
+      "source_basename": "opengl32sw.dll",
+      "origin_status": "distribution-metadata-match",
+      "source_root_kind": "python-package",
+      "component_name": "PySide6_Essentials",
+      "version": "6.12.0",
+      "project_url_candidate": "https://pypi.org/project/PySide6_Essentials/6.12.0/",
+      "license_metadata_candidate": {
+        "field": "License",
+        "value": "LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only"
+      },
+      "license_file_path_candidates": [
+        "pyside6_essentials-6.12.0.dist-info/licenses/LicenseRef-Qt-Commercial.txt"
+      ]
+    },
+    {
+      "bundle_path": "_internal/PySide6/plugins/generic/qtuiotouchplugin.dll",
+      "pyinstaller_kind": "BINARY",
+      "source_basename": "qtuiotouchplugin.dll",
+      "origin_status": "distribution-metadata-match",
+      "source_root_kind": "python-package",
+      "component_name": "PySide6_Essentials",
+      "version": "6.12.0",
+      "project_url_candidate": "https://pypi.org/project/PySide6_Essentials/6.12.0/",
+      "license_metadata_candidate": {
+        "field": "License",
+        "value": "LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only"
+      },
+      "license_file_path_candidates": [
+        "pyside6_essentials-6.12.0.dist-info/licenses/LicenseRef-Qt-Commercial.txt"
+      ]
+    },
+    {
+      "bundle_path": "_internal/PySide6/plugins/iconengines/qsvgicon.dll",
+      "pyinstaller_kind": "BINARY",
+      "source_basename": "qsvgicon.dll",
+      "origin_status": "distribution-metadata-match",
+      "source_root_kind": "python-package",
+      "component_name": "PySide6_Essentials",
+      "version": "6.12.0",
+      "project_url_candidate": "https://pypi.org/project/PySide6_Essentials/6.12.0/",
+      "license_metadata_candidate": {
+        "field": "License",
+        "value": "LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only"
+      },
+      "license_file_path_candidates": [
+        "pyside6_essentials-6.12.0.dist-info/licenses/LicenseRef-Qt-Commercial.txt"
+      ]
+    },
+    {
+      "bundle_path": "_internal/PySide6/plugins/imageformats/qgif.dll",
+      "pyinstaller_kind": "BINARY",
+      "source_basename": "qgif.dll",
+      "origin_status": "distribution-metadata-match",
+      "source_root_kind": "python-package",
+      "component_name": "PySide6_Essentials",
+      "version": "6.12.0",
+      "project_url_candidate": "https://pypi.org/project/PySide6_Essentials/6.12.0/",
+      "license_metadata_candidate": {
+        "field": "License",
+        "value": "LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only"
+      },
+      "license_file_path_candidates": [
+        "pyside6_essentials-6.12.0.dist-info/licenses/LicenseRef-Qt-Commercial.txt"
+      ]
+    },
+    {
+      "bundle_path": "_internal/PySide6/plugins/imageformats/qicns.dll",
+      "pyinstaller_kind": "BINARY",
+      "source_basename": "qicns.dll",
+      "origin_status": "distribution-metadata-match",
+      "source_root_kind": "python-package",
+      "component_name": "PySide6_Essentials",
+      "version": "6.12.0",
+      "project_url_candidate": "https://pypi.org/project/PySide6_Essentials/6.12.0/",
+      "license_metadata_candidate": {
+        "field": "License",
+        "value": "LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only"
+      },
+      "license_file_path_candidates": [
+        "pyside6_essentials-6.12.0.dist-info/licenses/LicenseRef-Qt-Commercial.txt"
+      ]
+    },
+    {
+      "bundle_path": "_internal/PySide6/plugins/imageformats/qico.dll",
+      "pyinstaller_kind": "BINARY",
+      "source_basename": "qico.dll",
+      "origin_status": "distribution-metadata-match",
+      "source_root_kind": "python-package",
+      "component_name": "PySide6_Essentials",
+      "version": "6.12.0",
+      "project_url_candidate": "https://pypi.org/project/PySide6_Essentials/6.12.0/",
+      "license_metadata_candidate": {
+        "field": "License",
+        "value": "LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only"
+      },
+      "license_file_path_candidates": [
+        "pyside6_essentials-6.12.0.dist-info/licenses/LicenseRef-Qt-Commercial.txt"
+      ]
+    },
+    {
+      "bundle_path": "_internal/PySide6/plugins/imageformats/qjpeg.dll",
+      "pyinstaller_kind": "BINARY",
+      "source_basename": "qjpeg.dll",
+      "origin_status": "distribution-metadata-match",
+      "source_root_kind": "python-package",
+      "component_name": "PySide6_Essentials",
+      "version": "6.12.0",
+      "project_url_candidate": "https://pypi.org/project/PySide6_Essentials/6.12.0/",
+      "license_metadata_candidate": {
+        "field": "License",
+        "value": "LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only"
+      },
+      "license_file_path_candidates": [
+        "pyside6_essentials-6.12.0.dist-info/licenses/LicenseRef-Qt-Commercial.txt"
+      ]
+    },
+    {
+      "bundle_path": "_internal/PySide6/plugins/imageformats/qpdf.dll",
+      "pyinstaller_kind": "BINARY",
+      "source_basename": "qpdf.dll",
+      "origin_status": "distribution-metadata-match",
+      "source_root_kind": "python-package",
+      "component_name": "PySide6_Essentials",
+      "version": "6.12.0",
+      "project_url_candidate": "https://pypi.org/project/PySide6_Essentials/6.12.0/",
+      "license_metadata_candidate": {
+        "field": "License",
+        "value": "LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only"
+      },
+      "license_file_path_candidates": [
+        "pyside6_essentials-6.12.0.dist-info/licenses/LicenseRef-Qt-Commercial.txt"
+      ]
+    },
+    {
+      "bundle_path": "_internal/PySide6/plugins/imageformats/qsvg.dll",
+      "pyinstaller_kind": "BINARY",
+      "source_basename": "qsvg.dll",
+      "origin_status": "distribution-metadata-match",
+      "source_root_kind": "python-package",
+      "component_name": "PySide6_Essentials",
+      "version": "6.12.0",
+      "project_url_candidate": "https://pypi.org/project/PySide6_Essentials/6.12.0/",
+      "license_metadata_candidate": {
+        "field": "License",
+        "value": "LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only"
+      },
+      "license_file_path_candidates": [
+        "pyside6_essentials-6.12.0.dist-info/licenses/LicenseRef-Qt-Commercial.txt"
+      ]
+    },
+    {
+      "bundle_path": "_internal/PySide6/plugins/imageformats/qtga.dll",
+      "pyinstaller_kind": "BINARY",
+      "source_basename": "qtga.dll",
+      "origin_status": "distribution-metadata-match",
+      "source_root_kind": "python-package",
+      "component_name": "PySide6_Essentials",
+      "version": "6.12.0",
+      "project_url_candidate": "https://pypi.org/project/PySide6_Essentials/6.12.0/",
+      "license_metadata_candidate": {
+        "field": "License",
+        "value": "LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only"
+      },
+      "license_file_path_candidates": [
+        "pyside6_essentials-6.12.0.dist-info/licenses/LicenseRef-Qt-Commercial.txt"
+      ]
+    },
+    {
+      "bundle_path": "_internal/PySide6/plugins/imageformats/qtiff.dll",
+      "pyinstaller_kind": "BINARY",
+      "source_basename": "qtiff.dll",
+      "origin_status": "distribution-metadata-match",
+      "source_root_kind": "python-package",
+      "component_name": "PySide6_Essentials",
+      "version": "6.12.0",
+      "project_url_candidate": "https://pypi.org/project/PySide6_Essentials/6.12.0/",
+      "license_metadata_candidate": {
+        "field": "License",
+        "value": "LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only"
+      },
+      "license_file_path_candidates": [
+        "pyside6_essentials-6.12.0.dist-info/licenses/LicenseRef-Qt-Commercial.txt"
+      ]
+    },
+    {
+      "bundle_path": "_internal/PySide6/plugins/imageformats/qwbmp.dll",
+      "pyinstaller_kind": "BINARY",
+      "source_basename": "qwbmp.dll",
+      "origin_status": "distribution-metadata-match",
+      "source_root_kind": "python-package",
+      "component_name": "PySide6_Essentials",
+      "version": "6.12.0",
+      "project_url_candidate": "https://pypi.org/project/PySide6_Essentials/6.12.0/",
+      "license_metadata_candidate": {
+        "field": "License",
+        "value": "LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only"
+      },
+      "license_file_path_candidates": [
+        "pyside6_essentials-6.12.0.dist-info/licenses/LicenseRef-Qt-Commercial.txt"
+      ]
+    },
+    {
+      "bundle_path": "_internal/PySide6/plugins/imageformats/qwebp.dll",
+      "pyinstaller_kind": "BINARY",
+      "source_basename": "qwebp.dll",
+      "origin_status": "distribution-metadata-match",
+      "source_root_kind": "python-package",
+      "component_name": "PySide6_Essentials",
+      "version": "6.12.0",
+      "project_url_candidate": "https://pypi.org/project/PySide6_Essentials/6.12.0/",
+      "license_metadata_candidate": {
+        "field": "License",
+        "value": "LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only"
+      },
+      "license_file_path_candidates": [
+        "pyside6_essentials-6.12.0.dist-info/licenses/LicenseRef-Qt-Commercial.txt"
+      ]
+    },
+    {
+      "bundle_path": "_internal/PySide6/plugins/networkinformation/qnetworklistmanager.dll",
+      "pyinstaller_kind": "BINARY",
+      "source_basename": "qnetworklistmanager.dll",
+      "origin_status": "distribution-metadata-match",
+      "source_root_kind": "python-package",
+      "component_name": "PySide6_Essentials",
+      "version": "6.12.0",
+      "project_url_candidate": "https://pypi.org/project/PySide6_Essentials/6.12.0/",
+      "license_metadata_candidate": {
+        "field": "License",
+        "value": "LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only"
+      },
+      "license_file_path_candidates": [
+        "pyside6_essentials-6.12.0.dist-info/licenses/LicenseRef-Qt-Commercial.txt"
+      ]
+    },
+    {
+      "bundle_path": "_internal/PySide6/plugins/platforminputcontexts/qtvirtualkeyboardplugin.dll",
+      "pyinstaller_kind": "BINARY",
+      "source_basename": "qtvirtualkeyboardplugin.dll",
+      "origin_status": "distribution-metadata-match",
+      "source_root_kind": "python-package",
+      "component_name": "PySide6_Essentials",
+      "version": "6.12.0",
+      "project_url_candidate": "https://pypi.org/project/PySide6_Essentials/6.12.0/",
+      "license_metadata_candidate": {
+        "field": "License",
+        "value": "LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only"
+      },
+      "license_file_path_candidates": [
+        "pyside6_essentials-6.12.0.dist-info/licenses/LicenseRef-Qt-Commercial.txt"
+      ]
+    },
+    {
+      "bundle_path": "_internal/PySide6/plugins/platforms/qdirect2d.dll",
+      "pyinstaller_kind": "BINARY",
+      "source_basename": "qdirect2d.dll",
+      "origin_status": "distribution-metadata-match",
+      "source_root_kind": "python-package",
+      "component_name": "PySide6_Essentials",
+      "version": "6.12.0",
+      "project_url_candidate": "https://pypi.org/project/PySide6_Essentials/6.12.0/",
+      "license_metadata_candidate": {
+        "field": "License",
+        "value": "LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only"
+      },
+      "license_file_path_candidates": [
+        "pyside6_essentials-6.12.0.dist-info/licenses/LicenseRef-Qt-Commercial.txt"
+      ]
+    },
+    {
+      "bundle_path": "_internal/PySide6/plugins/platforms/qminimal.dll",
+      "pyinstaller_kind": "BINARY",
+      "source_basename": "qminimal.dll",
+      "origin_status": "distribution-metadata-match",
+      "source_root_kind": "python-package",
+      "component_name": "PySide6_Essentials",
+      "version": "6.12.0",
+      "project_url_candidate": "https://pypi.org/project/PySide6_Essentials/6.12.0/",
+      "license_metadata_candidate": {
+        "field": "License",
+        "value": "LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only"
+      },
+      "license_file_path_candidates": [
+        "pyside6_essentials-6.12.0.dist-info/licenses/LicenseRef-Qt-Commercial.txt"
+      ]
+    },
+    {
+      "bundle_path": "_internal/PySide6/plugins/platforms/qoffscreen.dll",
+      "pyinstaller_kind": "BINARY",
+      "source_basename": "qoffscreen.dll",
+      "origin_status": "distribution-metadata-match",
+      "source_root_kind": "python-package",
+      "component_name": "PySide6_Essentials",
+      "version": "6.12.0",
+      "project_url_candidate": "https://pypi.org/project/PySide6_Essentials/6.12.0/",
+      "license_metadata_candidate": {
+        "field": "License",
+        "value": "LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only"
+      },
+      "license_file_path_candidates": [
+        "pyside6_essentials-6.12.0.dist-info/licenses/LicenseRef-Qt-Commercial.txt"
+      ]
+    },
+    {
+      "bundle_path": "_internal/PySide6/plugins/platforms/qwindows.dll",
+      "pyinstaller_kind": "BINARY",
+      "source_basename": "qwindows.dll",
+      "origin_status": "distribution-metadata-match",
+      "source_root_kind": "python-package",
+      "component_name": "PySide6_Essentials",
+      "version": "6.12.0",
+      "project_url_candidate": "https://pypi.org/project/PySide6_Essentials/6.12.0/",
+      "license_metadata_candidate": {
+        "field": "License",
+        "value": "LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only"
+      },
+      "license_file_path_candidates": [
+        "pyside6_essentials-6.12.0.dist-info/licenses/LicenseRef-Qt-Commercial.txt"
+      ]
+    },
+    {
+      "bundle_path": "_internal/PySide6/plugins/styles/qmodernwindowsstyle.dll",
+      "pyinstaller_kind": "BINARY",
+      "source_basename": "qmodernwindowsstyle.dll",
+      "origin_status": "distribution-metadata-match",
+      "source_root_kind": "python-package",
+      "component_name": "PySide6_Essentials",
+      "version": "6.12.0",
+      "project_url_candidate": "https://pypi.org/project/PySide6_Essentials/6.12.0/",
+      "license_metadata_candidate": {
+        "field": "License",
+        "value": "LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only"
+      },
+      "license_file_path_candidates": [
+        "pyside6_essentials-6.12.0.dist-info/licenses/LicenseRef-Qt-Commercial.txt"
+      ]
+    },
+    {
+      "bundle_path": "_internal/PySide6/plugins/tls/qcertonlybackend.dll",
+      "pyinstaller_kind": "BINARY",
+      "source_basename": "qcertonlybackend.dll",
+      "origin_status": "distribution-metadata-match",
+      "source_root_kind": "python-package",
+      "component_name": "PySide6_Essentials",
+      "version": "6.12.0",
+      "project_url_candidate": "https://pypi.org/project/PySide6_Essentials/6.12.0/",
+      "license_metadata_candidate": {
+        "field": "License",
+        "value": "LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only"
+      },
+      "license_file_path_candidates": [
+        "pyside6_essentials-6.12.0.dist-info/licenses/LicenseRef-Qt-Commercial.txt"
+      ]
+    },
+    {
+      "bundle_path": "_internal/PySide6/plugins/tls/qopensslbackend.dll",
+      "pyinstaller_kind": "BINARY",
+      "source_basename": "qopensslbackend.dll",
+      "origin_status": "distribution-metadata-match",
+      "source_root_kind": "python-package",
+      "component_name": "PySide6_Essentials",
+      "version": "6.12.0",
+      "project_url_candidate": "https://pypi.org/project/PySide6_Essentials/6.12.0/",
+      "license_metadata_candidate": {
+        "field": "License",
+        "value": "LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only"
+      },
+      "license_file_path_candidates": [
+        "pyside6_essentials-6.12.0.dist-info/licenses/LicenseRef-Qt-Commercial.txt"
+      ]
+    },
+    {
+      "bundle_path": "_internal/PySide6/plugins/tls/qschannelbackend.dll",
+      "pyinstaller_kind": "BINARY",
+      "source_basename": "qschannelbackend.dll",
+      "origin_status": "distribution-metadata-match",
+      "source_root_kind": "python-package",
+      "component_name": "PySide6_Essentials",
+      "version": "6.12.0",
+      "project_url_candidate": "https://pypi.org/project/PySide6_Essentials/6.12.0/",
+      "license_metadata_candidate": {
+        "field": "License",
+        "value": "LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only"
+      },
+      "license_file_path_candidates": [
+        "pyside6_essentials-6.12.0.dist-info/licenses/LicenseRef-Qt-Commercial.txt"
+      ]
+    },
+    {
+      "bundle_path": "_internal/PySide6/pyside6.abi3.dll",
+      "pyinstaller_kind": "BINARY",
+      "source_basename": "pyside6.abi3.dll",
+      "origin_status": "distribution-metadata-match",
+      "source_root_kind": "python-package",
+      "component_name": "PySide6_Essentials",
+      "version": "6.12.0",
+      "project_url_candidate": "https://pypi.org/project/PySide6_Essentials/6.12.0/",
+      "license_metadata_candidate": {
+        "field": "License",
+        "value": "LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only"
+      },
+      "license_file_path_candidates": [
+        "pyside6_essentials-6.12.0.dist-info/licenses/LicenseRef-Qt-Commercial.txt"
+      ]
+    },
+    {
+      "bundle_path": "_internal/PySide6/translations/qt_ar.qm",
+      "pyinstaller_kind": "DATA",
+      "source_basename": "qt_ar.qm",
+      "origin_status": "distribution-metadata-match",
+      "source_root_kind": "python-package",
+      "component_name": "PySide6_Essentials",
+      "version": "6.12.0",
+      "project_url_candidate": "https://pypi.org/project/PySide6_Essentials/6.12.0/",
+      "license_metadata_candidate": {
+        "field": "License",
+        "value": "LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only"
+      },
+      "license_file_path_candidates": [
+        "pyside6_essentials-6.12.0.dist-info/licenses/LicenseRef-Qt-Commercial.txt"
+      ]
+    },
+    {
+      "bundle_path": "_internal/PySide6/translations/qt_bg.qm",
+      "pyinstaller_kind": "DATA",
+      "source_basename": "qt_bg.qm",
+      "origin_status": "distribution-metadata-match",
+      "source_root_kind": "python-package",
+      "component_name": "PySide6_Essentials",
+      "version": "6.12.0",
+      "project_url_candidate": "https://pypi.org/project/PySide6_Essentials/6.12.0/",
+      "license_metadata_candidate": {
+        "field": "License",
+        "value": "LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only"
+      },
+      "license_file_path_candidates": [
+        "pyside6_essentials-6.12.0.dist-info/licenses/LicenseRef-Qt-Commercial.txt"
+      ]
+    },
+    {
+      "bundle_path": "_internal/PySide6/translations/qt_ca.qm",
+      "pyinstaller_kind": "DATA",
+      "source_basename": "qt_ca.qm",
+      "origin_status": "distribution-metadata-match",
+      "source_root_kind": "python-package",
+      "component_name": "PySide6_Essentials",
+      "version": "6.12.0",
+      "project_url_candidate": "https://pypi.org/project/PySide6_Essentials/6.12.0/",
+      "license_metadata_candidate": {
+        "field": "License",
+        "value": "LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only"
+      },
+      "license_file_path_candidates": [
+        "pyside6_essentials-6.12.0.dist-info/licenses/LicenseRef-Qt-Commercial.txt"
+      ]
+    },
+    {
+      "bundle_path": "_internal/PySide6/translations/qt_cs.qm",
+      "pyinstaller_kind": "DATA",
+      "source_basename": "qt_cs.qm",
+      "origin_status": "distribution-metadata-match",
+      "source_root_kind": "python-package",
+      "component_name": "PySide6_Essentials",
+      "version": "6.12.0",
+      "project_url_candidate": "https://pypi.org/project/PySide6_Essentials/6.12.0/",
+      "license_metadata_candidate": {
+        "field": "License",
+        "value": "LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only"
+      },
+      "license_file_path_candidates": [
+        "pyside6_essentials-6.12.0.dist-info/licenses/LicenseRef-Qt-Commercial.txt"
+      ]
+    },
+    {
+      "bundle_path": "_internal/PySide6/translations/qt_da.qm",
+      "pyinstaller_kind": "DATA",
+      "source_basename": "qt_da.qm",
+      "origin_status": "distribution-metadata-match",
+      "source_root_kind": "python-package",
+      "component_name": "PySide6_Essentials",
+      "version": "6.12.0",
+      "project_url_candidate": "https://pypi.org/project/PySide6_Essentials/6.12.0/",
+      "license_metadata_candidate": {
+        "field": "License",
+        "value": "LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only"
+      },
+      "license_file_path_candidates": [
+        "pyside6_essentials-6.12.0.dist-info/licenses/LicenseRef-Qt-Commercial.txt"
+      ]
+    },
+    {
+      "bundle_path": "_internal/PySide6/translations/qt_de.qm",
+      "pyinstaller_kind": "DATA",
+      "source_basename": "qt_de.qm",
+      "origin_status": "distribution-metadata-match",
+      "source_root_kind": "python-package",
+      "component_name": "PySide6_Essentials",
+      "version": "6.12.0",
+      "project_url_candidate": "https://pypi.org/project/PySide6_Essentials/6.12.0/",
+      "license_metadata_candidate": {
+        "field": "License",
+        "value": "LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only"
+      },
+      "license_file_path_candidates": [
+        "pyside6_essentials-6.12.0.dist-info/licenses/LicenseRef-Qt-Commercial.txt"
+      ]
+    },
+    {
+      "bundle_path": "_internal/PySide6/translations/qt_en.qm",
+      "pyinstaller_kind": "DATA",
+      "source_basename": "qt_en.qm",
+      "origin_status": "distribution-metadata-match",
+      "source_root_kind": "python-package",
+      "component_name": "PySide6_Essentials",
+      "version": "6.12.0",
+      "project_url_candidate": "https://pypi.org/project/PySide6_Essentials/6.12.0/",
+      "license_metadata_candidate": {
+        "field": "License",
+        "value": "LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only"
+      },
+      "license_file_path_candidates": [
+        "pyside6_essentials-6.12.0.dist-info/licenses/LicenseRef-Qt-Commercial.txt"
+      ]
+    },
+    {
+      "bundle_path": "_internal/PySide6/translations/qt_es.qm",
+      "pyinstaller_kind": "DATA",
+      "source_basename": "qt_es.qm",
+      "origin_status": "distribution-metadata-match",
+      "source_root_kind": "python-package",
+      "component_name": "PySide6_Essentials",
+      "version": "6.12.0",
+      "project_url_candidate": "https://pypi.org/project/PySide6_Essentials/6.12.0/",
+      "license_metadata_candidate": {
+        "field": "License",
+        "value": "LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only"
+      },
+      "license_file_path_candidates": [
+        "pyside6_essentials-6.12.0.dist-info/licenses/LicenseRef-Qt-Commercial.txt"
+      ]
+    },
+    {
+      "bundle_path": "_internal/PySide6/translations/qt_fa.qm",
+      "pyinstaller_kind": "DATA",
+      "source_basename": "qt_fa.qm",
+      "origin_status": "distribution-metadata-match",
+      "source_root_kind": "python-package",
+      "component_name": "PySide6_Essentials",
+      "version": "6.12.0",
+      "project_url_candidate": "https://pypi.org/project/PySide6_Essentials/6.12.0/",
+      "license_metadata_candidate": {
+        "field": "License",
+        "value": "LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only"
+      },
+      "license_file_path_candidates": [
+        "pyside6_essentials-6.12.0.dist-info/licenses/LicenseRef-Qt-Commercial.txt"
+      ]
+    },
+    {
+      "bundle_path": "_internal/PySide6/translations/qt_fi.qm",
+      "pyinstaller_kind": "DATA",
+      "source_basename": "qt_fi.qm",
+      "origin_status": "distribution-metadata-match",
+      "source_root_kind": "python-package",
+      "component_name": "PySide6_Essentials",
+      "version": "6.12.0",
+      "project_url_candidate": "https://pypi.org/project/PySide6_Essentials/6.12.0/",
+      "license_metadata_candidate": {
+        "field": "License",
+        "value": "LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only"
+      },
+      "license_file_path_candidates": [
+        "pyside6_essentials-6.12.0.dist-info/licenses/LicenseRef-Qt-Commercial.txt"
+      ]
+    },
+    {
+      "bundle_path": "_internal/PySide6/translations/qt_fr.qm",
+      "pyinstaller_kind": "DATA",
+      "source_basename": "qt_fr.qm",
+      "origin_status": "distribution-metadata-match",
+      "source_root_kind": "python-package",
+      "component_name": "PySide6_Essentials",
+      "version": "6.12.0",
+      "project_url_candidate": "https://pypi.org/project/PySide6_Essentials/6.12.0/",
+      "license_metadata_candidate": {
+        "field": "License",
+        "value": "LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only"
+      },
+      "license_file_path_candidates": [
+        "pyside6_essentials-6.12.0.dist-info/licenses/LicenseRef-Qt-Commercial.txt"
+      ]
+    },
+    {
+      "bundle_path": "_internal/PySide6/translations/qt_gd.qm",
+      "pyinstaller_kind": "DATA",
+      "source_basename": "qt_gd.qm",
+      "origin_status": "distribution-metadata-match",
+      "source_root_kind": "python-package",
+      "component_name": "PySide6_Essentials",
+      "version": "6.12.0",
+      "project_url_candidate": "https://pypi.org/project/PySide6_Essentials/6.12.0/",
+      "license_metadata_candidate": {
+        "field": "License",
+        "value": "LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only"
+      },
+      "license_file_path_candidates": [
+        "pyside6_essentials-6.12.0.dist-info/licenses/LicenseRef-Qt-Commercial.txt"
+      ]
+    },
+    {
+      "bundle_path": "_internal/PySide6/translations/qt_gl.qm",
+      "pyinstaller_kind": "DATA",
+      "source_basename": "qt_gl.qm",
+      "origin_status": "distribution-metadata-match",
+      "source_root_kind": "python-package",
+      "component_name": "PySide6_Essentials",
+      "version": "6.12.0",
+      "project_url_candidate": "https://pypi.org/project/PySide6_Essentials/6.12.0/",
+      "license_metadata_candidate": {
+        "field": "License",
+        "value": "LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only"
+      },
+      "license_file_path_candidates": [
+        "pyside6_essentials-6.12.0.dist-info/licenses/LicenseRef-Qt-Commercial.txt"
+      ]
+    },
+    {
+      "bundle_path": "_internal/PySide6/translations/qt_he.qm",
+      "pyinstaller_kind": "DATA",
+      "source_basename": "qt_he.qm",
+      "origin_status": "distribution-metadata-match",
+      "source_root_kind": "python-package",
+      "component_name": "PySide6_Essentials",
+      "version": "6.12.0",
+      "project_url_candidate": "https://pypi.org/project/PySide6_Essentials/6.12.0/",
+      "license_metadata_candidate": {
+        "field": "License",
+        "value": "LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only"
+      },
+      "license_file_path_candidates": [
+        "pyside6_essentials-6.12.0.dist-info/licenses/LicenseRef-Qt-Commercial.txt"
+      ]
+    },
+    {
+      "bundle_path": "_internal/PySide6/translations/qt_help_ar.qm",
+      "pyinstaller_kind": "DATA",
+      "source_basename": "qt_help_ar.qm",
+      "origin_status": "distribution-metadata-match",
+      "source_root_kind": "python-package",
+      "component_name": "PySide6_Essentials",
+      "version": "6.12.0",
+      "project_url_candidate": "https://pypi.org/project/PySide6_Essentials/6.12.0/",
+      "license_metadata_candidate": {
+        "field": "License",
+        "value": "LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only"
+      },
+      "license_file_path_candidates": [
+        "pyside6_essentials-6.12.0.dist-info/licenses/LicenseRef-Qt-Commercial.txt"
+      ]
+    },
+    {
+      "bundle_path": "_internal/PySide6/translations/qt_help_bg.qm",
+      "pyinstaller_kind": "DATA",
+      "source_basename": "qt_help_bg.qm",
+      "origin_status": "distribution-metadata-match",
+      "source_root_kind": "python-package",
+      "component_name": "PySide6_Essentials",
+      "version": "6.12.0",
+      "project_url_candidate": "https://pypi.org/project/PySide6_Essentials/6.12.0/",
+      "license_metadata_candidate": {
+        "field": "License",
+        "value": "LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only"
+      },
+      "license_file_path_candidates": [
+        "pyside6_essentials-6.12.0.dist-info/licenses/LicenseRef-Qt-Commercial.txt"
+      ]
+    },
+    {
+      "bundle_path": "_internal/PySide6/translations/qt_help_ca.qm",
+      "pyinstaller_kind": "DATA",
+      "source_basename": "qt_help_ca.qm",
+      "origin_status": "distribution-metadata-match",
+      "source_root_kind": "python-package",
+      "component_name": "PySide6_Essentials",
+      "version": "6.12.0",
+      "project_url_candidate": "https://pypi.org/project/PySide6_Essentials/6.12.0/",
+      "license_metadata_candidate": {
+        "field": "License",
+        "value": "LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only"
+      },
+      "license_file_path_candidates": [
+        "pyside6_essentials-6.12.0.dist-info/licenses/LicenseRef-Qt-Commercial.txt"
+      ]
+    },
+    {
+      "bundle_path": "_internal/PySide6/translations/qt_help_cs.qm",
+      "pyinstaller_kind": "DATA",
+      "source_basename": "qt_help_cs.qm",
+      "origin_status": "distribution-metadata-match",
+      "source_root_kind": "python-package",
+      "component_name": "PySide6_Essentials",
+      "version": "6.12.0",
+      "project_url_candidate": "https://pypi.org/project/PySide6_Essentials/6.12.0/",
+      "license_metadata_candidate": {
+        "field": "License",
+        "value": "LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only"
+      },
+      "license_file_path_candidates": [
+        "pyside6_essentials-6.12.0.dist-info/licenses/LicenseRef-Qt-Commercial.txt"
+      ]
+    },
+    {
+      "bundle_path": "_internal/PySide6/translations/qt_help_da.qm",
+      "pyinstaller_kind": "DATA",
+      "source_basename": "qt_help_da.qm",
+      "origin_status": "distribution-metadata-match",
+      "source_root_kind": "python-package",
+      "component_name": "PySide6_Essentials",
+      "version": "6.12.0",
+      "project_url_candidate": "https://pypi.org/project/PySide6_Essentials/6.12.0/",
+      "license_metadata_candidate": {
+        "field": "License",
+        "value": "LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only"
+      },
+      "license_file_path_candidates": [
+        "pyside6_essentials-6.12.0.dist-info/licenses/LicenseRef-Qt-Commercial.txt"
+      ]
+    },
+    {
+      "bundle_path": "_internal/PySide6/translations/qt_help_de.qm",
+      "pyinstaller_kind": "DATA",
+      "source_basename": "qt_help_de.qm",
+      "origin_status": "distribution-metadata-match",
+      "source_root_kind": "python-package",
+      "component_name": "PySide6_Essentials",
+      "version": "6.12.0",
+      "project_url_candidate": "https://pypi.org/project/PySide6_Essentials/6.12.0/",
+      "license_metadata_candidate": {
+        "field": "License",
+        "value": "LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only"
+      },
+      "license_file_path_candidates": [
+        "pyside6_essentials-6.12.0.dist-info/licenses/LicenseRef-Qt-Commercial.txt"
+      ]
+    },
+    {
+      "bundle_path": "_internal/PySide6/translations/qt_help_en.qm",
+      "pyinstaller_kind": "DATA",
+      "source_basename": "qt_help_en.qm",
+      "origin_status": "distribution-metadata-match",
+      "source_root_kind": "python-package",
+      "component_name": "PySide6_Essentials",
+      "version": "6.12.0",
+      "project_url_candidate": "https://pypi.org/project/PySide6_Essentials/6.12.0/",
+      "license_metadata_candidate": {
+        "field": "License",
+        "value": "LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only"
+      },
+      "license_file_path_candidates": [
+        "pyside6_essentials-6.12.0.dist-info/licenses/LicenseRef-Qt-Commercial.txt"
+      ]
+    },
+    {
+      "bundle_path": "_internal/PySide6/translations/qt_help_es.qm",
+      "pyinstaller_kind": "DATA",
+      "source_basename": "qt_help_es.qm",
+      "origin_status": "distribution-metadata-match",
+      "source_root_kind": "python-package",
+      "component_name": "PySide6_Essentials",
+      "version": "6.12.0",
+      "project_url_candidate": "https://pypi.org/project/PySide6_Essentials/6.12.0/",
+      "license_metadata_candidate": {
+        "field": "License",
+        "value": "LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only"
+      },
+      "license_file_path_candidates": [
+        "pyside6_essentials-6.12.0.dist-info/licenses/LicenseRef-Qt-Commercial.txt"
+      ]
+    },
+    {
+      "bundle_path": "_internal/PySide6/translations/qt_help_fr.qm",
+      "pyinstaller_kind": "DATA",
+      "source_basename": "qt_help_fr.qm",
+      "origin_status": "distribution-metadata-match",
+      "source_root_kind": "python-package",
+      "component_name": "PySide6_Essentials",
+      "version": "6.12.0",
+      "project_url_candidate": "https://pypi.org/project/PySide6_Essentials/6.12.0/",
+      "license_metadata_candidate": {
+        "field": "License",
+        "value": "LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only"
+      },
+      "license_file_path_candidates": [
+        "pyside6_essentials-6.12.0.dist-info/licenses/LicenseRef-Qt-Commercial.txt"
+      ]
+    },
+    {
+      "bundle_path": "_internal/PySide6/translations/qt_help_gl.qm",
+      "pyinstaller_kind": "DATA",
+      "source_basename": "qt_help_gl.qm",
+      "origin_status": "distribution-metadata-match",
+      "source_root_kind": "python-package",
+      "component_name": "PySide6_Essentials",
+      "version": "6.12.0",
+      "project_url_candidate": "https://pypi.org/project/PySide6_Essentials/6.12.0/",
+      "license_metadata_candidate": {
+        "field": "License",
+        "value": "LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only"
+      },
+      "license_file_path_candidates": [
+        "pyside6_essentials-6.12.0.dist-info/licenses/LicenseRef-Qt-Commercial.txt"
+      ]
+    },
+    {
+      "bundle_path": "_internal/PySide6/translations/qt_help_hr.qm",
+      "pyinstaller_kind": "DATA",
+      "source_basename": "qt_help_hr.qm",
+      "origin_status": "distribution-metadata-match",
+      "source_root_kind": "python-package",
+      "component_name": "PySide6_Essentials",
+      "version": "6.12.0",
+      "project_url_candidate": "https://pypi.org/project/PySide6_Essentials/6.12.0/",
+      "license_metadata_candidate": {
+        "field": "License",
+        "value": "LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only"
+      },
+      "license_file_path_candidates": [
+        "pyside6_essentials-6.12.0.dist-info/licenses/LicenseRef-Qt-Commercial.txt"
+      ]
+    },
+    {
+      "bundle_path": "_internal/PySide6/translations/qt_help_hu.qm",
+      "pyinstaller_kind": "DATA",
+      "source_basename": "qt_help_hu.qm",
+      "origin_status": "distribution-metadata-match",
+      "source_root_kind": "python-package",
+      "component_name": "PySide6_Essentials",
+      "version": "6.12.0",
+      "project_url_candidate": "https://pypi.org/project/PySide6_Essentials/6.12.0/",
+      "license_metadata_candidate": {
+        "field": "License",
+        "value": "LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only"
+      },
+      "license_file_path_candidates": [
+        "pyside6_essentials-6.12.0.dist-info/licenses/LicenseRef-Qt-Commercial.txt"
+      ]
+    },
+    {
+      "bundle_path": "_internal/PySide6/translations/qt_help_it.qm",
+      "pyinstaller_kind": "DATA",
+      "source_basename": "qt_help_it.qm",
+      "origin_status": "distribution-metadata-match",
+      "source_root_kind": "python-package",
+      "component_name": "PySide6_Essentials",
+      "version": "6.12.0",
+      "project_url_candidate": "https://pypi.org/project/PySide6_Essentials/6.12.0/",
+      "license_metadata_candidate": {
+        "field": "License",
+        "value": "LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only"
+      },
+      "license_file_path_candidates": [
+        "pyside6_essentials-6.12.0.dist-info/licenses/LicenseRef-Qt-Commercial.txt"
+      ]
+    },
+    {
+      "bundle_path": "_internal/PySide6/translations/qt_help_ja.qm",
+      "pyinstaller_kind": "DATA",
+      "source_basename": "qt_help_ja.qm",
+      "origin_status": "distribution-metadata-match",
+      "source_root_kind": "python-package",
+      "component_name": "PySide6_Essentials",
+      "version": "6.12.0",
+      "project_url_candidate": "https://pypi.org/project/PySide6_Essentials/6.12.0/",
+      "license_metadata_candidate": {
+        "field": "License",
+        "value": "LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only"
+      },
+      "license_file_path_candidates": [
+        "pyside6_essentials-6.12.0.dist-info/licenses/LicenseRef-Qt-Commercial.txt"
+      ]
+    },
+    {
+      "bundle_path": "_internal/PySide6/translations/qt_help_ka.qm",
+      "pyinstaller_kind": "DATA",
+      "source_basename": "qt_help_ka.qm",
+      "origin_status": "distribution-metadata-match",
+      "source_root_kind": "python-package",
+      "component_name": "PySide6_Essentials",
+      "version": "6.12.0",
+      "project_url_candidate": "https://pypi.org/project/PySide6_Essentials/6.12.0/",
+      "license_metadata_candidate": {
+        "field": "License",
+        "value": "LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only"
+      },
+      "license_file_path_candidates": [
+        "pyside6_essentials-6.12.0.dist-info/licenses/LicenseRef-Qt-Commercial.txt"
+      ]
+    },
+    {
+      "bundle_path": "_internal/PySide6/translations/qt_help_kk.qm",
+      "pyinstaller_kind": "DATA",
+      "source_basename": "qt_help_kk.qm",
+      "origin_status": "distribution-metadata-match",
+      "source_root_kind": "python-package",
+      "component_name": "PySide6_Essentials",
+      "version": "6.12.0",
+      "project_url_candidate": "https://pypi.org/project/PySide6_Essentials/6.12.0/",
+      "license_metadata_candidate": {
+        "field": "License",
+        "value": "LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only"
+      },
+      "license_file_path_candidates": [
+        "pyside6_essentials-6.12.0.dist-info/licenses/LicenseRef-Qt-Commercial.txt"
+      ]
+    },
+    {
+      "bundle_path": "_internal/PySide6/translations/qt_help_ko.qm",
+      "pyinstaller_kind": "DATA",
+      "source_basename": "qt_help_ko.qm",
+      "origin_status": "distribution-metadata-match",
+      "source_root_kind": "python-package",
+      "component_name": "PySide6_Essentials",
+      "version": "6.12.0",
+      "project_url_candidate": "https://pypi.org/project/PySide6_Essentials/6.12.0/",
+      "license_metadata_candidate": {
+        "field": "License",
+        "value": "LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only"
+      },
+      "license_file_path_candidates": [
+        "pyside6_essentials-6.12.0.dist-info/licenses/LicenseRef-Qt-Commercial.txt"
+      ]
+    },
+    {
+      "bundle_path": "_internal/PySide6/translations/qt_help_nl.qm",
+      "pyinstaller_kind": "DATA",
+      "source_basename": "qt_help_nl.qm",
+      "origin_status": "distribution-metadata-match",
+      "source_root_kind": "python-package",
+      "component_name": "PySide6_Essentials",
+      "version": "6.12.0",
+      "project_url_candidate": "https://pypi.org/project/PySide6_Essentials/6.12.0/",
+      "license_metadata_candidate": {
+        "field": "License",
+        "value": "LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only"
+      },
+      "license_file_path_candidates": [
+        "pyside6_essentials-6.12.0.dist-info/licenses/LicenseRef-Qt-Commercial.txt"
+      ]
+    },
+    {
+      "bundle_path": "_internal/PySide6/translations/qt_help_nn.qm",
+      "pyinstaller_kind": "DATA",
+      "source_basename": "qt_help_nn.qm",
+      "origin_status": "distribution-metadata-match",
+      "source_root_kind": "python-package",
+      "component_name": "PySide6_Essentials",
+      "version": "6.12.0",
+      "project_url_candidate": "https://pypi.org/project/PySide6_Essentials/6.12.0/",
+      "license_metadata_candidate": {
+        "field": "License",
+        "value": "LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only"
+      },
+      "license_file_path_candidates": [
+        "pyside6_essentials-6.12.0.dist-info/licenses/LicenseRef-Qt-Commercial.txt"
+      ]
+    },
+    {
+      "bundle_path": "_internal/PySide6/translations/qt_help_pl.qm",
+      "pyinstaller_kind": "DATA",
+      "source_basename": "qt_help_pl.qm",
+      "origin_status": "distribution-metadata-match",
+      "source_root_kind": "python-package",
+      "component_name": "PySide6_Essentials",
+      "version": "6.12.0",
+      "project_url_candidate": "https://pypi.org/project/PySide6_Essentials/6.12.0/",
+      "license_metadata_candidate": {
+        "field": "License",
+        "value": "LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only"
+      },
+      "license_file_path_candidates": [
+        "pyside6_essentials-6.12.0.dist-info/licenses/LicenseRef-Qt-Commercial.txt"
+      ]
+    },
+    {
+      "bundle_path": "_internal/PySide6/translations/qt_help_pt_BR.qm",
+      "pyinstaller_kind": "DATA",
+      "source_basename": "qt_help_pt_BR.qm",
+      "origin_status": "distribution-metadata-match",
+      "source_root_kind": "python-package",
+      "component_name": "PySide6_Essentials",
+      "version": "6.12.0",
+      "project_url_candidate": "https://pypi.org/project/PySide6_Essentials/6.12.0/",
+      "license_metadata_candidate": {
+        "field": "License",
+        "value": "LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only"
+      },
+      "license_file_path_candidates": [
+        "pyside6_essentials-6.12.0.dist-info/licenses/LicenseRef-Qt-Commercial.txt"
+      ]
+    },
+    {
+      "bundle_path": "_internal/PySide6/translations/qt_help_ru.qm",
+      "pyinstaller_kind": "DATA",
+      "source_basename": "qt_help_ru.qm",
+      "origin_status": "distribution-metadata-match",
+      "source_root_kind": "python-package",
+      "component_name": "PySide6_Essentials",
+      "version": "6.12.0",
+      "project_url_candidate": "https://pypi.org/project/PySide6_Essentials/6.12.0/",
+      "license_metadata_candidate": {
+        "field": "License",
+        "value": "LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only"
+      },
+      "license_file_path_candidates": [
+        "pyside6_essentials-6.12.0.dist-info/licenses/LicenseRef-Qt-Commercial.txt"
+      ]
+    },
+    {
+      "bundle_path": "_internal/PySide6/translations/qt_help_sk.qm",
+      "pyinstaller_kind": "DATA",
+      "source_basename": "qt_help_sk.qm",
+      "origin_status": "distribution-metadata-match",
+      "source_root_kind": "python-package",
+      "component_name": "PySide6_Essentials",
+      "version": "6.12.0",
+      "project_url_candidate": "https://pypi.org/project/PySide6_Essentials/6.12.0/",
+      "license_metadata_candidate": {
+        "field": "License",
+        "value": "LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only"
+      },
+      "license_file_path_candidates": [
+        "pyside6_essentials-6.12.0.dist-info/licenses/LicenseRef-Qt-Commercial.txt"
+      ]
+    },
+    {
+      "bundle_path": "_internal/PySide6/translations/qt_help_sl.qm",
+      "pyinstaller_kind": "DATA",
+      "source_basename": "qt_help_sl.qm",
+      "origin_status": "distribution-metadata-match",
+      "source_root_kind": "python-package",
+      "component_name": "PySide6_Essentials",
+      "version": "6.12.0",
+      "project_url_candidate": "https://pypi.org/project/PySide6_Essentials/6.12.0/",
+      "license_metadata_candidate": {
+        "field": "License",
+        "value": "LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only"
+      },
+      "license_file_path_candidates": [
+        "pyside6_essentials-6.12.0.dist-info/licenses/LicenseRef-Qt-Commercial.txt"
+      ]
+    },
+    {
+      "bundle_path": "_internal/PySide6/translations/qt_help_sv.qm",
+      "pyinstaller_kind": "DATA",
+      "source_basename": "qt_help_sv.qm",
+      "origin_status": "distribution-metadata-match",
+      "source_root_kind": "python-package",
+      "component_name": "PySide6_Essentials",
+      "version": "6.12.0",
+      "project_url_candidate": "https://pypi.org/project/PySide6_Essentials/6.12.0/",
+      "license_metadata_candidate": {
+        "field": "License",
+        "value": "LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only"
+      },
+      "license_file_path_candidates": [
+        "pyside6_essentials-6.12.0.dist-info/licenses/LicenseRef-Qt-Commercial.txt"
+      ]
+    },
+    {
+      "bundle_path": "_internal/PySide6/translations/qt_help_tr.qm",
+      "pyinstaller_kind": "DATA",
+      "source_basename": "qt_help_tr.qm",
+      "origin_status": "distribution-metadata-match",
+      "source_root_kind": "python-package",
+      "component_name": "PySide6_Essentials",
+      "version": "6.12.0",
+      "project_url_candidate": "https://pypi.org/project/PySide6_Essentials/6.12.0/",
+      "license_metadata_candidate": {
+        "field": "License",
+        "value": "LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only"
+      },
+      "license_file_path_candidates": [
+        "pyside6_essentials-6.12.0.dist-info/licenses/LicenseRef-Qt-Commercial.txt"
+      ]
+    },
+    {
+      "bundle_path": "_internal/PySide6/translations/qt_help_uk.qm",
+      "pyinstaller_kind": "DATA",
+      "source_basename": "qt_help_uk.qm",
+      "origin_status": "distribution-metadata-match",
+      "source_root_kind": "python-package",
+      "component_name": "PySide6_Essentials",
+      "version": "6.12.0",
+      "project_url_candidate": "https://pypi.org/project/PySide6_Essentials/6.12.0/",
+      "license_metadata_candidate": {
+        "field": "License",
+        "value": "LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only"
+      },
+      "license_file_path_candidates": [
+        "pyside6_essentials-6.12.0.dist-info/licenses/LicenseRef-Qt-Commercial.txt"
+      ]
+    },
+    {
+      "bundle_path": "_internal/PySide6/translations/qt_help_zh_CN.qm",
+      "pyinstaller_kind": "DATA",
+      "source_basename": "qt_help_zh_CN.qm",
+      "origin_status": "distribution-metadata-match",
+      "source_root_kind": "python-package",
+      "component_name": "PySide6_Essentials",
+      "version": "6.12.0",
+      "project_url_candidate": "https://pypi.org/project/PySide6_Essentials/6.12.0/",
+      "license_metadata_candidate": {
+        "field": "License",
+        "value": "LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only"
+      },
+      "license_file_path_candidates": [
+        "pyside6_essentials-6.12.0.dist-info/licenses/LicenseRef-Qt-Commercial.txt"
+      ]
+    },
+    {
+      "bundle_path": "_internal/PySide6/translations/qt_help_zh_TW.qm",
+      "pyinstaller_kind": "DATA",
+      "source_basename": "qt_help_zh_TW.qm",
+      "origin_status": "distribution-metadata-match",
+      "source_root_kind": "python-package",
+      "component_name": "PySide6_Essentials",
+      "version": "6.12.0",
+      "project_url_candidate": "https://pypi.org/project/PySide6_Essentials/6.12.0/",
+      "license_metadata_candidate": {
+        "field": "License",
+        "value": "LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only"
+      },
+      "license_file_path_candidates": [
+        "pyside6_essentials-6.12.0.dist-info/licenses/LicenseRef-Qt-Commercial.txt"
+      ]
+    },
+    {
+      "bundle_path": "_internal/PySide6/translations/qt_hr.qm",
+      "pyinstaller_kind": "DATA",
+      "source_basename": "qt_hr.qm",
+      "origin_status": "distribution-metadata-match",
+      "source_root_kind": "python-package",
+      "component_name": "PySide6_Essentials",
+      "version": "6.12.0",
+      "project_url_candidate": "https://pypi.org/project/PySide6_Essentials/6.12.0/",
+      "license_metadata_candidate": {
+        "field": "License",
+        "value": "LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only"
+      },
+      "license_file_path_candidates": [
+        "pyside6_essentials-6.12.0.dist-info/licenses/LicenseRef-Qt-Commercial.txt"
+      ]
+    },
+    {
+      "bundle_path": "_internal/PySide6/translations/qt_hu.qm",
+      "pyinstaller_kind": "DATA",
+      "source_basename": "qt_hu.qm",
+      "origin_status": "distribution-metadata-match",
+      "source_root_kind": "python-package",
+      "component_name": "PySide6_Essentials",
+      "version": "6.12.0",
+      "project_url_candidate": "https://pypi.org/project/PySide6_Essentials/6.12.0/",
+      "license_metadata_candidate": {
+        "field": "License",
+        "value": "LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only"
+      },
+      "license_file_path_candidates": [
+        "pyside6_essentials-6.12.0.dist-info/licenses/LicenseRef-Qt-Commercial.txt"
+      ]
+    },
+    {
+      "bundle_path": "_internal/PySide6/translations/qt_it.qm",
+      "pyinstaller_kind": "DATA",
+      "source_basename": "qt_it.qm",
+      "origin_status": "distribution-metadata-match",
+      "source_root_kind": "python-package",
+      "component_name": "PySide6_Essentials",
+      "version": "6.12.0",
+      "project_url_candidate": "https://pypi.org/project/PySide6_Essentials/6.12.0/",
+      "license_metadata_candidate": {
+        "field": "License",
+        "value": "LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only"
+      },
+      "license_file_path_candidates": [
+        "pyside6_essentials-6.12.0.dist-info/licenses/LicenseRef-Qt-Commercial.txt"
+      ]
+    },
+    {
+      "bundle_path": "_internal/PySide6/translations/qt_ja.qm",
+      "pyinstaller_kind": "DATA",
+      "source_basename": "qt_ja.qm",
+      "origin_status": "distribution-metadata-match",
+      "source_root_kind": "python-package",
+      "component_name": "PySide6_Essentials",
+      "version": "6.12.0",
+      "project_url_candidate": "https://pypi.org/project/PySide6_Essentials/6.12.0/",
+      "license_metadata_candidate": {
+        "field": "License",
+        "value": "LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only"
+      },
+      "license_file_path_candidates": [
+        "pyside6_essentials-6.12.0.dist-info/licenses/LicenseRef-Qt-Commercial.txt"
+      ]
+    },
+    {
+      "bundle_path": "_internal/PySide6/translations/qt_ka.qm",
+      "pyinstaller_kind": "DATA",
+      "source_basename": "qt_ka.qm",
+      "origin_status": "distribution-metadata-match",
+      "source_root_kind": "python-package",
+      "component_name": "PySide6_Essentials",
+      "version": "6.12.0",
+      "project_url_candidate": "https://pypi.org/project/PySide6_Essentials/6.12.0/",
+      "license_metadata_candidate": {
+        "field": "License",
+        "value": "LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only"
+      },
+      "license_file_path_candidates": [
+        "pyside6_essentials-6.12.0.dist-info/licenses/LicenseRef-Qt-Commercial.txt"
+      ]
+    },
+    {
+      "bundle_path": "_internal/PySide6/translations/qt_kk.qm",
+      "pyinstaller_kind": "DATA",
+      "source_basename": "qt_kk.qm",
+      "origin_status": "distribution-metadata-match",
+      "source_root_kind": "python-package",
+      "component_name": "PySide6_Essentials",
+      "version": "6.12.0",
+      "project_url_candidate": "https://pypi.org/project/PySide6_Essentials/6.12.0/",
+      "license_metadata_candidate": {
+        "field": "License",
+        "value": "LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only"
+      },
+      "license_file_path_candidates": [
+        "pyside6_essentials-6.12.0.dist-info/licenses/LicenseRef-Qt-Commercial.txt"
+      ]
+    },
+    {
+      "bundle_path": "_internal/PySide6/translations/qt_ko.qm",
+      "pyinstaller_kind": "DATA",
+      "source_basename": "qt_ko.qm",
+      "origin_status": "distribution-metadata-match",
+      "source_root_kind": "python-package",
+      "component_name": "PySide6_Essentials",
+      "version": "6.12.0",
+      "project_url_candidate": "https://pypi.org/project/PySide6_Essentials/6.12.0/",
+      "license_metadata_candidate": {
+        "field": "License",
+        "value": "LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only"
+      },
+      "license_file_path_candidates": [
+        "pyside6_essentials-6.12.0.dist-info/licenses/LicenseRef-Qt-Commercial.txt"
+      ]
+    },
+    {
+      "bundle_path": "_internal/PySide6/translations/qt_lg.qm",
+      "pyinstaller_kind": "DATA",
+      "source_basename": "qt_lg.qm",
+      "origin_status": "distribution-metadata-match",
+      "source_root_kind": "python-package",
+      "component_name": "PySide6_Essentials",
+      "version": "6.12.0",
+      "project_url_candidate": "https://pypi.org/project/PySide6_Essentials/6.12.0/",
+      "license_metadata_candidate": {
+        "field": "License",
+        "value": "LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only"
+      },
+      "license_file_path_candidates": [
+        "pyside6_essentials-6.12.0.dist-info/licenses/LicenseRef-Qt-Commercial.txt"
+      ]
+    },
+    {
+      "bundle_path": "_internal/PySide6/translations/qt_lt.qm",
+      "pyinstaller_kind": "DATA",
+      "source_basename": "qt_lt.qm",
+      "origin_status": "distribution-metadata-match",
+      "source_root_kind": "python-package",
+      "component_name": "PySide6_Essentials",
+      "version": "6.12.0",
+      "project_url_candidate": "https://pypi.org/project/PySide6_Essentials/6.12.0/",
+      "license_metadata_candidate": {
+        "field": "License",
+        "value": "LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only"
+      },
+      "license_file_path_candidates": [
+        "pyside6_essentials-6.12.0.dist-info/licenses/LicenseRef-Qt-Commercial.txt"
+      ]
+    },
+    {
+      "bundle_path": "_internal/PySide6/translations/qt_lv.qm",
+      "pyinstaller_kind": "DATA",
+      "source_basename": "qt_lv.qm",
+      "origin_status": "distribution-metadata-match",
+      "source_root_kind": "python-package",
+      "component_name": "PySide6_Essentials",
+      "version": "6.12.0",
+      "project_url_candidate": "https://pypi.org/project/PySide6_Essentials/6.12.0/",
+      "license_metadata_candidate": {
+        "field": "License",
+        "value": "LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only"
+      },
+      "license_file_path_candidates": [
+        "pyside6_essentials-6.12.0.dist-info/licenses/LicenseRef-Qt-Commercial.txt"
+      ]
+    },
+    {
+      "bundle_path": "_internal/PySide6/translations/qt_nl.qm",
+      "pyinstaller_kind": "DATA",
+      "source_basename": "qt_nl.qm",
+      "origin_status": "distribution-metadata-match",
+      "source_root_kind": "python-package",
+      "component_name": "PySide6_Essentials",
+      "version": "6.12.0",
+      "project_url_candidate": "https://pypi.org/project/PySide6_Essentials/6.12.0/",
+      "license_metadata_candidate": {
+        "field": "License",
+        "value": "LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only"
+      },
+      "license_file_path_candidates": [
+        "pyside6_essentials-6.12.0.dist-info/licenses/LicenseRef-Qt-Commercial.txt"
+      ]
+    },
+    {
+      "bundle_path": "_internal/PySide6/translations/qt_nn.qm",
+      "pyinstaller_kind": "DATA",
+      "source_basename": "qt_nn.qm",
+      "origin_status": "distribution-metadata-match",
+      "source_root_kind": "python-package",
+      "component_name": "PySide6_Essentials",
+      "version": "6.12.0",
+      "project_url_candidate": "https://pypi.org/project/PySide6_Essentials/6.12.0/",
+      "license_metadata_candidate": {
+        "field": "License",
+        "value": "LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only"
+      },
+      "license_file_path_candidates": [
+        "pyside6_essentials-6.12.0.dist-info/licenses/LicenseRef-Qt-Commercial.txt"
+      ]
+    },
+    {
+      "bundle_path": "_internal/PySide6/translations/qt_pl.qm",
+      "pyinstaller_kind": "DATA",
+      "source_basename": "qt_pl.qm",
+      "origin_status": "distribution-metadata-match",
+      "source_root_kind": "python-package",
+      "component_name": "PySide6_Essentials",
+      "version": "6.12.0",
+      "project_url_candidate": "https://pypi.org/project/PySide6_Essentials/6.12.0/",
+      "license_metadata_candidate": {
+        "field": "License",
+        "value": "LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only"
+      },
+      "license_file_path_candidates": [
+        "pyside6_essentials-6.12.0.dist-info/licenses/LicenseRef-Qt-Commercial.txt"
+      ]
+    },
+    {
+      "bundle_path": "_internal/PySide6/translations/qt_pt_BR.qm",
+      "pyinstaller_kind": "DATA",
+      "source_basename": "qt_pt_BR.qm",
+      "origin_status": "distribution-metadata-match",
+      "source_root_kind": "python-package",
+      "component_name": "PySide6_Essentials",
+      "version": "6.12.0",
+      "project_url_candidate": "https://pypi.org/project/PySide6_Essentials/6.12.0/",
+      "license_metadata_candidate": {
+        "field": "License",
+        "value": "LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only"
+      },
+      "license_file_path_candidates": [
+        "pyside6_essentials-6.12.0.dist-info/licenses/LicenseRef-Qt-Commercial.txt"
+      ]
+    },
+    {
+      "bundle_path": "_internal/PySide6/translations/qt_pt_PT.qm",
+      "pyinstaller_kind": "DATA",
+      "source_basename": "qt_pt_PT.qm",
+      "origin_status": "distribution-metadata-match",
+      "source_root_kind": "python-package",
+      "component_name": "PySide6_Essentials",
+      "version": "6.12.0",
+      "project_url_candidate": "https://pypi.org/project/PySide6_Essentials/6.12.0/",
+      "license_metadata_candidate": {
+        "field": "License",
+        "value": "LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only"
+      },
+      "license_file_path_candidates": [
+        "pyside6_essentials-6.12.0.dist-info/licenses/LicenseRef-Qt-Commercial.txt"
+      ]
+    },
+    {
+      "bundle_path": "_internal/PySide6/translations/qt_ru.qm",
+      "pyinstaller_kind": "DATA",
+      "source_basename": "qt_ru.qm",
+      "origin_status": "distribution-metadata-match",
+      "source_root_kind": "python-package",
+      "component_name": "PySide6_Essentials",
+      "version": "6.12.0",
+      "project_url_candidate": "https://pypi.org/project/PySide6_Essentials/6.12.0/",
+      "license_metadata_candidate": {
+        "field": "License",
+        "value": "LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only"
+      },
+      "license_file_path_candidates": [
+        "pyside6_essentials-6.12.0.dist-info/licenses/LicenseRef-Qt-Commercial.txt"
+      ]
+    },
+    {
+      "bundle_path": "_internal/PySide6/translations/qt_sk.qm",
+      "pyinstaller_kind": "DATA",
+      "source_basename": "qt_sk.qm",
+      "origin_status": "distribution-metadata-match",
+      "source_root_kind": "python-package",
+      "component_name": "PySide6_Essentials",
+      "version": "6.12.0",
+      "project_url_candidate": "https://pypi.org/project/PySide6_Essentials/6.12.0/",
+      "license_metadata_candidate": {
+        "field": "License",
+        "value": "LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only"
+      },
+      "license_file_path_candidates": [
+        "pyside6_essentials-6.12.0.dist-info/licenses/LicenseRef-Qt-Commercial.txt"
+      ]
+    },
+    {
+      "bundle_path": "_internal/PySide6/translations/qt_sl.qm",
+      "pyinstaller_kind": "DATA",
+      "source_basename": "qt_sl.qm",
+      "origin_status": "distribution-metadata-match",
+      "source_root_kind": "python-package",
+      "component_name": "PySide6_Essentials",
+      "version": "6.12.0",
+      "project_url_candidate": "https://pypi.org/project/PySide6_Essentials/6.12.0/",
+      "license_metadata_candidate": {
+        "field": "License",
+        "value": "LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only"
+      },
+      "license_file_path_candidates": [
+        "pyside6_essentials-6.12.0.dist-info/licenses/LicenseRef-Qt-Commercial.txt"
+      ]
+    },
+    {
+      "bundle_path": "_internal/PySide6/translations/qt_sv.qm",
+      "pyinstaller_kind": "DATA",
+      "source_basename": "qt_sv.qm",
+      "origin_status": "distribution-metadata-match",
+      "source_root_kind": "python-package",
+      "component_name": "PySide6_Essentials",
+      "version": "6.12.0",
+      "project_url_candidate": "https://pypi.org/project/PySide6_Essentials/6.12.0/",
+      "license_metadata_candidate": {
+        "field": "License",
+        "value": "LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only"
+      },
+      "license_file_path_candidates": [
+        "pyside6_essentials-6.12.0.dist-info/licenses/LicenseRef-Qt-Commercial.txt"
+      ]
+    },
+    {
+      "bundle_path": "_internal/PySide6/translations/qt_tr.qm",
+      "pyinstaller_kind": "DATA",
+      "source_basename": "qt_tr.qm",
+      "origin_status": "distribution-metadata-match",
+      "source_root_kind": "python-package",
+      "component_name": "PySide6_Essentials",
+      "version": "6.12.0",
+      "project_url_candidate": "https://pypi.org/project/PySide6_Essentials/6.12.0/",
+      "license_metadata_candidate": {
+        "field": "License",
+        "value": "LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only"
+      },
+      "license_file_path_candidates": [
+        "pyside6_essentials-6.12.0.dist-info/licenses/LicenseRef-Qt-Commercial.txt"
+      ]
+    },
+    {
+      "bundle_path": "_internal/PySide6/translations/qt_uk.qm",
+      "pyinstaller_kind": "DATA",
+      "source_basename": "qt_uk.qm",
+      "origin_status": "distribution-metadata-match",
+      "source_root_kind": "python-package",
+      "component_name": "PySide6_Essentials",
+      "version": "6.12.0",
+      "project_url_candidate": "https://pypi.org/project/PySide6_Essentials/6.12.0/",
+      "license_metadata_candidate": {
+        "field": "License",
+        "value": "LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only"
+      },
+      "license_file_path_candidates": [
+        "pyside6_essentials-6.12.0.dist-info/licenses/LicenseRef-Qt-Commercial.txt"
+      ]
+    },
+    {
+      "bundle_path": "_internal/PySide6/translations/qt_zh_CN.qm",
+      "pyinstaller_kind": "DATA",
+      "source_basename": "qt_zh_CN.qm",
+      "origin_status": "distribution-metadata-match",
+      "source_root_kind": "python-package",
+      "component_name": "PySide6_Essentials",
+      "version": "6.12.0",
+      "project_url_candidate": "https://pypi.org/project/PySide6_Essentials/6.12.0/",
+      "license_metadata_candidate": {
+        "field": "License",
+        "value": "LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only"
+      },
+      "license_file_path_candidates": [
+        "pyside6_essentials-6.12.0.dist-info/licenses/LicenseRef-Qt-Commercial.txt"
+      ]
+    },
+    {
+      "bundle_path": "_internal/PySide6/translations/qt_zh_TW.qm",
+      "pyinstaller_kind": "DATA",
+      "source_basename": "qt_zh_TW.qm",
+      "origin_status": "distribution-metadata-match",
+      "source_root_kind": "python-package",
+      "component_name": "PySide6_Essentials",
+      "version": "6.12.0",
+      "project_url_candidate": "https://pypi.org/project/PySide6_Essentials/6.12.0/",
+      "license_metadata_candidate": {
+        "field": "License",
+        "value": "LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only"
+      },
+      "license_file_path_candidates": [
+        "pyside6_essentials-6.12.0.dist-info/licenses/LicenseRef-Qt-Commercial.txt"
+      ]
+    },
+    {
+      "bundle_path": "_internal/PySide6/translations/qtbase_ar.qm",
+      "pyinstaller_kind": "DATA",
+      "source_basename": "qtbase_ar.qm",
+      "origin_status": "distribution-metadata-match",
+      "source_root_kind": "python-package",
+      "component_name": "PySide6_Essentials",
+      "version": "6.12.0",
+      "project_url_candidate": "https://pypi.org/project/PySide6_Essentials/6.12.0/",
+      "license_metadata_candidate": {
+        "field": "License",
+        "value": "LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only"
+      },
+      "license_file_path_candidates": [
+        "pyside6_essentials-6.12.0.dist-info/licenses/LicenseRef-Qt-Commercial.txt"
+      ]
+    },
+    {
+      "bundle_path": "_internal/PySide6/translations/qtbase_bg.qm",
+      "pyinstaller_kind": "DATA",
+      "source_basename": "qtbase_bg.qm",
+      "origin_status": "distribution-metadata-match",
+      "source_root_kind": "python-package",
+      "component_name": "PySide6_Essentials",
+      "version": "6.12.0",
+      "project_url_candidate": "https://pypi.org/project/PySide6_Essentials/6.12.0/",
+      "license_metadata_candidate": {
+        "field": "License",
+        "value": "LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only"
+      },
+      "license_file_path_candidates": [
+        "pyside6_essentials-6.12.0.dist-info/licenses/LicenseRef-Qt-Commercial.txt"
+      ]
+    },
+    {
+      "bundle_path": "_internal/PySide6/translations/qtbase_ca.qm",
+      "pyinstaller_kind": "DATA",
+      "source_basename": "qtbase_ca.qm",
+      "origin_status": "distribution-metadata-match",
+      "source_root_kind": "python-package",
+      "component_name": "PySide6_Essentials",
+      "version": "6.12.0",
+      "project_url_candidate": "https://pypi.org/project/PySide6_Essentials/6.12.0/",
+      "license_metadata_candidate": {
+        "field": "License",
+        "value": "LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only"
+      },
+      "license_file_path_candidates": [
+        "pyside6_essentials-6.12.0.dist-info/licenses/LicenseRef-Qt-Commercial.txt"
+      ]
+    },
+    {
+      "bundle_path": "_internal/PySide6/translations/qtbase_cs.qm",
+      "pyinstaller_kind": "DATA",
+      "source_basename": "qtbase_cs.qm",
+      "origin_status": "distribution-metadata-match",
+      "source_root_kind": "python-package",
+      "component_name": "PySide6_Essentials",
+      "version": "6.12.0",
+      "project_url_candidate": "https://pypi.org/project/PySide6_Essentials/6.12.0/",
+      "license_metadata_candidate": {
+        "field": "License",
+        "value": "LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only"
+      },
+      "license_file_path_candidates": [
+        "pyside6_essentials-6.12.0.dist-info/licenses/LicenseRef-Qt-Commercial.txt"
+      ]
+    },
+    {
+      "bundle_path": "_internal/PySide6/translations/qtbase_da.qm",
+      "pyinstaller_kind": "DATA",
+      "source_basename": "qtbase_da.qm",
+      "origin_status": "distribution-metadata-match",
+      "source_root_kind": "python-package",
+      "component_name": "PySide6_Essentials",
+      "version": "6.12.0",
+      "project_url_candidate": "https://pypi.org/project/PySide6_Essentials/6.12.0/",
+      "license_metadata_candidate": {
+        "field": "License",
+        "value": "LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only"
+      },
+      "license_file_path_candidates": [
+        "pyside6_essentials-6.12.0.dist-info/licenses/LicenseRef-Qt-Commercial.txt"
+      ]
+    },
+    {
+      "bundle_path": "_internal/PySide6/translations/qtbase_de.qm",
+      "pyinstaller_kind": "DATA",
+      "source_basename": "qtbase_de.qm",
+      "origin_status": "distribution-metadata-match",
+      "source_root_kind": "python-package",
+      "component_name": "PySide6_Essentials",
+      "version": "6.12.0",
+      "project_url_candidate": "https://pypi.org/project/PySide6_Essentials/6.12.0/",
+      "license_metadata_candidate": {
+        "field": "License",
+        "value": "LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only"
+      },
+      "license_file_path_candidates": [
+        "pyside6_essentials-6.12.0.dist-info/licenses/LicenseRef-Qt-Commercial.txt"
+      ]
+    },
+    {
+      "bundle_path": "_internal/PySide6/translations/qtbase_en.qm",
+      "pyinstaller_kind": "DATA",
+      "source_basename": "qtbase_en.qm",
+      "origin_status": "distribution-metadata-match",
+      "source_root_kind": "python-package",
+      "component_name": "PySide6_Essentials",
+      "version": "6.12.0",
+      "project_url_candidate": "https://pypi.org/project/PySide6_Essentials/6.12.0/",
+      "license_metadata_candidate": {
+        "field": "License",
+        "value": "LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only"
+      },
+      "license_file_path_candidates": [
+        "pyside6_essentials-6.12.0.dist-info/licenses/LicenseRef-Qt-Commercial.txt"
+      ]
+    },
+    {
+      "bundle_path": "_internal/PySide6/translations/qtbase_es.qm",
+      "pyinstaller_kind": "DATA",
+      "source_basename": "qtbase_es.qm",
+      "origin_status": "distribution-metadata-match",
+      "source_root_kind": "python-package",
+      "component_name": "PySide6_Essentials",
+      "version": "6.12.0",
+      "project_url_candidate": "https://pypi.org/project/PySide6_Essentials/6.12.0/",
+      "license_metadata_candidate": {
+        "field": "License",
+        "value": "LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only"
+      },
+      "license_file_path_candidates": [
+        "pyside6_essentials-6.12.0.dist-info/licenses/LicenseRef-Qt-Commercial.txt"
+      ]
+    },
+    {
+      "bundle_path": "_internal/PySide6/translations/qtbase_fa.qm",
+      "pyinstaller_kind": "DATA",
+      "source_basename": "qtbase_fa.qm",
+      "origin_status": "distribution-metadata-match",
+      "source_root_kind": "python-package",
+      "component_name": "PySide6_Essentials",
+      "version": "6.12.0",
+      "project_url_candidate": "https://pypi.org/project/PySide6_Essentials/6.12.0/",
+      "license_metadata_candidate": {
+        "field": "License",
+        "value": "LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only"
+      },
+      "license_file_path_candidates": [
+        "pyside6_essentials-6.12.0.dist-info/licenses/LicenseRef-Qt-Commercial.txt"
+      ]
+    },
+    {
+      "bundle_path": "_internal/PySide6/translations/qtbase_fi.qm",
+      "pyinstaller_kind": "DATA",
+      "source_basename": "qtbase_fi.qm",
+      "origin_status": "distribution-metadata-match",
+      "source_root_kind": "python-package",
+      "component_name": "PySide6_Essentials",
+      "version": "6.12.0",
+      "project_url_candidate": "https://pypi.org/project/PySide6_Essentials/6.12.0/",
+      "license_metadata_candidate": {
+        "field": "License",
+        "value": "LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only"
+      },
+      "license_file_path_candidates": [
+        "pyside6_essentials-6.12.0.dist-info/licenses/LicenseRef-Qt-Commercial.txt"
+      ]
+    },
+    {
+      "bundle_path": "_internal/PySide6/translations/qtbase_fr.qm",
+      "pyinstaller_kind": "DATA",
+      "source_basename": "qtbase_fr.qm",
+      "origin_status": "distribution-metadata-match",
+      "source_root_kind": "python-package",
+      "component_name": "PySide6_Essentials",
+      "version": "6.12.0",
+      "project_url_candidate": "https://pypi.org/project/PySide6_Essentials/6.12.0/",
+      "license_metadata_candidate": {
+        "field": "License",
+        "value": "LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only"
+      },
+      "license_file_path_candidates": [
+        "pyside6_essentials-6.12.0.dist-info/licenses/LicenseRef-Qt-Commercial.txt"
+      ]
+    },
+    {
+      "bundle_path": "_internal/PySide6/translations/qtbase_gd.qm",
+      "pyinstaller_kind": "DATA",
+      "source_basename": "qtbase_gd.qm",
+      "origin_status": "distribution-metadata-match",
+      "source_root_kind": "python-package",
+      "component_name": "PySide6_Essentials",
+      "version": "6.12.0",
+      "project_url_candidate": "https://pypi.org/project/PySide6_Essentials/6.12.0/",
+      "license_metadata_candidate": {
+        "field": "License",
+        "value": "LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only"
+      },
+      "license_file_path_candidates": [
+        "pyside6_essentials-6.12.0.dist-info/licenses/LicenseRef-Qt-Commercial.txt"
+      ]
+    },
+    {
+      "bundle_path": "_internal/PySide6/translations/qtbase_he.qm",
+      "pyinstaller_kind": "DATA",
+      "source_basename": "qtbase_he.qm",
+      "origin_status": "distribution-metadata-match",
+      "source_root_kind": "python-package",
+      "component_name": "PySide6_Essentials",
+      "version": "6.12.0",
+      "project_url_candidate": "https://pypi.org/project/PySide6_Essentials/6.12.0/",
+      "license_metadata_candidate": {
+        "field": "License",
+        "value": "LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only"
+      },
+      "license_file_path_candidates": [
+        "pyside6_essentials-6.12.0.dist-info/licenses/LicenseRef-Qt-Commercial.txt"
+      ]
+    },
+    {
+      "bundle_path": "_internal/PySide6/translations/qtbase_hr.qm",
+      "pyinstaller_kind": "DATA",
+      "source_basename": "qtbase_hr.qm",
+      "origin_status": "distribution-metadata-match",
+      "source_root_kind": "python-package",
+      "component_name": "PySide6_Essentials",
+      "version": "6.12.0",
+      "project_url_candidate": "https://pypi.org/project/PySide6_Essentials/6.12.0/",
+      "license_metadata_candidate": {
+        "field": "License",
+        "value": "LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only"
+      },
+      "license_file_path_candidates": [
+        "pyside6_essentials-6.12.0.dist-info/licenses/LicenseRef-Qt-Commercial.txt"
+      ]
+    },
+    {
+      "bundle_path": "_internal/PySide6/translations/qtbase_hu.qm",
+      "pyinstaller_kind": "DATA",
+      "source_basename": "qtbase_hu.qm",
+      "origin_status": "distribution-metadata-match",
+      "source_root_kind": "python-package",
+      "component_name": "PySide6_Essentials",
+      "version": "6.12.0",
+      "project_url_candidate": "https://pypi.org/project/PySide6_Essentials/6.12.0/",
+      "license_metadata_candidate": {
+        "field": "License",
+        "value": "LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only"
+      },
+      "license_file_path_candidates": [
+        "pyside6_essentials-6.12.0.dist-info/licenses/LicenseRef-Qt-Commercial.txt"
+      ]
+    },
+    {
+      "bundle_path": "_internal/PySide6/translations/qtbase_it.qm",
+      "pyinstaller_kind": "DATA",
+      "source_basename": "qtbase_it.qm",
+      "origin_status": "distribution-metadata-match",
+      "source_root_kind": "python-package",
+      "component_name": "PySide6_Essentials",
+      "version": "6.12.0",
+      "project_url_candidate": "https://pypi.org/project/PySide6_Essentials/6.12.0/",
+      "license_metadata_candidate": {
+        "field": "License",
+        "value": "LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only"
+      },
+      "license_file_path_candidates": [
+        "pyside6_essentials-6.12.0.dist-info/licenses/LicenseRef-Qt-Commercial.txt"
+      ]
+    },
+    {
+      "bundle_path": "_internal/PySide6/translations/qtbase_ja.qm",
+      "pyinstaller_kind": "DATA",
+      "source_basename": "qtbase_ja.qm",
+      "origin_status": "distribution-metadata-match",
+      "source_root_kind": "python-package",
+      "component_name": "PySide6_Essentials",
+      "version": "6.12.0",
+      "project_url_candidate": "https://pypi.org/project/PySide6_Essentials/6.12.0/",
+      "license_metadata_candidate": {
+        "field": "License",
+        "value": "LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only"
+      },
+      "license_file_path_candidates": [
+        "pyside6_essentials-6.12.0.dist-info/licenses/LicenseRef-Qt-Commercial.txt"
+      ]
+    },
+    {
+      "bundle_path": "_internal/PySide6/translations/qtbase_ka.qm",
+      "pyinstaller_kind": "DATA",
+      "source_basename": "qtbase_ka.qm",
+      "origin_status": "distribution-metadata-match",
+      "source_root_kind": "python-package",
+      "component_name": "PySide6_Essentials",
+      "version": "6.12.0",
+      "project_url_candidate": "https://pypi.org/project/PySide6_Essentials/6.12.0/",
+      "license_metadata_candidate": {
+        "field": "License",
+        "value": "LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only"
+      },
+      "license_file_path_candidates": [
+        "pyside6_essentials-6.12.0.dist-info/licenses/LicenseRef-Qt-Commercial.txt"
+      ]
+    },
+    {
+      "bundle_path": "_internal/PySide6/translations/qtbase_kk.qm",
+      "pyinstaller_kind": "DATA",
+      "source_basename": "qtbase_kk.qm",
+      "origin_status": "distribution-metadata-match",
+      "source_root_kind": "python-package",
+      "component_name": "PySide6_Essentials",
+      "version": "6.12.0",
+      "project_url_candidate": "https://pypi.org/project/PySide6_Essentials/6.12.0/",
+      "license_metadata_candidate": {
+        "field": "License",
+        "value": "LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only"
+      },
+      "license_file_path_candidates": [
+        "pyside6_essentials-6.12.0.dist-info/licenses/LicenseRef-Qt-Commercial.txt"
+      ]
+    },
+    {
+      "bundle_path": "_internal/PySide6/translations/qtbase_ko.qm",
+      "pyinstaller_kind": "DATA",
+      "source_basename": "qtbase_ko.qm",
+      "origin_status": "distribution-metadata-match",
+      "source_root_kind": "python-package",
+      "component_name": "PySide6_Essentials",
+      "version": "6.12.0",
+      "project_url_candidate": "https://pypi.org/project/PySide6_Essentials/6.12.0/",
+      "license_metadata_candidate": {
+        "field": "License",
+        "value": "LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only"
+      },
+      "license_file_path_candidates": [
+        "pyside6_essentials-6.12.0.dist-info/licenses/LicenseRef-Qt-Commercial.txt"
+      ]
+    },
+    {
+      "bundle_path": "_internal/PySide6/translations/qtbase_lg.qm",
+      "pyinstaller_kind": "DATA",
+      "source_basename": "qtbase_lg.qm",
+      "origin_status": "distribution-metadata-match",
+      "source_root_kind": "python-package",
+      "component_name": "PySide6_Essentials",
+      "version": "6.12.0",
+      "project_url_candidate": "https://pypi.org/project/PySide6_Essentials/6.12.0/",
+      "license_metadata_candidate": {
+        "field": "License",
+        "value": "LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only"
+      },
+      "license_file_path_candidates": [
+        "pyside6_essentials-6.12.0.dist-info/licenses/LicenseRef-Qt-Commercial.txt"
+      ]
+    },
+    {
+      "bundle_path": "_internal/PySide6/translations/qtbase_lv.qm",
+      "pyinstaller_kind": "DATA",
+      "source_basename": "qtbase_lv.qm",
+      "origin_status": "distribution-metadata-match",
+      "source_root_kind": "python-package",
+      "component_name": "PySide6_Essentials",
+      "version": "6.12.0",
+      "project_url_candidate": "https://pypi.org/project/PySide6_Essentials/6.12.0/",
+      "license_metadata_candidate": {
+        "field": "License",
+        "value": "LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only"
+      },
+      "license_file_path_candidates": [
+        "pyside6_essentials-6.12.0.dist-info/licenses/LicenseRef-Qt-Commercial.txt"
+      ]
+    },
+    {
+      "bundle_path": "_internal/PySide6/translations/qtbase_nl.qm",
+      "pyinstaller_kind": "DATA",
+      "source_basename": "qtbase_nl.qm",
+      "origin_status": "distribution-metadata-match",
+      "source_root_kind": "python-package",
+      "component_name": "PySide6_Essentials",
+      "version": "6.12.0",
+      "project_url_candidate": "https://pypi.org/project/PySide6_Essentials/6.12.0/",
+      "license_metadata_candidate": {
+        "field": "License",
+        "value": "LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only"
+      },
+      "license_file_path_candidates": [
+        "pyside6_essentials-6.12.0.dist-info/licenses/LicenseRef-Qt-Commercial.txt"
+      ]
+    },
+    {
+      "bundle_path": "_internal/PySide6/translations/qtbase_nn.qm",
+      "pyinstaller_kind": "DATA",
+      "source_basename": "qtbase_nn.qm",
+      "origin_status": "distribution-metadata-match",
+      "source_root_kind": "python-package",
+      "component_name": "PySide6_Essentials",
+      "version": "6.12.0",
+      "project_url_candidate": "https://pypi.org/project/PySide6_Essentials/6.12.0/",
+      "license_metadata_candidate": {
+        "field": "License",
+        "value": "LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only"
+      },
+      "license_file_path_candidates": [
+        "pyside6_essentials-6.12.0.dist-info/licenses/LicenseRef-Qt-Commercial.txt"
+      ]
+    },
+    {
+      "bundle_path": "_internal/PySide6/translations/qtbase_pl.qm",
+      "pyinstaller_kind": "DATA",
+      "source_basename": "qtbase_pl.qm",
+      "origin_status": "distribution-metadata-match",
+      "source_root_kind": "python-package",
+      "component_name": "PySide6_Essentials",
+      "version": "6.12.0",
+      "project_url_candidate": "https://pypi.org/project/PySide6_Essentials/6.12.0/",
+      "license_metadata_candidate": {
+        "field": "License",
+        "value": "LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only"
+      },
+      "license_file_path_candidates": [
+        "pyside6_essentials-6.12.0.dist-info/licenses/LicenseRef-Qt-Commercial.txt"
+      ]
+    },
+    {
+      "bundle_path": "_internal/PySide6/translations/qtbase_pt_BR.qm",
+      "pyinstaller_kind": "DATA",
+      "source_basename": "qtbase_pt_BR.qm",
+      "origin_status": "distribution-metadata-match",
+      "source_root_kind": "python-package",
+      "component_name": "PySide6_Essentials",
+      "version": "6.12.0",
+      "project_url_candidate": "https://pypi.org/project/PySide6_Essentials/6.12.0/",
+      "license_metadata_candidate": {
+        "field": "License",
+        "value": "LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only"
+      },
+      "license_file_path_candidates": [
+        "pyside6_essentials-6.12.0.dist-info/licenses/LicenseRef-Qt-Commercial.txt"
+      ]
+    },
+    {
+      "bundle_path": "_internal/PySide6/translations/qtbase_ru.qm",
+      "pyinstaller_kind": "DATA",
+      "source_basename": "qtbase_ru.qm",
+      "origin_status": "distribution-metadata-match",
+      "source_root_kind": "python-package",
+      "component_name": "PySide6_Essentials",
+      "version": "6.12.0",
+      "project_url_candidate": "https://pypi.org/project/PySide6_Essentials/6.12.0/",
+      "license_metadata_candidate": {
+        "field": "License",
+        "value": "LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only"
+      },
+      "license_file_path_candidates": [
+        "pyside6_essentials-6.12.0.dist-info/licenses/LicenseRef-Qt-Commercial.txt"
+      ]
+    },
+    {
+      "bundle_path": "_internal/PySide6/translations/qtbase_sk.qm",
+      "pyinstaller_kind": "DATA",
+      "source_basename": "qtbase_sk.qm",
+      "origin_status": "distribution-metadata-match",
+      "source_root_kind": "python-package",
+      "component_name": "PySide6_Essentials",
+      "version": "6.12.0",
+      "project_url_candidate": "https://pypi.org/project/PySide6_Essentials/6.12.0/",
+      "license_metadata_candidate": {
+        "field": "License",
+        "value": "LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only"
+      },
+      "license_file_path_candidates": [
+        "pyside6_essentials-6.12.0.dist-info/licenses/LicenseRef-Qt-Commercial.txt"
+      ]
+    },
+    {
+      "bundle_path": "_internal/PySide6/translations/qtbase_sv.qm",
+      "pyinstaller_kind": "DATA",
+      "source_basename": "qtbase_sv.qm",
+      "origin_status": "distribution-metadata-match",
+      "source_root_kind": "python-package",
+      "component_name": "PySide6_Essentials",
+      "version": "6.12.0",
+      "project_url_candidate": "https://pypi.org/project/PySide6_Essentials/6.12.0/",
+      "license_metadata_candidate": {
+        "field": "License",
+        "value": "LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only"
+      },
+      "license_file_path_candidates": [
+        "pyside6_essentials-6.12.0.dist-info/licenses/LicenseRef-Qt-Commercial.txt"
+      ]
+    },
+    {
+      "bundle_path": "_internal/PySide6/translations/qtbase_tr.qm",
+      "pyinstaller_kind": "DATA",
+      "source_basename": "qtbase_tr.qm",
+      "origin_status": "distribution-metadata-match",
+      "source_root_kind": "python-package",
+      "component_name": "PySide6_Essentials",
+      "version": "6.12.0",
+      "project_url_candidate": "https://pypi.org/project/PySide6_Essentials/6.12.0/",
+      "license_metadata_candidate": {
+        "field": "License",
+        "value": "LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only"
+      },
+      "license_file_path_candidates": [
+        "pyside6_essentials-6.12.0.dist-info/licenses/LicenseRef-Qt-Commercial.txt"
+      ]
+    },
+    {
+      "bundle_path": "_internal/PySide6/translations/qtbase_uk.qm",
+      "pyinstaller_kind": "DATA",
+      "source_basename": "qtbase_uk.qm",
+      "origin_status": "distribution-metadata-match",
+      "source_root_kind": "python-package",
+      "component_name": "PySide6_Essentials",
+      "version": "6.12.0",
+      "project_url_candidate": "https://pypi.org/project/PySide6_Essentials/6.12.0/",
+      "license_metadata_candidate": {
+        "field": "License",
+        "value": "LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only"
+      },
+      "license_file_path_candidates": [
+        "pyside6_essentials-6.12.0.dist-info/licenses/LicenseRef-Qt-Commercial.txt"
+      ]
+    },
+    {
+      "bundle_path": "_internal/PySide6/translations/qtbase_zh_CN.qm",
+      "pyinstaller_kind": "DATA",
+      "source_basename": "qtbase_zh_CN.qm",
+      "origin_status": "distribution-metadata-match",
+      "source_root_kind": "python-package",
+      "component_name": "PySide6_Essentials",
+      "version": "6.12.0",
+      "project_url_candidate": "https://pypi.org/project/PySide6_Essentials/6.12.0/",
+      "license_metadata_candidate": {
+        "field": "License",
+        "value": "LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only"
+      },
+      "license_file_path_candidates": [
+        "pyside6_essentials-6.12.0.dist-info/licenses/LicenseRef-Qt-Commercial.txt"
+      ]
+    },
+    {
+      "bundle_path": "_internal/PySide6/translations/qtbase_zh_TW.qm",
+      "pyinstaller_kind": "DATA",
+      "source_basename": "qtbase_zh_TW.qm",
+      "origin_status": "distribution-metadata-match",
+      "source_root_kind": "python-package",
+      "component_name": "PySide6_Essentials",
+      "version": "6.12.0",
+      "project_url_candidate": "https://pypi.org/project/PySide6_Essentials/6.12.0/",
+      "license_metadata_candidate": {
+        "field": "License",
+        "value": "LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only"
+      },
+      "license_file_path_candidates": [
+        "pyside6_essentials-6.12.0.dist-info/licenses/LicenseRef-Qt-Commercial.txt"
+      ]
+    },
+    {
+      "bundle_path": "_internal/VCRUNTIME140.dll",
+      "pyinstaller_kind": "BINARY",
+      "source_basename": "vcruntime140.dll",
+      "origin_status": "python-runtime-path",
+      "source_root_kind": "python-runtime",
+      "component_name": "Python runtime",
+      "version": "3.12.16"
+    },
+    {
+      "bundle_path": "_internal/VCRUNTIME140_1.dll",
+      "pyinstaller_kind": "BINARY",
+      "source_basename": "vcruntime140_1.dll",
+      "origin_status": "python-runtime-path",
+      "source_root_kind": "python-runtime",
+      "component_name": "Python runtime",
+      "version": "3.12.16"
+    },
+    {
+      "bundle_path": "_internal/_asyncio.pyd",
+      "pyinstaller_kind": "EXTENSION",
+      "source_basename": "_asyncio.pyd",
+      "origin_status": "python-runtime-path",
+      "source_root_kind": "python-runtime",
+      "component_name": "Python runtime",
+      "version": "3.12.16"
+    },
+    {
+      "bundle_path": "_internal/_bz2.pyd",
+      "pyinstaller_kind": "EXTENSION",
+      "source_basename": "_bz2.pyd",
+      "origin_status": "python-runtime-path",
+      "source_root_kind": "python-runtime",
+      "component_name": "Python runtime",
+      "version": "3.12.16"
+    },
+    {
+      "bundle_path": "_internal/_ctypes.pyd",
+      "pyinstaller_kind": "EXTENSION",
+      "source_basename": "_ctypes.pyd",
+      "origin_status": "python-runtime-path",
+      "source_root_kind": "python-runtime",
+      "component_name": "Python runtime",
+      "version": "3.12.16"
+    },
+    {
+      "bundle_path": "_internal/_decimal.pyd",
+      "pyinstaller_kind": "EXTENSION",
+      "source_basename": "_decimal.pyd",
+      "origin_status": "python-runtime-path",
+      "source_root_kind": "python-runtime",
+      "component_name": "Python runtime",
+      "version": "3.12.16"
+    },
+    {
+      "bundle_path": "_internal/_elementtree.pyd",
+      "pyinstaller_kind": "EXTENSION",
+      "source_basename": "_elementtree.pyd",
+      "origin_status": "python-runtime-path",
+      "source_root_kind": "python-runtime",
+      "component_name": "Python runtime",
+      "version": "3.12.16"
+    },
+    {
+      "bundle_path": "_internal/_hashlib.pyd",
+      "pyinstaller_kind": "EXTENSION",
+      "source_basename": "_hashlib.pyd",
+      "origin_status": "python-runtime-path",
+      "source_root_kind": "python-runtime",
+      "component_name": "Python runtime",
+      "version": "3.12.16"
+    },
+    {
+      "bundle_path": "_internal/_lzma.pyd",
+      "pyinstaller_kind": "EXTENSION",
+      "source_basename": "_lzma.pyd",
+      "origin_status": "python-runtime-path",
+      "source_root_kind": "python-runtime",
+      "component_name": "Python runtime",
+      "version": "3.12.16"
+    },
+    {
+      "bundle_path": "_internal/_multiprocessing.pyd",
+      "pyinstaller_kind": "EXTENSION",
+      "source_basename": "_multiprocessing.pyd",
+      "origin_status": "python-runtime-path",
+      "source_root_kind": "python-runtime",
+      "component_name": "Python runtime",
+      "version": "3.12.16"
+    },
+    {
+      "bundle_path": "_internal/_overlapped.pyd",
+      "pyinstaller_kind": "EXTENSION",
+      "source_basename": "_overlapped.pyd",
+      "origin_status": "python-runtime-path",
+      "source_root_kind": "python-runtime",
+      "component_name": "Python runtime",
+      "version": "3.12.16"
+    },
+    {
+      "bundle_path": "_internal/_queue.pyd",
+      "pyinstaller_kind": "EXTENSION",
+      "source_basename": "_queue.pyd",
+      "origin_status": "python-runtime-path",
+      "source_root_kind": "python-runtime",
+      "component_name": "Python runtime",
+      "version": "3.12.16"
+    },
+    {
+      "bundle_path": "_internal/_socket.pyd",
+      "pyinstaller_kind": "EXTENSION",
+      "source_basename": "_socket.pyd",
+      "origin_status": "python-runtime-path",
+      "source_root_kind": "python-runtime",
+      "component_name": "Python runtime",
+      "version": "3.12.16"
+    },
+    {
+      "bundle_path": "_internal/_sqlite3.pyd",
+      "pyinstaller_kind": "EXTENSION",
+      "source_basename": "_sqlite3.pyd",
+      "origin_status": "python-runtime-path",
+      "source_root_kind": "python-runtime",
+      "component_name": "Python runtime",
+      "version": "3.12.16"
+    },
+    {
+      "bundle_path": "_internal/_ssl.pyd",
+      "pyinstaller_kind": "EXTENSION",
+      "source_basename": "_ssl.pyd",
+      "origin_status": "python-runtime-path",
+      "source_root_kind": "python-runtime",
+      "component_name": "Python runtime",
+      "version": "3.12.16"
+    },
+    {
+      "bundle_path": "_internal/_uuid.pyd",
+      "pyinstaller_kind": "EXTENSION",
+      "source_basename": "_uuid.pyd",
+      "origin_status": "python-runtime-path",
+      "source_root_kind": "python-runtime",
+      "component_name": "Python runtime",
+      "version": "3.12.16"
+    },
+    {
+      "bundle_path": "_internal/_wmi.pyd",
+      "pyinstaller_kind": "EXTENSION",
+      "source_basename": "_wmi.pyd",
+      "origin_status": "python-runtime-path",
+      "source_root_kind": "python-runtime",
+      "component_name": "Python runtime",
+      "version": "3.12.16"
+    },
+    {
+      "bundle_path": "_internal/_zoneinfo.pyd",
+      "pyinstaller_kind": "EXTENSION",
+      "source_basename": "_zoneinfo.pyd",
+      "origin_status": "python-runtime-path",
+      "source_root_kind": "python-runtime",
+      "component_name": "Python runtime",
+      "version": "3.12.16"
+    },
+    {
+      "bundle_path": "_internal/base_library.zip",
+      "pyinstaller_kind": "DATA",
+      "source_basename": "base_library.zip",
+      "origin_status": "pyinstaller-build-output",
+      "source_root_kind": "python-package",
+      "component_name": "pyinstaller",
+      "version": "6.22.3",
+      "project_url_candidate": "https://pypi.org/project/pyinstaller/6.22.3/",
+      "license_metadata_candidate": {
+        "field": "License",
+        "value": "GPLv2-or-later with a special exception which allows to use PyInstaller to build and distribute non-free programs (including commercial ones)"
+      },
+      "license_file_path_candidates": [
+        "pyinstaller-6.22.3.dist-info/licenses/COPYING.txt"
+      ]
+    },
+    {
+      "bundle_path": "_internal/libcrypto-3-x64.dll",
+      "pyinstaller_kind": "BINARY",
+      "source_basename": "libcrypto-3-x64.dll",
+      "origin_status": "python-runtime-path",
+      "source_root_kind": "python-runtime",
+      "component_name": "Python runtime",
+      "version": "3.12.16"
+    },
+    {
+      "bundle_path": "_internal/libffi-8.dll",
+      "pyinstaller_kind": "BINARY",
+      "source_basename": "libffi-8.dll",
+      "origin_status": "python-runtime-path",
+      "source_root_kind": "python-runtime",
+      "component_name": "Python runtime",
+      "version": "3.12.16"
+    },
+    {
+      "bundle_path": "_internal/libssl-3-x64.dll",
+      "pyinstaller_kind": "BINARY",
+      "source_basename": "libssl-3-x64.dll",
+      "origin_status": "python-runtime-path",
+      "source_root_kind": "python-runtime",
+      "component_name": "Python runtime",
+      "version": "3.12.16"
+    },
+    {
+      "bundle_path": "_internal/manga_to_kindle/infrastructure/persistence/migrations/__init__.py",
+      "pyinstaller_kind": "DATA",
+      "source_basename": "__init__.py",
+      "origin_status": "application-source",
+      "source_root_kind": "project-source",
+      "component_name": "Manga to Kindle application"
+    },
+    {
+      "bundle_path": "_internal/manga_to_kindle/infrastructure/persistence/migrations/env.py",
+      "pyinstaller_kind": "DATA",
+      "source_basename": "env.py",
+      "origin_status": "application-source",
+      "source_root_kind": "project-source",
+      "component_name": "Manga to Kindle application"
+    },
+    {
+      "bundle_path": "_internal/manga_to_kindle/infrastructure/persistence/migrations/versions/0001_initial_schema.py",
+      "pyinstaller_kind": "DATA",
+      "source_basename": "0001_initial_schema.py",
+      "origin_status": "application-source",
+      "source_root_kind": "project-source",
+      "component_name": "Manga to Kindle application"
+    },
+    {
+      "bundle_path": "_internal/manga_to_kindle/infrastructure/persistence/migrations/versions/0002_catalog_snapshot.py",
+      "pyinstaller_kind": "DATA",
+      "source_basename": "0002_catalog_snapshot.py",
+      "origin_status": "application-source",
+      "source_root_kind": "project-source",
+      "component_name": "Manga to Kindle application"
+    },
+    {
+      "bundle_path": "_internal/manga_to_kindle/infrastructure/persistence/migrations/versions/0003_download_queue.py",
+      "pyinstaller_kind": "DATA",
+      "source_basename": "0003_download_queue.py",
+      "origin_status": "application-source",
+      "source_root_kind": "project-source",
+      "component_name": "Manga to Kindle application"
+    },
+    {
+      "bundle_path": "_internal/manga_to_kindle/infrastructure/persistence/migrations/versions/0004_image_import.py",
+      "pyinstaller_kind": "DATA",
+      "source_basename": "0004_image_import.py",
+      "origin_status": "application-source",
+      "source_root_kind": "project-source",
+      "component_name": "Manga to Kindle application"
+    },
+    {
+      "bundle_path": "_internal/manga_to_kindle/infrastructure/persistence/migrations/versions/0005_export_artifacts.py",
+      "pyinstaller_kind": "DATA",
+      "source_basename": "0005_export_artifacts.py",
+      "origin_status": "application-source",
+      "source_root_kind": "project-source",
+      "component_name": "Manga to Kindle application"
+    },
+    {
+      "bundle_path": "_internal/manga_to_kindle/infrastructure/persistence/migrations/versions/0006_library.py",
+      "pyinstaller_kind": "DATA",
+      "source_basename": "0006_library.py",
+      "origin_status": "application-source",
+      "source_root_kind": "project-source",
+      "component_name": "Manga to Kindle application"
+    },
+    {
+      "bundle_path": "_internal/manga_to_kindle/infrastructure/persistence/migrations/versions/0007_transfers.py",
+      "pyinstaller_kind": "DATA",
+      "source_basename": "0007_transfers.py",
+      "origin_status": "application-source",
+      "source_root_kind": "project-source",
+      "component_name": "Manga to Kindle application"
+    },
+    {
+      "bundle_path": "_internal/manga_to_kindle/infrastructure/persistence/migrations/versions/0008_settings.py",
+      "pyinstaller_kind": "DATA",
+      "source_basename": "0008_settings.py",
+      "origin_status": "application-source",
+      "source_root_kind": "project-source",
+      "component_name": "Manga to Kindle application"
+    },
+    {
+      "bundle_path": "_internal/manga_to_kindle/infrastructure/persistence/migrations/versions/0009_profile_dimensions.py",
+      "pyinstaller_kind": "DATA",
+      "source_basename": "0009_profile_dimensions.py",
+      "origin_status": "application-source",
+      "source_root_kind": "project-source",
+      "component_name": "Manga to Kindle application"
+    },
+    {
+      "bundle_path": "_internal/manga_to_kindle/infrastructure/persistence/migrations/versions/0010_catalog_updates.py",
+      "pyinstaller_kind": "DATA",
+      "source_basename": "0010_catalog_updates.py",
+      "origin_status": "application-source",
+      "source_root_kind": "project-source",
+      "component_name": "Manga to Kindle application"
+    },
+    {
+      "bundle_path": "_internal/manga_to_kindle/infrastructure/persistence/migrations/versions/0011_mobi_export_artifacts.py",
+      "pyinstaller_kind": "DATA",
+      "source_basename": "0011_mobi_export_artifacts.py",
+      "origin_status": "application-source",
+      "source_root_kind": "project-source",
+      "component_name": "Manga to Kindle application"
+    },
+    {
+      "bundle_path": "_internal/manga_to_kindle/infrastructure/persistence/migrations/versions/__init__.py",
+      "pyinstaller_kind": "DATA",
+      "source_basename": "__init__.py",
+      "origin_status": "application-source",
+      "source_root_kind": "project-source",
+      "component_name": "Manga to Kindle application"
+    },
+    {
+      "bundle_path": "_internal/markupsafe-3.0.4.dist-info/INSTALLER",
+      "pyinstaller_kind": "DATA",
+      "source_basename": "INSTALLER",
+      "origin_status": "distribution-metadata-match",
+      "source_root_kind": "python-package",
+      "component_name": "MarkupSafe",
+      "version": "3.0.4",
+      "project_url_candidate": "https://pypi.org/project/MarkupSafe/3.0.4/",
+      "license_metadata_candidate": {
+        "field": "License-Expression",
+        "value": "BSD-3-Clause"
+      },
+      "license_file_path_candidates": [
+        "markupsafe-3.0.4.dist-info/licenses/LICENSE.txt"
+      ]
+    },
+    {
+      "bundle_path": "_internal/markupsafe-3.0.4.dist-info/METADATA",
+      "pyinstaller_kind": "DATA",
+      "source_basename": "METADATA",
+      "origin_status": "distribution-metadata-match",
+      "source_root_kind": "python-package",
+      "component_name": "MarkupSafe",
+      "version": "3.0.4",
+      "project_url_candidate": "https://pypi.org/project/MarkupSafe/3.0.4/",
+      "license_metadata_candidate": {
+        "field": "License-Expression",
+        "value": "BSD-3-Clause"
+      },
+      "license_file_path_candidates": [
+        "markupsafe-3.0.4.dist-info/licenses/LICENSE.txt"
+      ]
+    },
+    {
+      "bundle_path": "_internal/markupsafe-3.0.4.dist-info/RECORD",
+      "pyinstaller_kind": "DATA",
+      "source_basename": "RECORD",
+      "origin_status": "distribution-metadata-match",
+      "source_root_kind": "python-package",
+      "component_name": "MarkupSafe",
+      "version": "3.0.4",
+      "project_url_candidate": "https://pypi.org/project/MarkupSafe/3.0.4/",
+      "license_metadata_candidate": {
+        "field": "License-Expression",
+        "value": "BSD-3-Clause"
+      },
+      "license_file_path_candidates": [
+        "markupsafe-3.0.4.dist-info/licenses/LICENSE.txt"
+      ]
+    },
+    {
+      "bundle_path": "_internal/markupsafe-3.0.4.dist-info/REQUESTED",
+      "pyinstaller_kind": "DATA",
+      "source_basename": "REQUESTED",
+      "origin_status": "distribution-metadata-match",
+      "source_root_kind": "python-package",
+      "component_name": "MarkupSafe",
+      "version": "3.0.4",
+      "project_url_candidate": "https://pypi.org/project/MarkupSafe/3.0.4/",
+      "license_metadata_candidate": {
+        "field": "License-Expression",
+        "value": "BSD-3-Clause"
+      },
+      "license_file_path_candidates": [
+        "markupsafe-3.0.4.dist-info/licenses/LICENSE.txt"
+      ]
+    },
+    {
+      "bundle_path": "_internal/markupsafe-3.0.4.dist-info/WHEEL",
+      "pyinstaller_kind": "DATA",
+      "source_basename": "WHEEL",
+      "origin_status": "distribution-metadata-match",
+      "source_root_kind": "python-package",
+      "component_name": "MarkupSafe",
+      "version": "3.0.4",
+      "project_url_candidate": "https://pypi.org/project/MarkupSafe/3.0.4/",
+      "license_metadata_candidate": {
+        "field": "License-Expression",
+        "value": "BSD-3-Clause"
+      },
+      "license_file_path_candidates": [
+        "markupsafe-3.0.4.dist-info/licenses/LICENSE.txt"
+      ]
+    },
+    {
+      "bundle_path": "_internal/markupsafe-3.0.4.dist-info/licenses/LICENSE.txt",
+      "pyinstaller_kind": "DATA",
+      "source_basename": "LICENSE.txt",
+      "origin_status": "distribution-metadata-match",
+      "source_root_kind": "python-package",
+      "component_name": "MarkupSafe",
+      "version": "3.0.4",
+      "project_url_candidate": "https://pypi.org/project/MarkupSafe/3.0.4/",
+      "license_metadata_candidate": {
+        "field": "License-Expression",
+        "value": "BSD-3-Clause"
+      },
+      "license_file_path_candidates": [
+        "markupsafe-3.0.4.dist-info/licenses/LICENSE.txt"
+      ]
+    },
+    {
+      "bundle_path": "_internal/markupsafe-3.0.4.dist-info/top_level.txt",
+      "pyinstaller_kind": "DATA",
+      "source_basename": "top_level.txt",
+      "origin_status": "distribution-metadata-match",
+      "source_root_kind": "python-package",
+      "component_name": "MarkupSafe",
+      "version": "3.0.4",
+      "project_url_candidate": "https://pypi.org/project/MarkupSafe/3.0.4/",
+      "license_metadata_candidate": {
+        "field": "License-Expression",
+        "value": "BSD-3-Clause"
+      },
+      "license_file_path_candidates": [
+        "markupsafe-3.0.4.dist-info/licenses/LICENSE.txt"
+      ]
+    },
+    {
+      "bundle_path": "_internal/markupsafe/_speedups.cp312-win_amd64.pyd",
+      "pyinstaller_kind": "EXTENSION",
+      "source_basename": "_speedups.cp312-win_amd64.pyd",
+      "origin_status": "distribution-metadata-match",
+      "source_root_kind": "python-package",
+      "component_name": "MarkupSafe",
+      "version": "3.0.4",
+      "project_url_candidate": "https://pypi.org/project/MarkupSafe/3.0.4/",
+      "license_metadata_candidate": {
+        "field": "License-Expression",
+        "value": "BSD-3-Clause"
+      },
+      "license_file_path_candidates": [
+        "markupsafe-3.0.4.dist-info/licenses/LICENSE.txt"
+      ]
+    },
+    {
+      "bundle_path": "_internal/pydantic-2.14.4.dist-info/INSTALLER",
+      "pyinstaller_kind": "DATA",
+      "source_basename": "INSTALLER",
+      "origin_status": "distribution-metadata-match",
+      "source_root_kind": "python-package",
+      "component_name": "pydantic",
+      "version": "2.14.4",
+      "project_url_candidate": "https://pypi.org/project/pydantic/2.14.4/",
+      "license_metadata_candidate": {
+        "field": "License-Expression",
+        "value": "MIT"
+      },
+      "license_file_path_candidates": [
+        "pydantic-2.14.4.dist-info/licenses/LICENSE"
+      ]
+    },
+    {
+      "bundle_path": "_internal/pydantic-2.14.4.dist-info/METADATA",
+      "pyinstaller_kind": "DATA",
+      "source_basename": "METADATA",
+      "origin_status": "distribution-metadata-match",
+      "source_root_kind": "python-package",
+      "component_name": "pydantic",
+      "version": "2.14.4",
+      "project_url_candidate": "https://pypi.org/project/pydantic/2.14.4/",
+      "license_metadata_candidate": {
+        "field": "License-Expression",
+        "value": "MIT"
+      },
+      "license_file_path_candidates": [
+        "pydantic-2.14.4.dist-info/licenses/LICENSE"
+      ]
+    },
+    {
+      "bundle_path": "_internal/pydantic-2.14.4.dist-info/RECORD",
+      "pyinstaller_kind": "DATA",
+      "source_basename": "RECORD",
+      "origin_status": "distribution-metadata-match",
+      "source_root_kind": "python-package",
+      "component_name": "pydantic",
+      "version": "2.14.4",
+      "project_url_candidate": "https://pypi.org/project/pydantic/2.14.4/",
+      "license_metadata_candidate": {
+        "field": "License-Expression",
+        "value": "MIT"
+      },
+      "license_file_path_candidates": [
+        "pydantic-2.14.4.dist-info/licenses/LICENSE"
+      ]
+    },
+    {
+      "bundle_path": "_internal/pydantic-2.14.4.dist-info/REQUESTED",
+      "pyinstaller_kind": "DATA",
+      "source_basename": "REQUESTED",
+      "origin_status": "distribution-metadata-match",
+      "source_root_kind": "python-package",
+      "component_name": "pydantic",
+      "version": "2.14.4",
+      "project_url_candidate": "https://pypi.org/project/pydantic/2.14.4/",
+      "license_metadata_candidate": {
+        "field": "License-Expression",
+        "value": "MIT"
+      },
+      "license_file_path_candidates": [
+        "pydantic-2.14.4.dist-info/licenses/LICENSE"
+      ]
+    },
+    {
+      "bundle_path": "_internal/pydantic-2.14.4.dist-info/WHEEL",
+      "pyinstaller_kind": "DATA",
+      "source_basename": "WHEEL",
+      "origin_status": "distribution-metadata-match",
+      "source_root_kind": "python-package",
+      "component_name": "pydantic",
+      "version": "2.14.4",
+      "project_url_candidate": "https://pypi.org/project/pydantic/2.14.4/",
+      "license_metadata_candidate": {
+        "field": "License-Expression",
+        "value": "MIT"
+      },
+      "license_file_path_candidates": [
+        "pydantic-2.14.4.dist-info/licenses/LICENSE"
+      ]
+    },
+    {
+      "bundle_path": "_internal/pydantic-2.14.4.dist-info/licenses/LICENSE",
+      "pyinstaller_kind": "DATA",
+      "source_basename": "LICENSE",
+      "origin_status": "distribution-metadata-match",
+      "source_root_kind": "python-package",
+      "component_name": "pydantic",
+      "version": "2.14.4",
+      "project_url_candidate": "https://pypi.org/project/pydantic/2.14.4/",
+      "license_metadata_candidate": {
+        "field": "License-Expression",
+        "value": "MIT"
+      },
+      "license_file_path_candidates": [
+        "pydantic-2.14.4.dist-info/licenses/LICENSE"
+      ]
+    },
+    {
+      "bundle_path": "_internal/pydantic_core/_pydantic_core.cp312-win_amd64.pyd",
+      "pyinstaller_kind": "EXTENSION",
+      "source_basename": "_pydantic_core.cp312-win_amd64.pyd",
+      "origin_status": "distribution-metadata-match",
+      "source_root_kind": "python-package",
+      "component_name": "pydantic_core",
+      "version": "2.50.5",
+      "project_url_candidate": "https://pypi.org/project/pydantic_core/2.50.5/",
+      "license_metadata_candidate": {
+        "field": "License-Expression",
+        "value": "MIT"
+      },
+      "license_file_path_candidates": [
+        "pydantic_core-2.50.5.dist-info/licenses/LICENSE"
+      ]
+    },
+    {
+      "bundle_path": "_internal/pyexpat.pyd",
+      "pyinstaller_kind": "EXTENSION",
+      "source_basename": "pyexpat.pyd",
+      "origin_status": "python-runtime-path",
+      "source_root_kind": "python-runtime",
+      "component_name": "Python runtime",
+      "version": "3.12.16"
+    },
+    {
+      "bundle_path": "_internal/python3.dll",
+      "pyinstaller_kind": "BINARY",
+      "source_basename": "python3.dll",
+      "origin_status": "python-runtime-path",
+      "source_root_kind": "python-runtime",
+      "component_name": "Python runtime",
+      "version": "3.12.16"
+    },
+    {
+      "bundle_path": "_internal/python312.dll",
+      "pyinstaller_kind": "BINARY",
+      "source_basename": "python312.dll",
+      "origin_status": "python-runtime-path",
+      "source_root_kind": "python-runtime",
+      "component_name": "Python runtime",
+      "version": "3.12.16"
+    },
+    {
+      "bundle_path": "_internal/select.pyd",
+      "pyinstaller_kind": "EXTENSION",
+      "source_basename": "select.pyd",
+      "origin_status": "python-runtime-path",
+      "source_root_kind": "python-runtime",
+      "component_name": "Python runtime",
+      "version": "3.12.16"
+    },
+    {
+      "bundle_path": "_internal/shiboken6/MSVCP140.dll",
+      "pyinstaller_kind": "BINARY",
+      "source_basename": "msvcp140.dll",
+      "origin_status": "distribution-metadata-match",
+      "source_root_kind": "python-package",
+      "component_name": "shiboken6",
+      "version": "6.12.0",
+      "project_url_candidate": "https://pypi.org/project/shiboken6/6.12.0/",
+      "license_metadata_candidate": {
+        "field": "License",
+        "value": "LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only"
+      },
+      "license_file_path_candidates": [
+        "shiboken6-6.12.0.dist-info/licenses/LicenseRef-Qt-Commercial.txt"
+      ]
+    },
+    {
+      "bundle_path": "_internal/shiboken6/Shiboken.pyd",
+      "pyinstaller_kind": "EXTENSION",
+      "source_basename": "Shiboken.pyd",
+      "origin_status": "distribution-metadata-match",
+      "source_root_kind": "python-package",
+      "component_name": "shiboken6",
+      "version": "6.12.0",
+      "project_url_candidate": "https://pypi.org/project/shiboken6/6.12.0/",
+      "license_metadata_candidate": {
+        "field": "License",
+        "value": "LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only"
+      },
+      "license_file_path_candidates": [
+        "shiboken6-6.12.0.dist-info/licenses/LicenseRef-Qt-Commercial.txt"
+      ]
+    },
+    {
+      "bundle_path": "_internal/shiboken6/VCRUNTIME140.dll",
+      "pyinstaller_kind": "BINARY",
+      "source_basename": "vcruntime140.dll",
+      "origin_status": "distribution-metadata-match",
+      "source_root_kind": "python-package",
+      "component_name": "shiboken6",
+      "version": "6.12.0",
+      "project_url_candidate": "https://pypi.org/project/shiboken6/6.12.0/",
+      "license_metadata_candidate": {
+        "field": "License",
+        "value": "LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only"
+      },
+      "license_file_path_candidates": [
+        "shiboken6-6.12.0.dist-info/licenses/LicenseRef-Qt-Commercial.txt"
+      ]
+    },
+    {
+      "bundle_path": "_internal/shiboken6/VCRUNTIME140_1.dll",
+      "pyinstaller_kind": "BINARY",
+      "source_basename": "vcruntime140_1.dll",
+      "origin_status": "distribution-metadata-match",
+      "source_root_kind": "python-package",
+      "component_name": "shiboken6",
+      "version": "6.12.0",
+      "project_url_candidate": "https://pypi.org/project/shiboken6/6.12.0/",
+      "license_metadata_candidate": {
+        "field": "License",
+        "value": "LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only"
+      },
+      "license_file_path_candidates": [
+        "shiboken6-6.12.0.dist-info/licenses/LicenseRef-Qt-Commercial.txt"
+      ]
+    },
+    {
+      "bundle_path": "_internal/shiboken6/shiboken6.abi3.dll",
+      "pyinstaller_kind": "BINARY",
+      "source_basename": "shiboken6.abi3.dll",
+      "origin_status": "distribution-metadata-match",
+      "source_root_kind": "python-package",
+      "component_name": "shiboken6",
+      "version": "6.12.0",
+      "project_url_candidate": "https://pypi.org/project/shiboken6/6.12.0/",
+      "license_metadata_candidate": {
+        "field": "License",
+        "value": "LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only"
+      },
+      "license_file_path_candidates": [
+        "shiboken6-6.12.0.dist-info/licenses/LicenseRef-Qt-Commercial.txt"
+      ]
+    },
+    {
+      "bundle_path": "_internal/sqlalchemy/engine/_processors_cy.cp312-win_amd64.pyd",
+      "pyinstaller_kind": "EXTENSION",
+      "source_basename": "_processors_cy.cp312-win_amd64.pyd",
+      "origin_status": "distribution-metadata-match",
+      "source_root_kind": "python-package",
+      "component_name": "SQLAlchemy",
+      "version": "2.1.9",
+      "project_url_candidate": "https://pypi.org/project/SQLAlchemy/2.1.9/",
+      "license_metadata_candidate": {
+        "field": "License-Expression",
+        "value": "MIT"
+      },
+      "license_file_path_candidates": [
+        "sqlalchemy-2.1.9.dist-info/licenses/LICENSE"
+      ]
+    },
+    {
+      "bundle_path": "_internal/sqlalchemy/engine/_result_cy.cp312-win_amd64.pyd",
+      "pyinstaller_kind": "EXTENSION",
+      "source_basename": "_result_cy.cp312-win_amd64.pyd",
+      "origin_status": "distribution-metadata-match",
+      "source_root_kind": "python-package",
+      "component_name": "SQLAlchemy",
+      "version": "2.1.9",
+      "project_url_candidate": "https://pypi.org/project/SQLAlchemy/2.1.9/",
+      "license_metadata_candidate": {
+        "field": "License-Expression",
+        "value": "MIT"
+      },
+      "license_file_path_candidates": [
+        "sqlalchemy-2.1.9.dist-info/licenses/LICENSE"
+      ]
+    },
+    {
+      "bundle_path": "_internal/sqlalchemy/engine/_row_cy.cp312-win_amd64.pyd",
+      "pyinstaller_kind": "EXTENSION",
+      "source_basename": "_row_cy.cp312-win_amd64.pyd",
+      "origin_status": "distribution-metadata-match",
+      "source_root_kind": "python-package",
+      "component_name": "SQLAlchemy",
+      "version": "2.1.9",
+      "project_url_candidate": "https://pypi.org/project/SQLAlchemy/2.1.9/",
+      "license_metadata_candidate": {
+        "field": "License-Expression",
+        "value": "MIT"
+      },
+      "license_file_path_candidates": [
+        "sqlalchemy-2.1.9.dist-info/licenses/LICENSE"
+      ]
+    },
+    {
+      "bundle_path": "_internal/sqlalchemy/engine/_util_cy.cp312-win_amd64.pyd",
+      "pyinstaller_kind": "EXTENSION",
+      "source_basename": "_util_cy.cp312-win_amd64.pyd",
+      "origin_status": "distribution-metadata-match",
+      "source_root_kind": "python-package",
+      "component_name": "SQLAlchemy",
+      "version": "2.1.9",
+      "project_url_candidate": "https://pypi.org/project/SQLAlchemy/2.1.9/",
+      "license_metadata_candidate": {
+        "field": "License-Expression",
+        "value": "MIT"
+      },
+      "license_file_path_candidates": [
+        "sqlalchemy-2.1.9.dist-info/licenses/LICENSE"
+      ]
+    },
+    {
+      "bundle_path": "_internal/sqlalchemy/sql/_cache_key_cy.cp312-win_amd64.pyd",
+      "pyinstaller_kind": "EXTENSION",
+      "source_basename": "_cache_key_cy.cp312-win_amd64.pyd",
+      "origin_status": "distribution-metadata-match",
+      "source_root_kind": "python-package",
+      "component_name": "SQLAlchemy",
+      "version": "2.1.9",
+      "project_url_candidate": "https://pypi.org/project/SQLAlchemy/2.1.9/",
+      "license_metadata_candidate": {
+        "field": "License-Expression",
+        "value": "MIT"
+      },
+      "license_file_path_candidates": [
+        "sqlalchemy-2.1.9.dist-info/licenses/LICENSE"
+      ]
+    },
+    {
+      "bundle_path": "_internal/sqlalchemy/sql/_util_cy.cp312-win_amd64.pyd",
+      "pyinstaller_kind": "EXTENSION",
+      "source_basename": "_util_cy.cp312-win_amd64.pyd",
+      "origin_status": "distribution-metadata-match",
+      "source_root_kind": "python-package",
+      "component_name": "SQLAlchemy",
+      "version": "2.1.9",
+      "project_url_candidate": "https://pypi.org/project/SQLAlchemy/2.1.9/",
+      "license_metadata_candidate": {
+        "field": "License-Expression",
+        "value": "MIT"
+      },
+      "license_file_path_candidates": [
+        "sqlalchemy-2.1.9.dist-info/licenses/LICENSE"
+      ]
+    },
+    {
+      "bundle_path": "_internal/sqlalchemy/util/_collections_cy.cp312-win_amd64.pyd",
+      "pyinstaller_kind": "EXTENSION",
+      "source_basename": "_collections_cy.cp312-win_amd64.pyd",
+      "origin_status": "distribution-metadata-match",
+      "source_root_kind": "python-package",
+      "component_name": "SQLAlchemy",
+      "version": "2.1.9",
+      "project_url_candidate": "https://pypi.org/project/SQLAlchemy/2.1.9/",
+      "license_metadata_candidate": {
+        "field": "License-Expression",
+        "value": "MIT"
+      },
+      "license_file_path_candidates": [
+        "sqlalchemy-2.1.9.dist-info/licenses/LICENSE"
+      ]
+    },
+    {
+      "bundle_path": "_internal/sqlalchemy/util/_immutabledict_cy.cp312-win_amd64.pyd",
+      "pyinstaller_kind": "EXTENSION",
+      "source_basename": "_immutabledict_cy.cp312-win_amd64.pyd",
+      "origin_status": "distribution-metadata-match",
+      "source_root_kind": "python-package",
+      "component_name": "SQLAlchemy",
+      "version": "2.1.9",
+      "project_url_candidate": "https://pypi.org/project/SQLAlchemy/2.1.9/",
+      "license_metadata_candidate": {
+        "field": "License-Expression",
+        "value": "MIT"
+      },
+      "license_file_path_candidates": [
+        "sqlalchemy-2.1.9.dist-info/licenses/LICENSE"
+      ]
+    },
+    {
+      "bundle_path": "_internal/sqlite3.dll",
+      "pyinstaller_kind": "BINARY",
+      "source_basename": "sqlite3.dll",
+      "origin_status": "python-runtime-path",
+      "source_root_kind": "python-runtime",
+      "component_name": "Python runtime",
+      "version": "3.12.16"
+    },
+    {
+      "bundle_path": "_internal/unicodedata.pyd",
+      "pyinstaller_kind": "EXTENSION",
+      "source_basename": "unicodedata.pyd",
+      "origin_status": "python-runtime-path",
+      "source_root_kind": "python-runtime",
+      "component_name": "Python runtime",
+      "version": "3.12.16"
+    }
+  ],
+  "scope_note": "Source paths are classified and redacted; license metadata and license files are candidates only. Review notices and source terms before any release."
+}

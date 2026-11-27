@@ -14,6 +14,7 @@ from manga_to_kindle.application.exports.ports import (
     CbzValidatorPort,
     EpubValidatorPort,
     ExportRepositoryPort,
+    ExternalPackageWriterFactoryPort,
     OutputStoreFactoryPort,
     PackageWriterPort,
     ProgressPort,
@@ -36,6 +37,10 @@ class ExportPackageTooLarge(ExportError):
     code = "EXPORT_PACKAGE_TOO_LARGE"
 
 
+class ExportOptionUnsupported(ExportError):
+    code = "EXPORT_OPTION_UNSUPPORTED"
+
+
 @dataclass(frozen=True, slots=True)
 class ExportResult:
     export_id: str
@@ -53,6 +58,7 @@ class CreateExport:
         cbz_writer: PackageWriterPort,
         epub_validator: EpubValidatorPort,
         cbz_validator: CbzValidatorPort,
+        external_writer_factory: ExternalPackageWriterFactoryPort | None = None,
     ) -> None:
         self._repository = repository
         self._output_store_factory = output_store_factory
@@ -60,6 +66,7 @@ class CreateExport:
         self._cbz_writer = cbz_writer
         self._epub_validator = epub_validator
         self._cbz_validator = cbz_validator
+        self._external_writer_factory = external_writer_factory
 
     def execute(
         self,
@@ -68,11 +75,24 @@ class CreateExport:
         cancellation: CancellationPort | None = None,
         report_progress: ProgressPort | None = None,
         overwrite_confirmed: bool = False,
+        kcc_executable: Path | None = None,
     ) -> ExportResult:
         _raise_if_cancelled(cancellation)
         sources = self._repository.load_sources(request.chapter_ids)
         plan = PlanExport().execute(sources, request)
         plan = PartitionExport().execute(plan)
+        if plan.format is ExportFormat.MOBI:
+            if plan.language is None:
+                raise ExportOptionUnsupported("MOBI requer idioma explícito nos metadados.")
+            if plan.max_size_bytes is not None:
+                raise ExportOptionUnsupported(
+                    "A divisão por tamanho não foi verificada para saída MOBI."
+                )
+            if self._external_writer_factory is None or kcc_executable is None:
+                raise ExportError("Configure a CLI KCC verificada antes de exportar MOBI.")
+            mobi_writer = self._external_writer_factory(kcc_executable)
+        else:
+            mobi_writer = None
         store = self._output_store_factory(plan.output_directory)
         staged_outputs: list[StagedOutput] = []
         generated: list[tuple[StagedOutput, GeneratedPackage, ExportPackagePlan]] = []
@@ -109,11 +129,14 @@ class CreateExport:
                         f"Pacote {current_package} de {len(plan.packages)} · {stage}",
                     )
 
-                writer = (
-                    self._epub_writer
-                    if plan.format is ExportFormat.EPUB
-                    else self._cbz_writer
-                )
+                if plan.format is ExportFormat.EPUB:
+                    writer = self._epub_writer
+                elif plan.format is ExportFormat.CBZ:
+                    writer = self._cbz_writer
+                else:
+                    if mobi_writer is None:
+                        raise ExportError("A CLI KCC não está configurada.")
+                    writer = mobi_writer
                 receipt = writer.write(
                     plan,
                     package,
@@ -130,10 +153,12 @@ class CreateExport:
                 _raise_if_cancelled(cancellation)
                 if plan.format is ExportFormat.EPUB:
                     self._epub_validator.execute(staged.staged_path)
-                else:
+                elif plan.format is ExportFormat.CBZ:
                     validated_pages = self._cbz_validator.execute(staged.staged_path, package)
                     if validated_pages != len(package.pages):
                         raise ExportError("A validação CBZ encontrou uma quantidade inesperada.")
+                elif receipt.page_count != len(package.pages):
+                    raise ExportError("A validação MOBI encontrou uma quantidade inesperada.")
                 generated.append((staged, receipt, package))
                 done_work += len(package.pages) + 1
                 _report(

@@ -333,8 +333,13 @@ def _profile_snapshot(
 ) -> dict[str, object]:
     return {
         "name": profile.name,
+        "profile_id": str(profile.profile_id) if profile.profile_id is not None else None,
         "width": profile.width,
         "height": profile.height,
+        "ppi": profile.ppi,
+        "grayscale": True,
+        "grayscale_levels": profile.grayscale_levels,
+        "quality": profile.quality,
         "margin_left": profile.margin_left,
         "margin_top": profile.margin_top,
         "margin_right": profile.margin_right,

@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import os
 from dataclasses import dataclass
 from pathlib import Path
 
@@ -22,6 +23,13 @@ class AppPaths:
 
     @classmethod
     def from_qstandardpaths(cls) -> AppPaths:
+        override = os.environ.get("MANGA_TO_KINDLE_DATA_ROOT")
+        if override:
+            override_path = Path(override).expanduser()
+            if not override_path.is_absolute():
+                raise AppPathsError("A pasta de dados configurada precisa ser absoluta.")
+            return cls.from_root(override_path)
+
         location = QStandardPaths.writableLocation(
             QStandardPaths.StandardLocation.AppLocalDataLocation
         )
@@ -64,7 +72,15 @@ class AppPaths:
 
     def ensure(self) -> None:
         try:
-            for directory in (self.root, self.config, self.data, self.logs, self.cache):
+            for directory in (
+                self.root,
+                self.config,
+                self.data,
+                self.data / "downloads",
+                self.data / "exports",
+                self.logs,
+                self.cache,
+            ):
                 directory.mkdir(parents=True, exist_ok=True)
         except OSError as exc:
             raise AppPathsError(

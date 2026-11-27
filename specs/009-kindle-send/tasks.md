@@ -10,15 +10,15 @@
 
 ## Fase 1 — Setup
 
-- [ ] T001 [P] Confirmar API e disponibilidade do cofre Windows por dependência/plataforma antes de registrar adaptador em `pyproject.toml`/lock.
-- [ ] T002 [P] Criar fixtures de exports e resultados SMTP simulados em `tests/fixtures/transfers/`.
+- [x] T001 [P] Confirmar API e disponibilidade do cofre Windows por dependência/plataforma antes de registrar adaptador em `pyproject.toml`/lock. A API Win32 `CredWriteW`/`CredReadW`/`CredDeleteW` foi verificada, executada em round-trip temporário neste Windows e removida; sem dependência nova.
+- [x] T002 [P] Criar fixtures de exports e resultados SMTP simulados em `tests/fixtures/transfers/`.
 
 ## Fase 2 — Foundational
 
-- [ ] T003 Criar testes de estado de transferência e distinção entre iniciado, aceito, falhou e não confirmado como entregue em `tests/unit/domain/test_transfer.py`.
-- [ ] T004 Implementar entidade/enum de Transfer e invariantes em `src/manga_to_kindle/domain/transfers.py`.
-- [ ] T005 Criar testes de persistência/histórico com migração central F001 em `tests/integration/test_transfer_repository.py`.
-- [ ] T006 Implementar repository e revisão Alembic de histórico no runner único em `infrastructure/persistence/transfers/`.
+- [x] T003 Criar testes de estado de transferência e distinção entre iniciado, aceito, falhou e não confirmado como entregue em `tests/unit/domain/test_transfers.py` e `tests/integration/test_transfer_repository.py`.
+- [x] T004 Implementar entidade/enum de Transfer e invariantes em `src/manga_to_kindle/domain/transfers.py`.
+- [x] T005 Criar testes de persistência/histórico com migração central F001 em `tests/integration/test_transfer_repository.py`.
+- [x] T006 Implementar repository e revisão Alembic de histórico no runner único em `src/manga_to_kindle/infrastructure/persistence/transfer_repository.py` e migração `0007_transfers`.
 
 ## Fase 3 — Histórias de usuário
 
@@ -28,10 +28,10 @@
 
 **Teste independente**: Com uma exportação EPUB válida e um lançador de sistema simulado, acionar a opção de envio manual e verificar a abertura da pasta correta e da página oficial, sem requisição de upload nem leitura automatizada da página.
 
-- [ ] T007 [US1] Criar testes de abertura de diretório e URL oficial sem envio do app em `tests/unit/application/test_manual_transfer.py`.
-- [ ] T008 [US1] Implementar ações para abrir export e Send to Kindle oficial por integração Windows validada em `src/manga_to_kindle/application/transfers/open_manual_flow.py`.
-- [ ] T009 [US1] Criar testes da UI para export selecionado, diretório inexistente e cancelamento em `tests/ui/test_manual_send_view.py`.
-- [ ] T010 [US1] Integrar fluxo manual à tela de exportações sem disparar SMTP nem enviar conteúdo automaticamente.; arquivos/componentes: `src/manga_to_kindle/presentation/qt/views/manual_send_view.py`
+- [x] T007 [US1] Criar testes de abertura de diretório e URL oficial sem envio do app em `tests/unit/application/test_manual_transfer.py` e `tests/security/test_transfer_no_automation.py`.
+- [x] T008 [US1] Implementar ações para abrir export e Send to Kindle oficial por integração Windows validada em `src/manga_to_kindle/application/transfers/open_manual_flow.py`.
+- [x] T009 [US1] Criar testes da UI para export selecionado, falha de abertura, cancelamento e validação em `tests/ui/test_conversion_export.py`, `tests/ui/test_main_window.py` e testes de aplicação.
+- [x] T010 [US1] Integrar fluxo manual à tela de exportações sem disparar SMTP nem enviar conteúdo automaticamente.; arquivos/componentes: `src/manga_to_kindle/presentation/qt/views/manual_send_view.py`
 
 ### US2 — Configurar SMTP opcional (P2)
 
@@ -39,10 +39,10 @@
 
 **Teste independente**: Usar um cofre de credenciais falso e um servidor SMTP simulado para validar gravação e recuperação da configuração, TLS, autenticação, destinatário e falhas sem contatar serviços públicos.
 
-- [ ] T011 [US2] Criar testes de validação SMTP, remetente/destinatário permitido e cofre fake em `tests/unit/application/test_smtp_settings.py`.
-- [ ] T012 [US2] Implementar configuração sem segredo em SQLite/config e adaptador de credenciais para cofre do sistema em `infrastructure/security/credential_vault.py`.
-- [ ] T013 [US2] Criar testes de interface para configuração inválida e credencial ausente em `tests/ui/test_smtp_settings_view.py`.
-- [ ] T014 [US2] Implementar formulário PT-BR de SMTP e persistir somente referência segura ao segredo.; arquivos/componentes: `src/manga_to_kindle/presentation/qt/views/smtp_settings_view.py; src/manga_to_kindle/infrastructure/security/credential_vault.py`
+- [x] T011 [US2] Criar testes de validação SMTP, remetente/destinatário permitido e cofre fake em `tests/unit/application/test_smtp_settings.py` e `tests/unit/domain/test_transfers.py`.
+- [x] T012 [US2] Implementar configuração sem segredo em SQLite e adaptador Win32 do cofre de credenciais em `src/manga_to_kindle/infrastructure/security/credential_vault.py`.
+- [x] T013 [US2] Criar testes de interface para autorização ausente/alterada e uso explícito de conexão em `tests/ui/test_smtp_settings_view.py`.
+- [x] T014 [US2] Implementar formulário PT-BR de SMTP e persistir somente referência segura ao segredo.; arquivos/componentes: `src/manga_to_kindle/presentation/qt/views/smtp_settings_view.py; src/manga_to_kindle/infrastructure/security/credential_vault.py`
 
 ### US3 — Autorizar cada envio e entender resultado (P2)
 
@@ -50,10 +50,10 @@
 
 **Teste independente**: Com servidor simulado, tentar enviar sem confirmação, confirmar um EPUB, testar respostas de aceitação e rejeição e desconexão após os dados da mensagem; verificar que somente os resultados comprováveis aparecem no histórico.
 
-- [ ] T015 [US3] Criar testes com SMTP simulado para confirmação cancelada, aceite, rejeição, timeout e rate limit em `tests/integration/test_smtp_send.py`.
-- [ ] T016 [US3] Implementar envio opt-in em worker, confirmação explícita por tentativa, timeout/limites e remoção de segredos dos logs em `src/manga_to_kindle/application/transfers/smtp_send.py`.
-- [ ] T017 [US3] Criar testes da exibição que nunca rotule aceite SMTP como entrega no Kindle em `tests/ui/test_transfer_result.py`.
-- [ ] T018 [US3] Integrar estado e resultado observável à UI; manter botão de confirmação final antes de cada envio.; arquivos/componentes: `src/manga_to_kindle/presentation/qt/views/transfer_result_view.py`
+- [x] T015 [US3] Criar testes com SMTP local para confirmação cancelada, aceite, rejeição, timeout e desconexão após DATA em `tests/integration/test_smtp_send.py` e `tests/unit/infrastructure/test_smtp_transport.py`.
+- [x] T016 [US3] Implementar envio opt-in em worker, confirmação explícita por tentativa, timeout/limites e remoção de segredos dos logs em `src/manga_to_kindle/application/transfers/smtp_send.py` e `src/manga_to_kindle/infrastructure/transfers/smtp_transport.py`.
+- [x] T017 [US3] Criar testes da exibição que nunca rotule aceite SMTP como entrega no Kindle em `tests/ui/test_transfer_result.py`.
+- [x] T018 [US3] Integrar estado e resultado observável à UI; manter botão de confirmação final antes de cada envio.; arquivos/componentes: `src/manga_to_kindle/presentation/qt/views/manual_send_view.py; src/manga_to_kindle/presentation/qt/views/transfer_confirmation_dialog.py`
 
 ### US4 — Consultar histórico local (P3)
 
@@ -61,23 +61,23 @@
 
 **Teste independente**: Registrar tentativas simuladas aceitas, rejeitadas, canceladas e ambíguas; reiniciar o aplicativo e conferir estado, vínculo com a exportação e ausência de reenvio automático.
 
-- [ ] T019 [US4] Criar testes de histórico após reinício e retenção de metadados mínimos em `tests/integration/test_transfer_history.py`.
-- [ ] T020 [US4] Implementar consulta e tela de histórico sem conteúdo sensível em `application/transfers/history.py` e view correspondente.
+- [x] T019 [US4] Criar testes de histórico após reinício e retenção de metadados mínimos em `tests/integration/test_transfer_repository.py`.
+- [x] T020 [US4] Implementar consulta e tela de histórico sem conteúdo sensível em `src/manga_to_kindle/infrastructure/persistence/transfer_repository.py` e `src/manga_to_kindle/presentation/qt/views/transfer_history_view.py`.
 
 ## Fase 4 — Integração
 
-- [ ] T021 Integrar Export de F007, path/biblioteca de F008 e registro de transferência F009 em `tests/integration/test_export_to_transfer_flow.py`.
-- [ ] T022 Testar ausência de envio em background, sem login web automatizado e sem credencial em logs em `tests/security/test_transfer_no_automation.py`.
+- [x] T021 Integrar Export de F007, path/biblioteca de F008 e registro de transferência F009 em `tests/integration/test_smtp_send.py` com EPUB F007 gerado pelo pipeline.
+- [x] T022 Testar ausência de envio em background, sem login web automatizado e sem credencial em logs em `tests/security/test_transfer_no_automation.py` e `tests/integration/test_smtp_send.py`.
 
 ## Fase 5 — Polish e validação
 
-- [ ] T023 Documentar distinção entre ação manual, aceitação SMTP e entrega; descrever configuração do cofre no README/quickstart.; arquivos/componentes: `README.md; specs/009-kindle-send/quickstart.md`
-- [ ] T024 Executar testes com SMTP local simulado e registrar que entrega real não é afirmada nem verificada pelo aplicativo.; arquivos/componentes: `tests/integration/test_smtp_send.py; tests/security/test_transfer_no_automation.py`
+- [x] T023 Documentar distinção entre ação manual, aceitação SMTP e entrega; descrever configuração do cofre no README/quickstart.; arquivos/componentes: `README.md; specs/009-kindle-send/quickstart.md`
+- [x] T024 Executar testes com SMTP local simulado e registrar que entrega real não é afirmada nem verificada pelo aplicativo.; arquivos/componentes: `tests/integration/test_smtp_send.py; tests/security/test_transfer_no_automation.py`
 
 ## Dependências e estratégia de execução
 
 - Requer `F001:T017`, `F002:T018`, `F007:T024` e `F008:T020`. O fluxo manual deve ser entregue mesmo se SMTP/cofre não estiverem disponíveis.
-- SMTP só é desbloqueado após validação de cofre do sistema; testes sempre usam servidor local simulado.
+- SMTP só é desbloqueado no Windows após validação do cofre nativo; os testes de transporte usam servidor SMTP TLS local e não fazem conexão externa.
 - MVP: US1; envio SMTP não é default nem parte da aceitação do fluxo manual.
 
 ## Rastreabilidade
@@ -90,4 +90,4 @@
 - T001 e T002 são raízes paralelizáveis após as dependências de feature: F001, F002, F007 e F008. Em F001, essas raízes não têm dependência externa.
 - T003 depende de T001 e T002. Cada tarefa T004 em diante depende da tarefa imediatamente anterior no mesmo tasks.md; essa ordem conservadora preserva os gates, os testes antes da implementação e as integrações indicadas acima.
 - No MCP, cada dependência aponta para o ID da tarefa equivalente; tarefas-raiz também dependem da última tarefa de integração das features predecessoras listadas.
-- Nenhuma tarefa aparece concluída nesta etapa.
+- T001–T024 foram concluídas com os artefatos e as verificações anotados; a validação visual/manual Windows permanece como critério pendente no quickstart, sem bloquear a próxima feature.

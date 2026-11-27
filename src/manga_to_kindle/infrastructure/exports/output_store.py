@@ -161,7 +161,7 @@ def _validate_filename(filename: str) -> str:
     if not filename or Path(filename).name != filename or "/" in filename or "\\" in filename:
         raise ExportOutputError("O nome do arquivo contém um caminho não permitido.")
     suffix = Path(filename).suffix.casefold()
-    if suffix not in {".epub", ".cbz"}:
+    if suffix not in {".epub", ".cbz", ".mobi"}:
         raise ExportOutputError("O formato do arquivo final não é aceito.")
     stem = sanitize_filename_component(Path(filename).stem, fallback="export")
     return f"{stem}{suffix}"

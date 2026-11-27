@@ -62,7 +62,8 @@ def upgrade() -> None:
             name="ck_transfer_job_state",
         ),
         sa.CheckConstraint(
-            "stage IN ('connecting', 'tls', 'authenticating', 'envelope', 'transmitting', 'finished')",
+            "stage IN ('connecting', 'tls', 'authenticating', 'envelope', "
+            "'transmitting', 'finished')",
             name="ck_transfer_job_stage",
         ),
         sa.CheckConstraint("port BETWEEN 1 AND 65535", name="ck_transfer_job_port"),

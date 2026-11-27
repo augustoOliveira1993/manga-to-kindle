@@ -1,0 +1,17 @@
+{
+  "name": "Perfil inválido",
+  "model": "Perfil personalizado",
+  "generation": null,
+  "width": 80,
+  "height": 800,
+  "ppi": null,
+  "grayscale_levels": 16,
+  "grayscale": true,
+  "direction": "rtl",
+  "margin_left": 40,
+  "margin_top": 0,
+  "margin_right": 40,
+  "margin_bottom": 0,
+  "crop_margins": false,
+  "quality": 90
+}

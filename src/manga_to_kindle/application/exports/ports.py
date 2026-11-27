@@ -81,6 +81,9 @@ class PackageWriterPort(Protocol):
     ) -> GeneratedPackage: ...
 
 
+type ExternalPackageWriterFactoryPort = Callable[[Path], PackageWriterPort]
+
+
 class EpubValidatorPort(Protocol):
     def execute(self, path: Path) -> object: ...
 
