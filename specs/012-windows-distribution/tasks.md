@@ -5,14 +5,14 @@
 ## Dependências
 
 - Features anteriores: F001–F011. Empacotamento só começa após baseline de aplicação e dependências licenciadas.
-- Gates sem decisão presumida: o baseline e um build local existem; a matriz de arquiteturas Windows (x64/ARM64/x86) precisa ser definida antes de declarar suporte/release; revisão de licenças e VMs limpas seguem pendentes. Inno Setup é opcional e não foi usado.
+- Matriz aprovada em 2026-11-27: Windows 10/11 x64 somente. O baseline e um build local existem; revisão de licenças/notices e VMs limpas dos dois sistemas seguem pendentes. Inno Setup é opcional e não foi usado.
 - Reutilizar paths de usuário F001; atualização/desinstalação nunca remove biblioteca sem consentimento explícito. Não empacotar KCC ou browser sem validação de licença/requisitos.
 
 ## Fase 1 — Setup
 
 - [x] T001 [P] Completar inventário de runtime/dependências/licenças e versões fixadas a partir do lock real em `packaging/third-party-notices/`; `bundle-component-candidates.json` mapeia 222/222 arquivos do TOC e corresponde aos caminhos físicos do bundle, sem guardar caminhos absolutos. Metadata e avisos são apenas candidatos; aprovação de licenças continua em T017/T018.
 - [x] T002 [P] Definir fluxo genérico de build PyInstaller em `packaging/` sem fixar arquitetura cruzada ou incluir ferramentas de desenvolvimento, mantendo a aprovação de targets bloqueada até a matriz; o ambiente de build usa somente dependências do app e do grupo `build`.
-- [ ] T003 Registrar a decisão humana da matriz de arquiteturas na release checklist antes de adicionar targets específicos; manter build bloqueado enquanto faltar decisão.; arquivos/componentes: `specs/012-windows-distribution/checklists/release.md`
+- [ ] T003 Registrar no checklist de release a matriz humana já aprovada (Windows 10/11 x64 somente), sem declarar compatibilidade antes dos testes limpos.; arquivos/componentes: `specs/012-windows-distribution/checklists/release.md`
 
 ## Fase 2 — Foundational
 

@@ -161,7 +161,7 @@ Como pessoa mantenedora, quero reconstruir e verificar o pacote, identificar sua
 - A saída portátil de PyInstaller é o modo de contingência se Inno Setup não for aprovado; o instalador Inno é opcional e sua licença deve ser verificada para o uso concreto.
 - PyInstaller 6.22.3 é a versão indicada pela documentação consultada em 2026-11-25, mas não está selecionada; a equipe deve escolher/pinar e testar a versão vigente no planejamento.
 - A documentação de Inno Setup consultada em 2026-11-25 lista 7.1.1 e informa que usuários comerciais devem adquirir licença. O modelo de distribuição do projeto não foi definido; a aprovação/compra aplicável é gate antes de executar o compilador em release comercial.
-- A matriz de arquiteturas de processador ainda requer decisão humana; até essa decisão e os testes correspondentes, a release não pode declarar suporte a uma arquitetura específica além do sistema operacional-alvo da constituição.
+- A matriz aprovada em 2026-11-27 é Windows 10/11 x64 somente. Até os testes correspondentes em VMs limpas, a release não pode anunciar compatibilidade comprovada para esses pares.
 - No checkout revisado em 2026-11-25 não foram encontrados arquivos de implementação Python, `pyproject.toml`, `uv.lock`, configuração PyInstaller ou script Inno Setup; o `README.md` contém somente títulos. O conjunto de dependências, a arquitetura implementada e a build real ainda não são verificáveis.
 - F007 usa writer EPUB da biblioteca padrão e não empacota EbookLib. KCC e Inno Setup continuam fora do pacote até revisão específica.
 - KCC é uma instalação externa opcional conforme F007; navegador é fornecido pelo sistema. Ambos ficam fora do pacote até revisão específica e decisão explícita.
@@ -189,7 +189,7 @@ Como pessoa mantenedora, quero reconstruir e verificar o pacote, identificar sua
 ### Bloqueios de Release
 
 - **B012-IMPLEMENTATION-BASELINE**: F001–F011, `pyproject.toml`, `uv.lock`, configuração PyInstaller e um bundle inicializado neste Windows 10 x64 já existem. Continuam pendentes o build a partir de checkout limpo e a compatibilidade em cada par Windows/arquitetura aprovado; até executar esses critérios, o artefato local é um rascunho e não uma release.
-- **B012-ARCH-MATRIX**: A arquitetura-alvo (x64, ARM64 e/ou x86) aguarda decisão humana. A lista de releases e VMs de teste deve ser fechada depois dessa resposta.
+- **B012-ARCH-MATRIX**: Resolvido por decisão humana em 2026-11-27: Windows 10/11 x64 somente. Builds e VMs limpas para cada versão ainda são necessários para declarar compatibilidade e aprovar release.
 
 ### Riscos e Mitigações
 

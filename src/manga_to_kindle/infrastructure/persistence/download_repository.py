@@ -223,6 +223,13 @@ class DownloadRepository:
                 pages=tuple(_domain_page(record) for record in pages),
             )
 
+    def get_policy_snapshot(self, job_id: UUID) -> dict[str, object] | None:
+        with self._database.unit_of_work() as session:
+            record = session.get(DownloadJobRecord, job_id)
+            if record is None:
+                return None
+            return dict(record.policy_snapshot)
+
     def list_jobs(self) -> tuple[DownloadJob, ...]:
         with self._database.unit_of_work() as session:
             records = session.scalars(

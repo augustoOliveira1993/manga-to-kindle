@@ -4,7 +4,7 @@
 
 ## Objetivo, bloqueios e conformidade
 
-Fila persistente/resumível com concorrência limitada, timeout/retry, pausa/cancelamento, validação de raster e commit atômico de arquivo + metadata. Até autorização da fonte B003, implementação e aceitação usam provider/transporte fake: nenhum tráfego real nem indicação de download disponível. Livros não são enviados ou transformados.
+Fila persistente/resumível com concorrência limitada, timeout/retry, pausa/cancelamento, validação de raster e commit atômico de arquivo + metadata. Após autorização limitada de 2026-11-27, a aplicação conecta seleção explícita de item NDL PDM ao download local confirmado; outras fontes permanecem bloqueadas. Livros não são enviados ou transformados.
 
 ## Arquitetura e fluxo de estado
 
@@ -32,4 +32,4 @@ Model/contracts: [data-model.md](data-model.md), [contracts/downloads.md](contra
 
 ## Dependências e gates
 
-F001/F002/F003/F004; F008 aporta schema completo; F011 controla concorrência. B003 bloqueia fonte real, não transporte fake. F006 pode importar posteriormente sem usar downloader. Verificações da spec estão em [quickstart.md](quickstart.md).
+F001/F002/F003/F004; F008 aporta schema completo; F011 controla concorrência. NDL é autorizada somente para item individual PDM selecionado e confirmado. B003 continua bloqueando fontes/escalas adicionais, não o fluxo NDL limitado. F006 pode importar posteriormente sem usar downloader. Verificações da spec estão em [quickstart.md](quickstart.md).

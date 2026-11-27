@@ -2,7 +2,7 @@
   "schema_version": "1.0",
   "evidence_kind": "package metadata candidates; not legal approval",
   "source_sbom": "dependency-inventory.cdx.json",
-  "source_sbom_sha256": "3b1062c4955593f745aaac5ed8035596f6c58bb3e95f814d66f56313339448b8",
+  "source_sbom_sha256": "2beaf07c53cbb27340e53de4acfb0ee52e93a4571b9f68bd092e3b8257fe5228",
   "components": [
     {
       "name": "alembic",

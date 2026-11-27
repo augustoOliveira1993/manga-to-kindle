@@ -1,39 +1,55 @@
 # Checkpoint de implementação — Manga to Kindle
 
-Atualizado em 26/11/2026. Este checkpoint reúne as entregas locais, verificações executadas e critérios manuais pendentes. A ordem das features continua definida em [task-dependencies.md](task-dependencies.md).
+Atualizado em 27/11/2026. Este checkpoint reúne as entregas locais, verificações executadas e critérios manuais pendentes. A ordem das features continua definida em [task-dependencies.md](task-dependencies.md).
 
 ## Estado dos marcos
 
 | Marco | Estado |
 |---|---|
 | F002 — protótipo visual navegável | Atingido; navegação e telas base estão disponíveis. |
-| F005 — primeiro download funcional | Pendente; a fila local está implementada, mas falta uma fonte com autorização verificável para habilitar o primeiro download real. |
+| F005 — primeiro download funcional | Atingido: item NDL PDM selecionado e confirmado, com 33/33 páginas reais validadas e gravadas no perfil temporário QA. Validação manual visual Windows segue pendente. |
 | F006 — importação e processamento de imagens | Atingido para conteúdo local autorizado; processamento, persistência e recuperação estão implementados. A validação visual manual no Windows continua pendente. |
 | F007 — MVP funcional com geração EPUB | Atingido: EPUB/CBZ nativos; MOBI integrado via CLI oficial KCC 13.0.4 nos perfis verificados. Compatibilidade física continua pendente. |
 | F008 — Biblioteca Local | Atingido: consulta persistida, disponibilidade, histórico e remoção explícita implementados. A validação visual manual no Windows continua pendente. |
 | F009 — fluxo de envio ao Kindle | Atingido no código: ação manual e SMTP opt-in com confirmação individual; histórico nunca afirma entrega. Testes automatizados locais passaram; validação visual no Windows e serviço externo permanecem pendentes. |
-| F010 — atualização de capítulos | Infraestrutura local implementada e exercitada. O refresh real e o monitoramento permanecem bloqueados até existir uma fonte autorizada, com identidade e limites revisados; a fixture não os habilita. |
+| F010 — atualização de capítulos | Infraestrutura local implementada e exercitada. Atualização periódica segue bloqueada: a autorização NDL exclui uso contínuo e periodicidade; a fixture não habilita refresh. |
 | F011 — configurações e perfis | Implementada e ligada a novas importações F006 e exports F007; validação visual no Windows continua pendente. |
-| F012 — distribuição Windows | Marco local com instalador atingido: bundle `onedir` recompilado, instalado, aberto com migração `0011_mobi_export_artifacts`, atualizado e removido em perfil descartável neste Windows 10 x64. Release aprovada continua pendente da matriz, licenças/notices e VMs limpas. |
+| F012 — distribuição Windows | Marco local com instalador atingido em Windows 10 x64. Matriz aprovada: Windows 10/11 x64 somente. Release continua pendente de VMs limpas dos dois sistemas, licenças/notices e artefato/atestação revisados. |
+
+## Retomada IMPLEMENT ALL — 27/11/2026
+
+- F003/F005 após integração NDL e fila real: a suíte completa e smoke desktop são registrados abaixo após validação final. F003 teve 31 testes focados e F005 acrescentou cobertura de redirect seguro, restauração e confirmação de UI.
+- Inicialização/composição e encerramento do desktop em perfil temporário: `uv run --locked --python 3.12 pytest tests/acceptance/foundation/test_desktop_startup.py tests/integration/test_desktop_startup.py -q` — **2 passed**. A entrada real `main()` em Qt offscreen saiu com código 0 e criou o banco em perfil temporário; nenhum arquivo do perfil real foi alterado.
+- Os 5 skips são: CLI KCC real sem `M2K_KCC_EXE`; dois smokes de instalador sem build/ZIP atual; build de release isolado sem `M2K_RUN_CLEAN_BUILD_TEST=1`; e teste de symlink não suportado pelo host. Nenhum skip foi contado como evidência positiva.
+- O comando para iniciar pelo checkout continua `uv run --locked --python 3.12 manga-to-kindle`, depois de `uv sync --locked --python 3.12`.
+- Consulta/download autorizados: o provider consultou PID `851650` e recebeu **北斎漫画**, autoria 葛飾北斎, volume ５編, 33 páginas. A fila baixou as 33 páginas, validou-as e gravou 108.693.160 bytes em `C:\Users\augusto.oliveira\AppData\Local\Temp\manga-to-kindle-f005-ndl-qa-pnltd0e1`. Perfil normal do usuário não foi alterado. A NDL redirecionou páginas 21/29 a bucket S3 exato; o transporte revalida host, DNS/IP e TLS por salto e protege URLs assinadas de persistência/log.
+- Não houve atualização periódica, envio SMTP para serviço real nem validação em Kindle físico. Critérios manuais visuais F005 permanecem no quickstart e não bloqueiam as próximas features.
+- Gates atuais: periodicidade F010 excluída pela autorização NDL; compatibilidade física para F007/F009; revisão de licenças/notices e VMs limpas Windows 10/11 x64 para release F012. Validações visuais não impeditivas permanecem pendentes conforme cada quickstart.
+- Pesquisa e autorização: a NDL documenta API/IIIF e PDM em seu acervo. Em 27/11/2026, a pessoa usuária autorizou consultas pontuais e download local explícito de item individual PDM; periodicidade, continuidade e outras fontes não foram autorizadas. O app impõe uma consulta de metadados por minuto e 12 imagens/minuto como limites locais, não cotas NDL. Ver [pesquisa F003](003-extensible-providers/research.md) e [F010](010-chapter-updates/research.md).
+- O estado por feature, funcionalidades disponíveis para teste, lacunas de implementação e marcos F002/F005/F007/F009/F012 estão discriminados neste checkpoint e nos quickstarts; nenhuma operação simulada foi promovida a funcionalidade real.
 
 ## F003 — Provedores extensíveis
 
-**Estado**: contrato, segurança de URL e fixture offline implementados. A validação manual no Windows está pendente. `B003-REAL-SOURCE` continua aberto; nenhum provedor real ou download está habilitado.
+**Estado**: contrato, transporte HTTPS fixado, fixture offline e consulta NDL pontual implementados. O escopo NDL cobre metadados e itens individuais do corpus PDM; atualização periódica continua desativada. A fila F005 consome o item escolhido; validação visual manual Windows permanece pendente.
 
 ### Evidências e testes
 
-- `https://fixture.invalid/manga/demo` retorna sete capítulos fictícios determinísticos, sem DNS ou socket. A capacidade de download é falsa.
+- `https://fixture.invalid/manga/demo` retorna sete capítulos fictícios determinísticos, sem DNS ou socket. A capacidade de download é falsa e seus dados permanecem em identidade separada.
+- NDL aceita somente URL HTTPS de item `/dl/book/<PID>`, confirma correspondência de PID e metadados e produz referências IIIF para as páginas declaradas pelo registro. A URL original não é persistida.
+- Transporte conecta somente a IPs públicos aprovados, comprova peer e conserva TLS/SNI do host atual. Redirects são revalidados; somente o bucket S3 de entrega NDL exato é permitido. O fallback MIME `.jpg` ainda exige assinatura e decode raster.
+- A interface lista NDL, fixture e a ausência de outros catálogos; a consulta real só começa após ação explícita. F010 não recebe suporte de atualização periódica.
 - IDs de capítulo não dependem da posição visual. A fixture cobre capítulos duplicados, decimais e especiais para exercitar a ordenação da F004.
 - URLs inválidas, hosts não registrados, redes privadas, esquemas fora da capacidade, destinos de redirect, portas vazias e dados sensíveis são verificados sem request real.
 - A consulta salva sob `provider_id=fixture` e `source_id=fixture:demo`. A integração confirma que outro registro local continua intacto e que uma URL sem provedor não recebe dados da fixture.
-- Na conclusão inicial da F003: 25 testes focados e 91 testes na suíte completa passaram.
-- Na revalidação compartilhada após a F004: 27 testes focados da F003 e 100 testes da suíte completa passaram.
+- F003 após extensão: **31 testes focados passaram**, Ruff e MyPy dos arquivos alterados passaram, e a suíte completa passou com **379 passed, 5 skipped**. Startup/encerramento desktop: **2 passed**.
 
 ### Critérios para validação manual
 
 - No Windows 10/11, consultar a fixture e conferir título, identificação de demonstração e ordem `1, 1, 1.5, 2, 10`, seguida dos dois bônus.
 - Consultar uma URL externa não registrada e um esquema FTP; confirmar mensagens adequadas e ausência de fallback para a fixture.
 - Confirmar navegação por teclado e leitura dos rótulos de demonstração.
+- Em ação explícita, consultar `https://lab.ndl.go.jp/dl/book/851650`; conferir aviso PDM, autoria/título e que outras fontes estão marcadas como não integradas. Validar responsividade e limite local entre consultas.
+- Confirmar que NDL não atualiza automaticamente, que a fixture não faz request e que nenhum download ocorre até o fluxo F005.
 - A tela Biblioteca ainda mostra um exemplo visual fixo; ela não lista o catálogo persistido. A preservação de outro registro local foi verificada pela integração automatizada.
 
 O roteiro está em [quickstart F003](003-extensible-providers/quickstart.md).
@@ -63,20 +79,20 @@ O roteiro está em [quickstart F004](004-catalog-chapters/quickstart.md).
 
 ## F005 — Fila de downloads
 
-**Estado**: engenharia da fila local concluída; o marco do primeiro download funcional permanece bloqueado por `B003-REAL-SOURCE`. Não existe provider de produção nem adaptador HTTP habilitado. O transporte injetável só é usado com respostas de teste automatizadas e não conta como funcionalidade simulada disponível no produto.
+**Estado**: marco F005 atingido para NDL restrita. O botão aparece somente para seleção NDL não simulada; a pessoa usuária confirma antes de persistir e iniciar. A fila real reutiliza páginas validadas, grava atomicamente e restaura IDs após reinício sem nova consulta de metadados. Outras fontes seguem sob `B003-REAL-SOURCE`.
 
 ### Evidências e testes
 
-- A tela Downloads lista trabalhos persistidos e mostra progresso por capítulo/página; pausa, retomada explícita e cancelamento são conectados ao estado local. A fixture F003 não pode criar trabalho, e a interface explica que não há fonte autorizada.
+- A tela Downloads lista trabalhos persistidos e mostra progresso por capítulo/página; pausa, retomada explícita e cancelamento são conectados ao estado local. A fixture F003 não pode criar trabalho; NDL exige seleção e confirmação.
 - A fila limita transferências simultâneas, aplica retry/rate limit documentados, valida destino/resposta e imagem raster, grava por staging e promoção atômica e reconcilia operações interrompidas sem iniciar rede na retomada.
-- A suíte focada F005 passou: `37 passed`. A suíte completa `uv run --locked --python 3.12 pytest tests -q` passou: `129 passed`. Inicialização/encerramento desktop: `2 passed`. Ruff: `All checks passed`. MyPy: `Success: no issues found in 79 source files`.
-- Não foi adicionada dependência HTTP nem Pillow; `pyproject.toml` e `uv.lock` permanecem sem mudança para F005. A aplicação só poderá habilitar uma fonte depois de revisão de autorização, hosts, limites e política.
+- Smoke real pelo provider/fila com item `851650`: 31 páginas reutilizadas de uma primeira execução parcial e 2 páginas redirecionadas concluídas após revalidação; resultado final `succeeded`, 33/33 arquivos JPEG existentes, 108.693.160 bytes em perfil temporário. Os testes unitários cobrem redirect seguro/negado e validação da referência final.
+- A suíte focada F005, regressão completa, startup/composição e checks Ruff/MyPy são registrados no bloco de validação depois que terminarem. Não foi adicionada dependência HTTP nem Pillow; `pyproject.toml` e `uv.lock` permanecem sem mudança para F005.
 
 ### Critérios para validação manual
 
-- No Windows 10/11, abrir Downloads e conferir o estado sem fonte autorizada, botão de início desativado, foco/teclado e rótulos acessíveis.
+- No Windows 10/11 x64, abrir Downloads e conferir a lista de trabalho, progresso, foco/teclado e rótulos acessíveis.
 - Consultar a fixture, selecionar capítulos, voltar a Downloads e confirmar que a fila continua vazia; reiniciar a aplicação e confirmar que nenhum tráfego começa automaticamente.
-- O primeiro download real, progresso/controles com conteúdo real e a verificação de origem autorizada dependem de evidência oficial compatível com download e uso local. Esse é o bloqueio do marco F005; não há tráfego real a executar até resolver o gate.
+- Consultar o item PDM, confirmar o download, observar 33/33, conferir armazenamento QA e validar pause/resume/cancel/reinício sem tráfego automático. A validação automatizada e o smoke real passaram; validação manual Windows não bloqueia implementação.
 
 O roteiro está em [quickstart F005](005-download-queue/quickstart.md).
 
@@ -228,7 +244,7 @@ Roteiro, comandos, funcionalidades disponíveis/ausentes e critérios manuais es
 
 ## F012 — Distribuição Windows
 
-**Estado**: implementação local do bundle `onedir` e ciclo do instalador disponível. O marco de aplicativo com instalador foi atingido para validação local no Windows 10 x64; não existe release aprovada nem matriz de suporte declarada.
+**Estado**: implementação local do bundle `onedir` e ciclo do instalador disponível. O marco de aplicativo com instalador foi atingido para validação local no Windows 10 x64. Matriz aprovada: Windows 10/11 x64 somente; não existe release aprovada.
 
 ### Evidências e testes
 
@@ -237,7 +253,7 @@ Roteiro, comandos, funcionalidades disponíveis/ausentes e critérios manuais es
 - **Notices/atestação**: `tools/release/manifest.py` valida notices UTF-8 declarados e hashes; `tools/release/attestation.py` liga hash do ZIP e do manifest a `pending/passed/failed`, recusa ZIP corrompido/caminhos inseguros e, se a revisão for marcada como aprovada, exige notices presentes dentro do próprio artefato. Testes focados: **16 passed** em `test_dependency_licenses.py`, `test_release_manifest.py` e `test_release_attestation.py`; Ruff passou e MyPy passou nos dois módulos de release.
 - Entry point PyInstaller chama `main()`; o bundle/instalador abriu em perfil isolado e aplicou `0011_mobi_export_artifacts`. Migrações são empacotadas em `_internal`; o executável KCC continua fora do bundle.
 - Pacote local atual: `dist/local-release-draft/MangaToKindle-0.1.0-windows-x64-local-20261126-200905.zip`; SHA-256 `7bcc64183cc78ab5737e98e4bae8cb87817d0047d35a355d30c05094578a50c7` (**63.424.876 bytes**). O bundle tem 263 arquivos e 149.835.697 bytes. O pacote de validação inclui scripts PowerShell, aviso local, SBOM CycloneDX, candidatos de licença e inventário de arquivos como sidecars; KCC não está incluído.
-- O SBOM atual tem 24 componentes; há metadata candidata encontrada para 23 e `macholib==1.16.4` segue ausente no host. As 24 revisões continuam `pending`; metadata não aprova licenças. O inventário real do `onedir` enumera 263 arquivos e 149.835.697 bytes com caminhos relativos e SHA-256, mas não mapeia a proveniência dos binários Qt nem determina suas licenças. T001/T017/T018/T023 seguem abertas até inventário/proveniência, notices completos, manifest do artefato e revisão humana.
+- O SBOM atual tem 24 componentes; há metadata candidata encontrada para 23 e `macholib==1.16.4` segue ausente no host. As 24 revisões continuam `pending`; metadata não aprova licenças. O inventário real do `onedir` enumera 263 arquivos e 149.835.697 bytes com caminhos relativos e SHA-256, mas não determina suas licenças. T001 está concluída com inventários candidatos; T017/T018/T023 seguem abertas enquanto notices completos, revisão humana e manifest/atestação correspondente ao artefato não tiverem evidência suficiente.
 - O instalador valida caminhos/links no ZIP e extrai por fluxo .NET seguro, instala por staging, preserva a versão anterior e restaura a versão anterior em falha após publicação. A remoção valida marcador/registro, repete até seis tentativas espaçadas para bloqueios de arquivo e só apaga atalho/registro após remover a pasta; os dados locais permanecem fora da instalação.
 - Testes F012 já executados: `uv run --locked --python 3.12 pytest tests/packaging -q` — **24 passed em 23,16s** (antes da adição do teste lento; ele passa separadamente em 104,61s). Incluem startup real do bundle até `0011_mobi_export_artifacts`, lifecycle do ZIP atualizado em perfil descartável, instalação/upgrade/rollback, remoção e preservação do dado sentinela.
 - Regressão completa final: `uv run --locked --python 3.12 pytest tests -q` com `M2K_KCC_EXE` apontando para a CLI oficial real — **363 passed em 133,91s**. Ruff (`src/manga_to_kindle tests tools`): **All checks passed**. MyPy (`src/manga_to_kindle tools/release/bundle_inventory.py tools/release/license_inventory.py tools/release/manifest.py`): **Success: no issues found in 153 source files**. `git diff --check` passou após as atualizações documentais; Git exibiu somente avisos de normalização LF/CRLF do checkout Windows.
@@ -249,15 +265,15 @@ Roteiro, comandos, funcionalidades disponíveis/ausentes e critérios manuais es
 
 ### Critérios de aceitação manual pendentes
 
-- Windows 10 e 11 limpos em cada par de arquitetura aprovado, sem Python/uv/Qt, verificando abertura, versão, ícone, funções e diretórios de dados.
+- Windows 10 e 11 x64 limpos, sem Python/uv/Qt, verificando abertura, versão, ícone, funções e diretórios de dados.
 - Atualização com banco e biblioteca sintéticos reais para o app, comparação de IDs/checksums e falha de migração; permissões, espaço insuficiente, arquivos em uso e cancelamento.
 - Desinstalação/reinstalação por usuário com verificação de atalhos/registro e preservação de biblioteca, exports, originais e configurações.
-- Aprovar matriz de arquitetura, revisar licenças de cada componente/notices, inspecionar SmartScreen/assinatura e anexar evidências/hashes à checklist.
+- Revisar licenças de cada componente/notices, inspecionar SmartScreen/assinatura e anexar evidências/hashes à checklist.
 
 ### Disponível e ainda não disponível
 
 - Disponível: build e ZIP local, instalação/atualização/remoção por usuário, preservação dos dados, fallback da instalação e startup testado do pacote real no perfil QA.
-- Ainda indisponível: release aprovada, suporte x64/ARM64/x86 declarado, builds/VMs limpas Windows 10/11, assinatura digital e notices completos. Inno Setup, KCC e navegador não estão no bundle.
+- Ainda indisponível: release aprovada, builds/VMs limpas Windows 10/11 x64, assinatura digital e notices completos. Inno Setup, KCC e navegador não estão no bundle.
 
 Consulte o [quickstart F012](012-windows-distribution/quickstart.md) e a [checklist de release](012-windows-distribution/checklists/release.md) para os comandos e critérios. Nenhuma validação manual pendente foi marcada como concluída.
 
@@ -265,9 +281,9 @@ Consulte o [quickstart F012](012-windows-distribution/quickstart.md) e a [checkl
 
 - F001: bootstrap, configuração, caminhos de usuário, banco local e encerramento seguro.
 - F002: protótipo desktop navegável, atalhos, navegação por teclado e tema.
-- F003: consulta e recusa de fonte sem rede, com fixture explicitamente fictícia.
+- F003: consulta NDL limitada a item individual PDM, fixture explicitamente fictícia e recusa de fonte não integrada.
 - F004: consulta offline, metadados opcionais, ordenação, seleção individual/por intervalo e atualização recuperável.
-- F005: fila persistida, controles, retry, integridade e recuperação verificados com transporte isolado nos testes; no aplicativo, apenas a tela e a barreira sem fonte estão disponíveis. Não há download real.
+- F005: seleção NDL PDM com confirmação, fila real, progresso, pause/resume/cancel, validação raster, gravação atômica e recuperação; smoke real 33/33 em perfil QA. A fixture não baixa conteúdo.
 - F006: importação de pasta/CBZ autorizada, prévia 600×800, ordenação, processamento, cancelamento e recuperação. Dados de demonstração sintéticos disponíveis em `examples/demo-import`.
 - F007: exportação local EPUB/CBZ nativa e MOBI via KCC 13.0.4 nos dois perfis verificados; critérios físicos pendentes no [quickstart F007](007-epub-kcc-export/quickstart.md).
 - F008: busca/filtros/favoritos, disponibilidade verificada, histórico, migração e exclusão por escopo confirmado; critérios no [quickstart F008](008-local-library/quickstart.md).
@@ -276,13 +292,13 @@ Consulte o [quickstart F012](012-windows-distribution/quickstart.md) e a [checkl
 - F011: perfis e preferências persistentes ligados a F006/F007, pastas/recursos e restauração sem perda; critérios em [quickstart F011](011-settings-profiles/quickstart.md).
 - F012: bundle e instalador PowerShell reais em rascunho local; release aguarda matriz, revisão de licenças/notices e VMs limpas. Consulte o [quickstart F012](012-windows-distribution/quickstart.md).
 
-O download real F005 e a atualização remota F010 continuam bloqueados enquanto não houver fonte autorizada. Nenhum transporte de teste é evidência desses fluxos. A distribuição F012 só pode ser aprovada depois da matriz, revisão de licenças e execução de instalação/upgrade/desinstalação em Windows limpo.
+Atualização remota periódica F010 permanece bloqueada porque a autorização NDL exclui uso contínuo; nenhum transporte de teste é evidência de autorização externa. O escopo real F005 está disponível apenas para item NDL PDM individual após confirmação. A distribuição F012 só pode ser aprovada depois de revisão de licenças e instalação/upgrade/desinstalação em Windows 10/11 x64 limpos.
 
 ## Ainda não implementado ou bloqueado
 
-- F005: primeiro download real. A fila local e seus controles foram implementados; a fonte externa permanece bloqueada até haver evidência verificável de autorização compatível com o uso local pretendido.
-- F010: atualização remota, monitoramento efetivo e avisos derivados de catálogo consultado, dependentes de fonte/capacidade autorizadas com IDs e limites documentados. A infraestrutura local correspondente já está disponível para revisão e teste automatizado.
-- F012: aprovação e publicação da distribuição Windows; implementação local do bundle/instalador já está disponível, mas arquitetura, licenças/notices e VMs limpas continuam como gates.
+- F005: outros providers e itens fora do escopo NDL PDM; a fila limitada já baixou e validou um item real.
+- F010: consultas remotas periódicas, monitoramento e avisos derivados de catálogo real; o escopo NDL não autoriza continuidade. A infraestrutura local correspondente está disponível.
+- F012: aprovação/publicação da distribuição Windows; build e instalador locais existem, mas revisão de licenças/notices e VMs limpas Windows 10/11 x64 continuam como gates.
 
 Não se deve usar as operações simuladas das telas atuais como evidência de conclusão desses fluxos.
 

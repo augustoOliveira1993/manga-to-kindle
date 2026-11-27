@@ -1,15 +1,15 @@
 {
   "schema_version": "1.0",
   "bundle_directory": "MangaToKindle",
-  "file_count": 222,
-  "total_size_bytes": 151601693,
+  "file_count": 221,
+  "total_size_bytes": 144328559,
   "license_review_status": "pending",
   "scope_note": "Inventário de arquivos e hashes do bundle; não identifica origem, componente nem licença. A revisão dos componentes continua pendente.",
   "files": [
     {
       "path": "MangaToKindle.exe",
-      "size_bytes": 10074773,
-      "sha256": "bec4c7636d3e552ec2b82163cf90367d44ac501f340be23582f0ba968419524e"
+      "size_bytes": 8249982,
+      "sha256": "fb9d43e83ac51cd9d77d804a8deb4225f43cc750e5d5c1e4864ab2aa6e2781ee"
     },
     {
       "path": "_internal/PIL/_avif.cp312-win_amd64.pyd",
@@ -25,11 +25,6 @@
       "path": "_internal/PIL/_imagingcms.cp312-win_amd64.pyd",
       "size_bytes": 275456,
       "sha256": "2640857cace64d69735bdcaa3987e9ad70f85168abc1a8662079c77ac44b5301"
-    },
-    {
-      "path": "_internal/PIL/_imagingft.cp312-win_amd64.pyd",
-      "size_bytes": 2250752,
-      "sha256": "985228f6086171978abb5d04f2f625c489fdc9d7f0a92f2077a621ff184a599e"
     },
     {
       "path": "_internal/PIL/_imagingtk.cp312-win_amd64.pyd",
@@ -768,133 +763,133 @@
     },
     {
       "path": "_internal/VCRUNTIME140.dll",
-      "size_bytes": 124544,
-      "sha256": "d5e4d9a3e835fa679450145d6a7d94e36573a509317111904d9b3712c30d9066"
+      "size_bytes": 120400,
+      "sha256": "052ad6a20d375957e82aa6a3c441ea548d89be0981516ca7eb306e063d5027f4"
     },
     {
       "path": "_internal/VCRUNTIME140_1.dll",
-      "size_bytes": 49792,
-      "sha256": "1f2d41c4aa5db0bc33ebf7b66d72943a817d7ce6cbe880502a9403823633093f"
+      "size_bytes": 49776,
+      "sha256": "6a99bc0128e0c7d6cbbf615fcc26909565e17d4ca3451b97f8987f9c6acbc6c8"
     },
     {
       "path": "_internal/_asyncio.pyd",
-      "size_bytes": 59392,
-      "sha256": "3d7498f973598608f3b83349f23f36f638cc9658049e3297504c5e60bfd85766"
+      "size_bytes": 74096,
+      "sha256": "c77de90cad749087a0c5dc5e19d78d24f6ef44e7e5ac19b8420cfc0cea62395d"
     },
     {
       "path": "_internal/_bz2.pyd",
-      "size_bytes": 73216,
-      "sha256": "a44bead91bc3ba4152eb2e99919b2652c3cdd10380bd7dd35514a19fc18d31fc"
+      "size_bytes": 86896,
+      "sha256": "65f610646d10d5babea080e060d244b546ec52c54012e5e937dc72dcc2e2e7bc"
     },
     {
       "path": "_internal/_ctypes.pyd",
-      "size_bytes": 116224,
-      "sha256": "3e358ef06fd703bd2d6ec324acf63c118dd1e87272b413ceab7cd23b409b6337"
+      "size_bytes": 127480,
+      "sha256": "0e56107a891100535f2da79d85a5ae65ff1227b4765bd108f8593ac1a1110d81"
     },
     {
       "path": "_internal/_decimal.pyd",
-      "size_bytes": 246784,
-      "sha256": "fe1a53d9ec8789dbb8c79884ff5c3afb3052cde4ec8718da867259a968cb7291"
+      "size_bytes": 262000,
+      "sha256": "aeacfead2befcc0768063a037bb64bd32109ae09cb144e5f571b04dd7965db9d"
     },
     {
       "path": "_internal/_elementtree.pyd",
-      "size_bytes": 122368,
-      "sha256": "4196ada9e7e41b6f980822c14072102c8729e3545f5820f5242b211d7f011c37"
+      "size_bytes": 135160,
+      "sha256": "5009a9a53c03ef8387443b5cf6ce08e5c3a79727466a0b931c5bbca915bf89ca"
     },
     {
       "path": "_internal/_hashlib.pyd",
-      "size_bytes": 54784,
-      "sha256": "1654b2206075c97420c5589c415443847ac55e54adff5e2b2ec0f55a9d51582f"
+      "size_bytes": 68976,
+      "sha256": "03d233dbace599168eaffec823de6ed7beec8c2a4ebfe9b8a3d8e042a59af3ba"
     },
     {
       "path": "_internal/_lzma.pyd",
-      "size_bytes": 153088,
-      "sha256": "9890de5099e236829745726ec5b062f2dfd69cc7a048eff4e67d6e0c918fec30"
+      "size_bytes": 161136,
+      "sha256": "e3deecc1f59a3b811c608861decd84de1e8df8bafd5e2b39188861318c5a38cf"
     },
     {
       "path": "_internal/_multiprocessing.pyd",
-      "size_bytes": 24064,
-      "sha256": "7bd0cb8c58323eb670c948bfd559fde1d7dae5dbef7bb779213ad149c3d4a390"
+      "size_bytes": 37368,
+      "sha256": "2c636df7059cb0dd7e978dd735c7c5c8ddb09cf94754cf9e232296b96c5c545a"
     },
     {
       "path": "_internal/_overlapped.pyd",
-      "size_bytes": 44032,
-      "sha256": "1a6850c1019be7fa67b5ed03273e1153b3ad6efd8ce9d8eaa0070d7bbaf84486"
+      "size_bytes": 57336,
+      "sha256": "662126ff80c3a1b4cedf74074029c12ae4743e6d3b37376e39ac70aacb7d4d3c"
     },
     {
       "path": "_internal/_queue.pyd",
-      "size_bytes": 20480,
-      "sha256": "529ec33ef1d0d68e65de57a791db36e12876e2bbb7d1f8c53ffffbbb25f9fa7f"
+      "size_bytes": 33784,
+      "sha256": "48e76e0ad63f6932b4a77b5819f41c1e7595636ca8d9e824f0943a14b8bb5035"
     },
     {
       "path": "_internal/_socket.pyd",
-      "size_bytes": 71680,
-      "sha256": "de182b11b6cbea1b3a594c33f06f2b72b48541ca88c692a1dc253d4ac885b6ce"
+      "size_bytes": 85496,
+      "sha256": "3efa4636cf9e350856f6927d67a4c2564bf9bd2758a00bbf17d3aece5b60016d"
     },
     {
       "path": "_internal/_sqlite3.pyd",
-      "size_bytes": 112128,
-      "sha256": "b7999a4b74459100e6816625672082c47e599d7d881507621f6a3340b41dad61"
+      "size_bytes": 126184,
+      "sha256": "64b51df2805c58b023a875e8ae3be7ac7f61ef664f32ca6c90f6315da47ef0bc"
     },
     {
       "path": "_internal/_ssl.pyd",
-      "size_bytes": 165888,
-      "sha256": "7c6242d52c9eab09f459d9ab494be8e485b31c3ec4d059a8e27bb5b72af79762"
+      "size_bytes": 179432,
+      "sha256": "0bc527d2dbc50009f43b2ed5d5982c4f63f4b647647ffa9eda612dcda80f6040"
     },
     {
       "path": "_internal/_uuid.pyd",
-      "size_bytes": 13824,
-      "sha256": "570a3c249873873163b51c3794e8374af9c34194e28ab8f0b5dfbb09ec81b8fd"
+      "size_bytes": 27128,
+      "sha256": "acce4f281d7ffb2dec0997527faf25b1df62ad7bd3032c568ddcf65c90edc867"
     },
     {
       "path": "_internal/_wmi.pyd",
-      "size_bytes": 25600,
-      "sha256": "d17f3c962ea0e535c544323515120f5149fd80e90c55c4c3f89617b0bea74659"
+      "size_bytes": 40304,
+      "sha256": "a980f1e7a29842bd946863fc2693fbeb555a9dc0f9e1630dfed9a2fcdef3ece2"
     },
     {
       "path": "_internal/_zoneinfo.pyd",
-      "size_bytes": 36352,
-      "sha256": "c54225b231f7b1f80786023d1d3cd010fd9e53855156bfba02659d907b58b14e"
+      "size_bytes": 49656,
+      "sha256": "76f1439cda82ab6976df6ba505c4079444703f6d44d8b0259ce59c0ff4279fb4"
     },
     {
       "path": "_internal/base_library.zip",
-      "size_bytes": 1333525,
-      "sha256": "f04f6fc803982f13283b6757103b9a06bb76d236837e269b93849a2e94ee0ae0"
+      "size_bytes": 1333717,
+      "sha256": "8c922c9f659bcfc77be9328201b7d14f1e453f698264cd100bc03b29e7e54ca5"
     },
     {
-      "path": "_internal/libcrypto-3-x64.dll",
-      "size_bytes": 7856640,
-      "sha256": "b36cfb21dc3dad939aabab2e479c6e179b65e3a674105b15bfcc8b5ca7cad526"
+      "path": "_internal/libcrypto-3.dll",
+      "size_bytes": 5231472,
+      "sha256": "ccfffddcd3defb8d899026298af9af43bc186130f8483d77e97c93233d5f27d7"
     },
     {
       "path": "_internal/libffi-8.dll",
-      "size_bytes": 28160,
-      "sha256": "1e0c713f7423dfa559f0cb16b2edf39fa1bc73c69e1592a40e2a91198cdba9bd"
+      "size_bytes": 39696,
+      "sha256": "eff52743773eb550fcc6ce3efc37c85724502233b6b002a35496d828bd7b280a"
     },
     {
-      "path": "_internal/libssl-3-x64.dll",
-      "size_bytes": 1571840,
-      "sha256": "f92b48f4bc8e61bd6c780ce4a7cf5ff4e91ac78f3ba86e232558e12d403247fa"
+      "path": "_internal/libssl-3.dll",
+      "size_bytes": 794992,
+      "sha256": "007142039f04d04e0ed607bda53de095e5bc6a8a10d26ecedde94ea7d2d7eefe"
     },
     {
       "path": "_internal/manga_to_kindle/infrastructure/persistence/migrations/__init__.py",
-      "size_bytes": 57,
-      "sha256": "c1a672b715c1e56a1014a4af995fb720ec064e09e1fd6f5bbb558ca51584a4ff"
+      "size_bytes": 56,
+      "sha256": "8b9df765435d3f4750f98eb908c3836d5698c9e3beb7c9af5aa5a6e991e72d5f"
     },
     {
       "path": "_internal/manga_to_kindle/infrastructure/persistence/migrations/env.py",
-      "size_bytes": 1591,
-      "sha256": "f85e37cdedae3b82b9f380ac1cbc4435538e00734b3208b78d0bdf14884add13"
+      "size_bytes": 1534,
+      "sha256": "4328cd1d229aef18b33c55346806d1245fb5a901072d2f8f3ce1a3a19f997ad0"
     },
     {
       "path": "_internal/manga_to_kindle/infrastructure/persistence/migrations/versions/0001_initial_schema.py",
-      "size_bytes": 6036,
-      "sha256": "cffe2f3549a424c6f57e023c396e7902e21fc532d1e0c68d432497bead8b5cec"
+      "size_bytes": 5909,
+      "sha256": "b6babaf96648141c4a5370a1a49f4a75236c180264e32ce92b2384ff2ef1baa5"
     },
     {
       "path": "_internal/manga_to_kindle/infrastructure/persistence/migrations/versions/0002_catalog_snapshot.py",
-      "size_bytes": 2064,
-      "sha256": "35e7641ff495ae354908a5e5352a41744d764ebf07315a58a64e978c944ca497"
+      "size_bytes": 2019,
+      "sha256": "69ea9e13a696e1124e1dce89c0a477ee462c67c7d0c77dab4fdebc7863d0b2a9"
     },
     {
       "path": "_internal/manga_to_kindle/infrastructure/persistence/migrations/versions/0003_download_queue.py",
@@ -943,8 +938,8 @@
     },
     {
       "path": "_internal/manga_to_kindle/infrastructure/persistence/migrations/versions/__init__.py",
-      "size_bytes": 41,
-      "sha256": "1204d89dae492f4c81ac3c98ad1cad1aefd54373bc6b679c7dc89dcc8e63423d"
+      "size_bytes": 40,
+      "sha256": "3c2fd6042964597eef882de6813306bb92f7653bd386461a8b7c055542b5a33e"
     },
     {
       "path": "_internal/markupsafe-3.0.4.dist-info/INSTALLER",
@@ -1023,23 +1018,23 @@
     },
     {
       "path": "_internal/pyexpat.pyd",
-      "size_bytes": 211456,
-      "sha256": "242b09f1023c0c1e29ca09c86b280f6512253c78993604f3d0d9b9f898cbb3b5"
+      "size_bytes": 205304,
+      "sha256": "d615e193d1affcdbfe504e90d3621cbdcff94bf72b79d899126534507fd6d27a"
     },
     {
       "path": "_internal/python3.dll",
-      "size_bytes": 56320,
-      "sha256": "db0c6c1efa44cd83ec6d97825cba36bc98e25d962df53ea6995a49b4d068e9f7"
+      "size_bytes": 70376,
+      "sha256": "fb975a606e7fbf74f64260e3f60c3490b4f74a183c0926fd6ed1ac4c52ac7b1c"
     },
     {
       "path": "_internal/python312.dll",
-      "size_bytes": 6971392,
-      "sha256": "f4ee82750281a43282d2d6bfcf03812f2ac62725ae8c958b6e6182ba203c3cef"
+      "size_bytes": 6945272,
+      "sha256": "9a0e3435aaa680d868150f87ab3e388ad2eebc22f87e036155c7b4eda8cd2120"
     },
     {
       "path": "_internal/select.pyd",
-      "size_bytes": 18944,
-      "sha256": "5655f96dbb82c76c6dc91fd38d8d0181fbf07426696e385a7e7812802340c461"
+      "size_bytes": 33136,
+      "sha256": "d4d7181b11db0bd22a6cd5cda6f8583d1f5c77615fd0a6ca33350619d6e0438a"
     },
     {
       "path": "_internal/shiboken6/MSVCP140.dll",
@@ -1108,13 +1103,13 @@
     },
     {
       "path": "_internal/sqlite3.dll",
-      "size_bytes": 1607680,
-      "sha256": "1d74686acdde82918d11ca095c1676049d5c1da2e819af64ad5fccd50126c397"
+      "size_bytes": 1583608,
+      "sha256": "8daa45684bf6688fca28d956b2e8942f2fa98f656675ce68e6d61dd869848a7a"
     },
     {
       "path": "_internal/unicodedata.pyd",
-      "size_bytes": 1127936,
-      "sha256": "5f0598e7a3f5d09de7bf4fe8e992342a27d871fbce264987413d68288e7e7cf4"
+      "size_bytes": 1140592,
+      "sha256": "208ee1cd3cbad0828433ca7246b05be2b1ff5569983d27d296c0b38888585488"
     }
   ]
 }

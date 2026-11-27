@@ -55,9 +55,9 @@
 
 ### Matriz de Windows/arquitetura
 
-- **Decisão**: não fechar arquitetura por inferência. O formato de manifest e a checklist recebem a lista explícita aprovada; build e VMs são instanciados por par de Windows/arquitetura. Até a decisão humana, B012-ARCH-MATRIX impede anunciar suporte e fecha a publicação.
-- **Racional**: a constituição limita sistema a Windows 10/11, mas não escolhe x64/ARM64/x86; a spec deliberadamente deixou essa escolha aberta.
-- **Alternativas consideradas**: fixar x64 sem resposta mudaria uma decisão já encaminhada para aprovação humana; gerar artefato para arquiteturas extras sem build e VM seria declaração sem evidência.
+- **Decisão humana registrada em 2026-11-27**: Windows 10 e Windows 11, ambos x64 somente. ARM64 e x86 ficam fora da matriz até nova aprovação.
+- **Racional**: a pessoa usuária confirmou explicitamente x64 somente. A matriz define os targets desejados, mas não prova compatibilidade; build e VM limpa ainda precisam ser executados por par Windows/arquitetura.
+- **Estado**: `B012-ARCH-MATRIX` resolvido quanto à decisão. `B012-IMPLEMENTATION-BASELINE` e validação em VMs limpas continuam bloqueando a aprovação de release.
 
 ### Manifesto estável e hash por artefato
 
@@ -69,7 +69,7 @@
 | Item | Estado e efeito |
 |---|---|
 | B012-IMPLEMENTATION-BASELINE | A implementação F001–F011, lock, build PyInstaller e smoke local existem. Build de checkout limpo e compatibilidade em VMs por par aprovado ainda bloqueiam release. |
-| B012-ARCH-MATRIX | Bloqueia matriz final e declaração de suporte. O plano mantém a matriz como entrada configurável pendente de aprovação humana. |
+| B012-ARCH-MATRIX | Decisão resolvida em 2026-11-27: Windows 10/11 x64 somente. Compatibilidade anunciada segue condicionada aos smoke tests limpos de cada versão. |
 | B007-EBOOKLIB-LICENSE | Resolvido na F007: writer próprio com biblioteca padrão, sem EbookLib no lock ou artefato. |
 | Inno Setup | Instalador opcional; validar licença aplicável e documentar versão/compilador antes de qualquer uso. Bundle portátil segue como saída-base. |
 | Versões concretas | O ambiente local está travado em `uv.lock` e PyInstaller 6.22.3; conferir novamente a documentação e validar a matriz antes de release. |

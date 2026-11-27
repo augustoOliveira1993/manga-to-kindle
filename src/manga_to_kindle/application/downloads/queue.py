@@ -332,7 +332,14 @@ class DownloadQueue:
             cancellation=cancellation,
         )
         try:
-            destination.assert_connected_address(response.connected_address)
+            response_destination = getattr(response, "validated_destination", destination)
+            if (
+                response_destination.allowed_hosts != destination.allowed_hosts
+                or response_destination.allowed_ports != destination.allowed_ports
+                or response_destination.allowed_schemes != destination.allowed_schemes
+            ):
+                raise DownloadUnavailable("O destino final não respeita a política da fonte.")
+            response_destination.assert_connected_address(response.connected_address)
             if response.status_code != 200:
                 raise _HttpFailure(response.status_code, response.headers)
             content_encoding = _header(response.headers, "content-encoding")

@@ -4,14 +4,14 @@
 
 **Criada em**: 2026-11-25
 
-**Status**: Rascunho com bloqueio para provedor real
+**Status**: Aprovado para provedor NDL pontual e limitado; outros provedores seguem bloqueados
 
 **Entrada**: Definir o contrato `MangaProvider` com `supports`, `get_manga`,
 `get_chapters` e `get_pages`; registro de provedores, normalização de URLs, erros tipados
-e capacidades declaradas. Aceitar somente HTTP/HTTPS, validar redirecionamentos e
-destinos e bloquear acesso a redes privadas. Incluir provedor de fixtures; incluir
-provedor real somente com autorização de download e documentação verificável. Sem código
-nesta etapa.
+e capacidades declaradas. Aceitar somente HTTP/HTTPS, validar destinos e bloquear acesso
+a redes privadas. Incluir provedor de fixtures e um provedor NDL limitado a consultas
+pontuais de metadados e download local explícito de itens individuais PDM. Atualizações
+periódicas e outros provedores permanecem bloqueados.
 
 ## Histórias de Usuário e Testes (obrigatório)
 
@@ -171,12 +171,13 @@ sem evidência autorizada.
 - **RF-016**: A aplicação deve incluir um provedor de fixtures com dados determinísticos
   e explicitamente fictícios. Ele deve suportar somente seu identificador sintético,
   retornar Manga, Chapter e referências de página sem DNS, rede ou acesso a fontes reais.
-- **RF-017**: Nenhum provedor real deve ser incluído até existir fonte com autorização
-  verificável para baixar o conteúdo pretendido, documentação oficial dos endpoints e
-  limites, obrigações de atribuição/remoção e permissões compatíveis com o uso local.
-- **RF-018**: Enquanto não houver essa fonte, a implementação deve registrar o bloqueio
-  `B003-REAL-SOURCE` e não pode simular um provedor real, preencher a interface com dados
-  de fixture sob identidade de uma fonte real ou afirmar que um download real funciona.
+- **RF-017**: Provedores reais exigem autorização específica, documentação oficial dos
+  endpoints, escopo de uso, limites locais, atribuição/remoção e destinos aprovados. A NDL
+  só pode consultar um item identificado pelo usuário e baixar localmente um item
+  individual confirmado como parte do corpus PDM da Next Digital Library.
+- **RF-018**: O provedor NDL não pode fazer atualização periódica, descoberta ampla,
+  distribuição ou acesso contínuo. Nenhum provedor pode simular sucesso real, apresentar
+  fixture sob identidade de outra fonte ou afirmar que uma operação não executada funciona.
 - **RF-019**: URL completa, parâmetros, credenciais e resposta de conteúdo não devem ser
   registrados nos logs. Erros visíveis à pessoa usuária devem ser em português e sem
   ecoar dados sensíveis.
@@ -196,8 +197,9 @@ sem evidência autorizada.
   conexão permissiva.
 - **RNF-004**: Logs devem omitir segredos, credenciais, tokens, conteúdo de livros e URL
   completa quando houver parâmetros sensíveis.
-- **RNF-005**: Limites de requisições devem vir da documentação verificável do provedor;
-  se não estiverem documentados, a fonte permanece bloqueada para integração real.
+- **RNF-005**: Respeitar limites de origem publicados. Se uma fonte não publicar limite
+  numérico, qualquer uso autorizado precisa de limite local conservador claramente
+  identificado como política do aplicativo; isso não autoriza uso contínuo ou periódico.
 - **RNF-006**: O provedor de fixtures deve executar sem internet e produzir os mesmos
   resultados para as mesmas entradas.
 
@@ -234,9 +236,8 @@ sem evidência autorizada.
   redirecionamento passam sem usar rede real.
 - **CS-006**: Nenhum provedor é marcado como autorizado a baixar sem referência verificável
   que cubra a fonte, o conteúdo e o uso pretendido.
-- **CS-007**: F003 entrega o provedor de fixtures e registra explicitamente
-  `B003-REAL-SOURCE`; não há integração real apresentada como funcional enquanto o
-  bloqueio não for resolvido.
+- **CS-007**: F003 entrega a fixture offline e consulta NDL somente para URL de item
+  individual autorizada; nenhum refresh periódico é registrado ou iniciado.
 
 ## Premissas
 
@@ -253,8 +254,8 @@ sem evidência autorizada.
   limite somente com justificativa de segurança e testes equivalentes.
 - O projeto não tem `docs/roadmap.md`; o checkout contém specs F001 e F002 e nenhuma
   implementação de provedor ou fonte externa. Não há predecessores anteriores adicionais.
-- A data da consulta documental registrada nesta spec é 2026-11-25. Mudanças de termos ou
-  permissões devem ser verificadas novamente antes de qualquer integração real.
+- A revisão da autorização NDL e do escopo humano ocorreu em 2026-11-27. Mudanças de
+  termos ou permissões devem ser verificadas antes de ampliar o escopo.
 
 ## Dependências, Bloqueios, Riscos e Limites de Escopo
 
@@ -268,28 +269,32 @@ sem evidência autorizada.
 - F002 — [Interface Desktop do Manga to Kindle](../002-desktop-interface/spec.md) define
   o campo URL, estados de tela e mensagens do fluxo de entrada; em F002 os dados permanecem
   simulados.
-- Nenhuma fonte real está aprovada. A documentação consultada da API MangaDex declara uso
+- A API MangaDex não está aprovada. A documentação consultada declara uso
   público e gratuito sob condições de crédito a MangaDex e grupos, remoção de conteúdo e
   ausência de anúncios/serviços pagos, mas não declara autorização específica para baixar
   imagens de capítulos e exportá-las localmente para Kindle. A conclusão de que isso é
   insuficiente para habilitar um provedor real é uma inferência conservadora baseada na
   constituição.
 
-### Bloqueio de Integração Real
+### Escopo autorizado e bloqueios restantes
 
-- **B003-REAL-SOURCE**: Nenhuma fonte foi identificada com termos/licença explícitos que
-  autorizem baixar o conteúdo pretendido para uso local no Manga to Kindle. MangaDex não
-  será registrado como provedor real com base apenas em sua política de API. O bloqueio só
-  pode ser removido após validar documentação oficial aplicável aos direitos dos capítulos
-  e páginas, uso offline/exportação, atribuição, retirada de conteúdo e limites de acesso.
-  Até lá, somente `FixtureProvider` é permitido.
+- A autorização de 2026-11-27 permite somente acesso pontual à API de metadados e download
+  local de um item individual da Next Digital Library confirmado como parte do corpus
+  Public Domain Mark. O aplicativo limita consultas de metadados a uma por minuto e
+  imagens IIIF a até 12 por minuto; esses limites são locais, não cotas publicadas pela
+  NDL. A NDL identifica uso
+  contínuo como fora do acesso sem solicitação; por isso `periodic_catalog_updates_enabled`
+  permanece falso.
+- `B003-REAL-SOURCE` continua para MangaDex, outros catálogos, conteúdo sem PDM confirmado,
+  republicação/distribuição e qualquer ampliação de escopo. A consulta e o download NDL não
+  presumem compatibilidade com mangás serializados ou capítulos modernos.
 
 ### Riscos e Mitigações
 
 | Risco | Mitigação exigida |
 |---|---|
 | URL fornecida alcança serviço interno ou metadados de nuvem. | Validar IP literal, todas as respostas DNS e destino efetivo; recusar endereços não globalmente roteáveis antes da conexão. |
-| Redirecionamento contorna a validação inicial. | Não seguir redirecionamento automaticamente; revalidar cada salto, limitar a cinco e detectar loops/downgrade. |
+| Redirecionamento contorna a validação inicial. | Seguir somente redirects permitidos pela allowlist central; revalidar cada salto, limitar a cinco e detectar loops/downgrade. |
 | DNS muda entre validação e conexão. | Garantir que o destino conectado seja o mesmo endereço público validado; falhar fechado em resposta mista ou inconsistente. |
 | Provedor passa a acessar conteúdo não autorizado ou termos mudam. | Exigir evidência oficial por capacidade de download, guardar revisão/data e desativar a integração quando a permissão não estiver clara. |
 | Correspondência parcial seleciona um host controlado por terceiro. | Usar host normalizado e regras explícitas por provedor; não confiar em substring ou sufixo implícito. |
@@ -298,9 +303,9 @@ sem evidência autorizada.
 
 ### Fora do Escopo
 
-- Provedor real MangaDex ou de qualquer fonte sem autorização específica verificável para
-  o uso local pretendido.
-- Downloads reais, gravação de bytes de imagem, cache de páginas e conversão para Kindle.
+- Provedor real MangaDex ou de qualquer outra fonte sem autorização específica verificável.
+- Download NDL automático, periódico, em lote sem seleção, ou de conteúdo fora do corpus PDM.
+- Conversão para Kindle; o download NDL é implementado pela F005.
 - Login, armazenamento de credenciais, CAPTCHA, bypass de DRM, paywall ou restrição de
   acesso.
 - Carregamento dinâmico de plugins de terceiros ou instalação de extensões pela pessoa

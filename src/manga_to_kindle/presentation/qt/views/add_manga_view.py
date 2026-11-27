@@ -2,15 +2,17 @@
 
 from __future__ import annotations
 
+from collections.abc import Callable
 from uuid import UUID
 
-from PySide6.QtCore import Qt
+from PySide6.QtCore import Qt, Signal
 from PySide6.QtWidgets import (
     QComboBox,
     QFormLayout,
     QHBoxLayout,
     QLabel,
     QLineEdit,
+    QMessageBox,
     QProgressBar,
     QPushButton,
     QVBoxLayout,
@@ -18,6 +20,7 @@ from PySide6.QtWidgets import (
 )
 
 from manga_to_kindle.application.catalog.chapter_selection import ChapterSelection
+from manga_to_kindle.application.downloads.enqueue import PreparedDownload
 from manga_to_kindle.application.providers.resolve_provider import (
     provider_error_message_for_code,
 )
@@ -25,11 +28,17 @@ from manga_to_kindle.application.ui.validate_url import validate_http_url
 from manga_to_kindle.domain.catalog import CatalogSnapshot
 from manga_to_kindle.domain.chapter import Chapter
 from manga_to_kindle.presentation.qt.views.components import ChapterSelectionList
-from manga_to_kindle.presentation.qt.workers.adapter import OperationRunner
+from manga_to_kindle.presentation.qt.workers.adapter import (
+    CancellationToken,
+    OperationRunner,
+    ProgressReporter,
+)
 from manga_to_kindle.presentation.qt.workers.demo import CatalogQuery, make_catalog_operation
 
 
 class AddMangaView(QWidget):
+    download_enqueued = Signal(object)
+
     def __init__(
         self,
         runner: OperationRunner,
@@ -40,6 +49,10 @@ class AddMangaView(QWidget):
         self._runner = runner
         self._catalog_query = catalog_query
         self._operation_id: str | None = None
+        self._download_operation_id: str | None = None
+        self._download_preparer: (
+            Callable[[CatalogSnapshot, tuple[UUID, ...]], PreparedDownload] | None
+        ) = None
         self._chapters: tuple[Chapter, ...] = ()
         self._snapshot: CatalogSnapshot | None = None
         self._selection = ChapterSelection()
@@ -48,7 +61,12 @@ class AddMangaView(QWidget):
         layout.setSpacing(14)
 
         intro = QLabel(
-            "Consulte o catálogo local de demonstração. Nenhuma fonte externa será acessada."
+            "Fontes disponíveis para consulta:\n"
+            "• NDL — informe a página de um item individual do acervo marcado Public Domain "
+            "Mark (https://lab.ndl.go.jp/dl/book/ID); consultas pontuais, sem atualização "
+            "automática.\n"
+            "• Demonstração offline — https://fixture.invalid/manga/demo; dados fictícios.\n"
+            "Outros catálogos de mangá ainda não estão integrados."
         )
         intro.setObjectName("muted")
         intro.setWordWrap(True)
@@ -56,12 +74,12 @@ class AddMangaView(QWidget):
         self.url_input = QLineEdit()
         self.url_input.setObjectName("mangaUrlInput")
         self.url_input.setPlaceholderText("https://exemplo.com/manga/...")
-        self.url_input.setAccessibleName("Endereço HTTP ou HTTPS para demonstração")
+        self.url_input.setAccessibleName("Endereço HTTP ou HTTPS de uma fonte disponível")
         form.addRow("Endereço HTTP/HTTPS", self.url_input)
 
         self.query_button = QPushButton("Consultar catálogo")
         self.query_button.setObjectName("queryCatalog")
-        self.query_button.setAccessibleName("Consultar catálogo local, sem rede")
+        self.query_button.setAccessibleName("Consultar a fonte selecionada")
         self.query_button.setProperty("primaryAction", True)
         self.cancel_button = QPushButton("Cancelar consulta")
         self.cancel_button.setObjectName("cancelCatalogQuery")
@@ -71,7 +89,7 @@ class AddMangaView(QWidget):
         query_actions.addWidget(self.query_button)
         query_actions.addWidget(self.cancel_button)
         query_actions.addStretch(1)
-        self.status_label = QLabel("Aguardando endereço para consulta.")
+        self.status_label = QLabel("Aguardando endereço de uma fonte disponível para consulta.")
         self.status_label.setObjectName("catalogState")
         self.status_label.setAccessibleName("Estado da consulta")
         self.status_label.setWordWrap(True)
@@ -123,6 +141,12 @@ class AddMangaView(QWidget):
         selection_actions.addWidget(self.select_all_button)
         selection_actions.addWidget(self.select_none_button)
         selection_actions.addStretch(1)
+        self.download_button = QPushButton("Baixar item selecionado")
+        self.download_button.setObjectName("enqueueSelectedDownload")
+        self.download_button.setAccessibleName("Baixar localmente o item NDL selecionado")
+        self.download_button.setEnabled(False)
+        self.download_button.hide()
+        self.download_button.clicked.connect(self._request_download)
         self.selection_widget = QWidget()
         selection_layout = QVBoxLayout(self.selection_widget)
         selection_layout.setContentsMargins(0, 8, 0, 0)
@@ -132,6 +156,7 @@ class AddMangaView(QWidget):
         selection_layout.addWidget(self.chapter_list)
         selection_layout.addLayout(range_actions)
         selection_layout.addLayout(selection_actions)
+        selection_layout.addWidget(self.download_button)
         self.selection_widget.hide()
 
         layout.addWidget(intro)
@@ -165,6 +190,54 @@ class AddMangaView(QWidget):
     def set_catalog_query(self, catalog_query: CatalogQuery | None) -> None:
         self._catalog_query = catalog_query
 
+    def set_download_preparer(
+        self,
+        download_preparer: Callable[[CatalogSnapshot, tuple[UUID, ...]], PreparedDownload]
+        | None,
+    ) -> None:
+        self._download_preparer = download_preparer
+        self._update_download_button()
+
+    def _request_download(self) -> None:
+        snapshot = self._snapshot
+        selected = self.selected_chapter_ids
+        if (
+            snapshot is None
+            or self._download_preparer is None
+            or snapshot.simulated
+            or snapshot.provider_id != "ndl-next-digital-library"
+            or not selected
+            or self._download_operation_id is not None
+        ):
+            return
+        answer = QMessageBox.question(
+            self,
+            "Confirmar download local",
+            f"O item “{snapshot.manga.title}” está marcado como Public Domain Mark no acervo "
+            "NDL?\n\nConfirme que deseja baixá-lo para este dispositivo. A aplicação não envia "
+            "nem redistribui os arquivos.",
+            QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No,
+            QMessageBox.StandardButton.No,
+        )
+        if answer is not QMessageBox.StandardButton.Yes:
+            return
+        preparer = self._download_preparer
+        self.download_button.setEnabled(False)
+        self.status_label.setText("Validando a seleção para a fila local…")
+
+        def prepare_download(
+            cancellation: CancellationToken,
+            report: ProgressReporter,
+        ) -> PreparedDownload | None:
+            if cancellation.cancelled:
+                return None
+            report(0, 1, "Validando destinos e seleção")
+            prepared = preparer(snapshot, selected)
+            report(1, 1, "Item adicionado à fila local")
+            return prepared
+
+        self._download_operation_id = self._runner.start(prepare_download)
+
     def query_catalog(self) -> None:
         if self._operation_id is not None:
             return
@@ -181,9 +254,9 @@ class AddMangaView(QWidget):
         self.query_button.setEnabled(False)
         self.cancel_button.setEnabled(True)
         self.status_label.setText(
-            "Atualizando catálogo; os dados atuais são a última versão válida…"
+            "Consultando a fonte; os dados atuais são a última versão válida…"
             if self._snapshot is not None
-            else "Consultando catálogo local…"
+            else "Consultando a fonte selecionada…"
         )
         self.progress_bar.setValue(0)
         self.progress_bar.show()
@@ -229,6 +302,22 @@ class AddMangaView(QWidget):
         count = len(chapter_ids)
         self.selection_summary.setText(
             f"{count} capítulo selecionado" if count == 1 else f"{count} capítulos selecionados"
+        )
+        self._update_download_button()
+
+    def _update_download_button(self) -> None:
+        snapshot = self._snapshot
+        available = (
+            self._download_preparer is not None
+            and snapshot is not None
+            and not snapshot.simulated
+            and snapshot.provider_id == "ndl-next-digital-library"
+        )
+        self.download_button.setVisible(available)
+        self.download_button.setEnabled(
+            available
+            and bool(self.selected_chapter_ids)
+            and self._download_operation_id is None
         )
 
     def _select_all(self) -> None:
@@ -283,17 +372,22 @@ class AddMangaView(QWidget):
             message = "Nenhum capítulo foi encontrado no catálogo."
         if snapshot.simulated:
             message = f"{message} Nenhuma fonte real foi consultada."
+        elif snapshot.provider_id == "ndl-next-digital-library":
+            message = (
+                f"{message} Item da NDL indicado como Public Domain Mark. "
+                "A fonte não é atualizada automaticamente."
+            )
         self.status_label.setText(message)
         self.query_button.setText("Atualizar catálogo")
-        self.query_button.setAccessibleName("Atualizar catálogo local, sem rede")
+        self.query_button.setAccessibleName("Consultar novamente a fonte selecionada")
         self._selection_changed(self.chapter_list.selected_chapter_ids())
 
     def _on_started(self, operation_id: str) -> None:
         if operation_id == self._operation_id:
             self.status_label.setText(
-                "Atualizando catálogo; a última versão válida permanece exibida…"
+                "Consultando a fonte; a última versão válida permanece exibida…"
                 if self._snapshot is not None
-                else "Consultando catálogo local…"
+                else "Consultando a fonte selecionada…"
             )
 
     def _on_progress(
@@ -303,6 +397,9 @@ class AddMangaView(QWidget):
         total: int | None,
         stage: str,
     ) -> None:
+        if operation_id == self._download_operation_id:
+            self.status_label.setText(stage)
+            return
         if operation_id != self._operation_id:
             return
         if total:
@@ -318,6 +415,15 @@ class AddMangaView(QWidget):
         )
 
     def _on_succeeded(self, operation_id: str, result: object) -> None:
+        if operation_id == self._download_operation_id:
+            if isinstance(result, PreparedDownload):
+                self.status_label.setText("Item adicionado à fila de downloads local.")
+                self.download_enqueued.emit(result)
+            else:
+                self.status_label.setText(
+                    "A preparação foi interrompida; confira a fila em Downloads."
+                )
+            return
         if operation_id != self._operation_id:
             return
         if isinstance(result, CatalogSnapshot):
@@ -326,6 +432,12 @@ class AddMangaView(QWidget):
             self._on_failed(operation_id, "PROVIDER_RESPONSE_INVALID")
 
     def _on_failed(self, operation_id: str, error_code: str) -> None:
+        if operation_id == self._download_operation_id:
+            self.status_label.setText(
+                "O item não foi adicionado à fila. Confira a seleção e tente novamente. "
+                f"Código: {error_code}."
+            )
+            return
         if operation_id == self._operation_id:
             message = provider_error_message_for_code(error_code)
             self._retain_previous_catalog(message)
@@ -333,10 +445,19 @@ class AddMangaView(QWidget):
                 self.selection_widget.hide()
 
     def _on_cancelled(self, operation_id: str) -> None:
+        if operation_id == self._download_operation_id:
+            self.status_label.setText(
+                "A preparação foi interrompida. Se o item entrou na fila, confira Downloads."
+            )
+            return
         if operation_id == self._operation_id:
             self._retain_previous_catalog("Consulta cancelada.")
 
     def _on_finished(self, operation_id: str) -> None:
+        if operation_id == self._download_operation_id:
+            self._download_operation_id = None
+            self._update_download_button()
+            return
         if operation_id != self._operation_id:
             return
         self._operation_id = None

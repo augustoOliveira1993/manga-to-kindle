@@ -4,7 +4,7 @@
 
 **Criado**: 2026-11-25
 
-**Status**: Rascunho
+**Status**: Aprovado para NDL limitada; demais fontes continuam bloqueadas
 
 **Entrada**: Especificar fila persistente de downloads com concorrência limitada, timeout, retry com backoff e respeito a Retry-After, pausa, cancelamento e retomada segura. Validar tipo, tamanho e decodificação das imagens; gravar temporários e finalizar atomicamente; preservar ordem, detectar duplicatas e exibir progresso. Sem contornar bloqueios.
 
@@ -79,14 +79,14 @@ Como pessoa usuária, quero que falhas transitórias sejam tratadas com espera e
 
 ### Requisitos Funcionais
 
-- **RF-001**: A área Downloads deve permitir enfileirar capítulos selecionados na F004 somente depois de validar a fonte, sua capacidade de download e a autorização aplicável definidas em F003.
-- **RF-002**: Sem autorização verificável, documentação de uso local, limites e destinos permitidos, o trabalho deve ser recusado antes de abrir conexão. O provedor de fixtures de F003 não autoriza download remoto e não pode ser apresentado como fonte real funcional.
+- **RF-001**: A área Downloads deve enfileirar capítulos selecionados na F004 somente depois de validar fonte, capacidade e autorização F003; fontes habilitadas exigem confirmação explícita antes de criar o trabalho ou iniciar conexão.
+- **RF-002**: Sem autorização verificável, documentação de uso local, limites e destinos permitidos, o trabalho deve ser recusado antes de abrir conexão. O provedor de fixtures F003 não autoriza downloads e não pode ser apresentado como fonte real.
 - **RF-003**: A fila deve persistir trabalhos, capítulos, páginas, tentativas, ordem original, estado, progresso conhecido e horário da próxima tentativa. Uma reinicialização não pode duplicar registros nem perder páginas concluídas.
 - **RF-004**: O sistema deve limitar a no máximo duas transferências de página simultâneas globalmente. Um limite mais restritivo declarado pela fonte prevalece; limites de taxa e janelas de requisição documentados também devem ser respeitados.
 - **RF-005**: Cada transferência deve possuir timeout finito de conexão, com padrão de 10 segundos, e timeout de inatividade de leitura, com padrão de 30 segundos sem novos bytes. A fonte pode exigir valores menores; uma política não pode ampliar limites da fonte.
 - **RF-006**: Falhas transitórias de conexão e respostas HTTP 408, 429 e 5xx podem ser repetidas, com no máximo três tentativas adicionais após a tentativa inicial. O backoff padrão cresce em 1, 2 e 4 segundos e é limitado a 60 segundos; o trabalho permanece persistido durante a espera.
 - **RF-007**: Para resposta elegível que inclua Retry-After válido como segundos ou data HTTP, a tentativa seguinte não pode ocorrer antes do prazo indicado. Esse prazo não pode ser reduzido pelo limite do backoff; uma data expirada ou cabeçalho inválido usa o backoff padrão. Tentativas automáticas cessam ao alcançar o máximo.
-- **RF-008**: Respostas de autenticação/restrição, conteúdo ausente, tipo inválido, tamanho excedido, redirecionamento/destino recusado e conteúdo corrompido não devem ser repetidos automaticamente. O sistema não pode contornar autenticação, CAPTCHA, DRM, pagamento, 403 ou outra restrição.
+- **RF-008**: Respostas de autenticação/restrição, conteúdo ausente, tipo inválido, tamanho excedido, redirect ou destino não aprovado e conteúdo corrompido não devem ser repetidos automaticamente. Redirect só pode ser seguido quando cada salto for revalidado; o sistema não contorna autenticação, CAPTCHA, DRM, pagamento, 403 ou outra restrição.
 - **RF-009**: O fluxo deve oferecer pausar, retomar e cancelar por trabalho. Pausar impede o início de novas páginas e conclui a página em andamento ou a interrompe em ponto seguro; cancelar encerra novas requisições e não remove páginas completas.
 - **RF-010**: Trabalhos incompletos devem ser persistidos no encerramento seguro. Após encerramento inesperado, trabalhos em execução devem aparecer como interrompidos e exigir ação explícita de retomada, sem início automático de rede.
 - **RF-011**: A retomada por página deve pular páginas concluídas e validadas. Retomada de bytes parciais só pode ocorrer quando a fonte declarar suporte e houver identidade/validador estável compatível; caso contrário, o temporário daquela página deve ser descartado e baixado novamente do início.
@@ -102,8 +102,8 @@ Como pessoa usuária, quero que falhas transitórias sejam tratadas com espera e
 - **RF-021**: I/O, validação e decodificação não podem bloquear a thread gráfica. Trabalho interrompível deve responder a cancelamento com segurança e emitir progresso útil por página/capítulo.
 - **RF-022**: Estados e resultados de DownloadJob devem respeitar as transições de F001. Pausado, em retry ou interrompido são não terminais; concluído, cancelado e falha definitiva não retornam a execução. Uma tentativa manual após falha definitiva cria um novo trabalho.
 - **RF-023**: A fila e os resultados de página devem usar migrações locais versionadas, operações atômicas ou recuperação documentada. A falha de uma migração deve preservar o banco anterior e permitir diagnóstico sem segredo.
-- **RF-024**: Testes automatizados devem simular transporte, relógio, falhas HTTP, Retry-After, interrupção de processo, encerramento, corrupção, limites de bytes/pixels, duplicatas, concorrência, recuperação de arquivos e ausência de tráfego real.
-- **RF-025**: A documentação e o README devem explicar fila, controles, limites de imagem, retomada, retry e o estado bloqueado de fontes reais. A interface deve indicar quando nenhum provedor autorizado está habilitado.
+- **RF-024**: Testes automatizados devem isolar transporte, relógio, falhas HTTP, Retry-After, interrupção de processo, encerramento, corrupção, limites de bytes/pixels, duplicatas, concorrência, recuperação de arquivos e ausência de tráfego real. A integração NDL autorizada é validada separadamente em perfil descartável.
+- **RF-025**: A documentação e o README devem explicar fila, controles, limites de imagem, retomada, retry e o escopo autorizado. A interface lista as fontes disponíveis, separa fixture de NDL e pede confirmação para download local.
 - **RF-026**: A feature não pode enviar arquivos ou livros a Kindle, e-mail, nuvem ou terceiros; não pode alterar imagens originais nem realizar conversão de páginas.
 
 ### Requisitos Não Funcionais
@@ -141,8 +141,8 @@ Como pessoa usuária, quero que falhas transitórias sejam tratadas com espera e
 
 ## Premissas
 
-- F003 continua sem fonte real autorizada para download; o bloqueio B003-REAL-SOURCE permanece ativo.
-- Até remover esse bloqueio, respostas HTTP, conteúdo binário e falhas são exercitados somente com transporte, relógio e provedor falsos de teste. Nenhum provedor falso é distribuído como se fosse real.
+- F003 recebeu autorização limitada à Next Digital Library para download local, iniciado por seleção e confirmação explícitas, de item individual do corpus PDM. `B003-REAL-SOURCE` permanece para as outras fontes e escopos.
+- Respostas HTTP de fontes não aprovadas são exercitadas somente com transporte, relógio e provedor falsos de teste. O fluxo NDL autorizado é validado separadamente com um item real; nenhum provider falso é distribuído como se fosse real.
 - O fluxo de produção só inicia quando uma fonte tiver autorização verificável para download local, documentação dos destinos e limites, atribuição/remoção e capacidade registrada no provedor.
 - O aplicativo usa dois pedidos simultâneos como teto global padrão, timeout de conexão de 10 segundos, timeout de inatividade de leitura de 30 segundos, até três retries adicionais e limite de 60 segundos para backoff próprio; Retry-After nunca é reduzido para caber nesse teto.
 - Limites padrão de imagem são 25 MiB comprimidos e 50 megapixels decodificados. Um limite menor do provedor ou da política local prevalece.
@@ -157,13 +157,13 @@ Como pessoa usuária, quero que falhas transitórias sejam tratadas com espera e
 - Constituição em ../../.specify/memory/constitution.md: I/O fora da thread gráfica, cancelamento, progresso, persistência local, migrações, atomicidade, recuperação, privacidade e autorização.
 - F001 — Fundação do Manga to Kindle: DownloadJob, Page, SQLite local, diretórios do usuário, migrações, logs sanitizados e encerramento seguro.
 - F002 — Interface desktop do Manga to Kindle: área Downloads, seleção de perfil visual, acessibilidade e responsividade.
-- F003 — Provedores extensíveis do Manga to Kindle: referências de página, capacidades, autorização, limites, erros tipados, validação de destino e bloqueio B003-REAL-SOURCE.
+- F003 — Provedores extensíveis do Manga to Kindle: referências de página, capacidades, autorização NDL limitada, limites, erros tipados e validação central de destino.
 - F004 — Catálogo e capítulos do Manga to Kindle: IDs, ordenação canônica, seleção estável e capítulos selecionados que originam o trabalho.
 - Não foi encontrado docs/roadmap.md; nenhuma dependência posterior é presumida.
 
 ### Bloqueio de Fonte Real
 
-- **B003-REAL-SOURCE** continua vigente. Nenhuma fonte foi aprovada para baixar os capítulos e páginas pretendidos ao uso local. F005 especifica e testa a orquestração, persistência, validação e recuperação com transporte isolado; não declara download real funcional nem habilita tráfego remoto. A habilitação futura depende de evidência oficial e revisão explícita das permissões e limites.
+- **B003-REAL-SOURCE** continua vigente para MangaDex e demais fontes, itens fora do corpus PDM, uso contínuo/periódico, lote sem seleção, republicação e distribuição. A autorização NDL de 2026-11-27 habilita somente consulta pontual e download local de um item individual PDM após seleção e confirmação explícitas. O app aplica limites locais e valida hosts/redirects; atualização periódica continua desativada.
 
 ### Riscos e Mitigações
 
@@ -176,11 +176,11 @@ Como pessoa usuária, quero que falhas transitórias sejam tratadas com espera e
 | Retomada parcial mistura representações de conteúdo. | Exigir capacidade explícita e validador estável; sem eles, descartar o parcial e reiniciar a página. |
 | Cópia de arquivo excede área local ou substitui arquivo do usuário. | Gravar somente na área gerenciada, verificar pertencimento e não seguir caminhos fornecidos pela fonte como destinos locais. |
 | Logs revelam URL, cabeçalhos ou conteúdo. | Registrar categorias de erro e IDs internos sanitizados, sem URL completa, corpos ou segredos. |
-| Fixture induz impressão de integração funcional. | Sinalizar que testes são simulados e manter B003-REAL-SOURCE como bloqueio de produção. |
+| Fixture induz impressão de integração funcional. | Sinalizar que a fixture é sintética e não habilita downloads; somente a capability NDL restrita permite o fluxo real autorizado. |
 
 ### Fora do Escopo
 
-- Provedor real, tráfego HTTP de produção ou remoção do bloqueio B003-REAL-SOURCE sem autorização verificável.
+- Provedores reais além da NDL limitada, tráfego para item fora do escopo autorizado ou remoção geral do bloqueio B003-REAL-SOURCE.
 - Contornar DRM, CAPTCHA, login, paywall, 401/403 ou qualquer restrição; usar cookies ou credenciais para contornar bloqueios.
 - Conversão, recompressão, redimensionamento, edição ou substituição de imagem original.
 - Criação de arquivos Kindle, transferência por USB/e-mail/nuvem, envio de livro ou integração com dispositivo.

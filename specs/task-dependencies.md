@@ -37,7 +37,7 @@ Este documento coordena os `tasks.md` das features F001–F012. Os arquivos loca
 
 ## Gates e riscos transversais
 
-- **G-F003/F005/F010 — fonte real**: até que exista fonte com download autorizado, documentação verificável, termos/licenças e limites confirmados, validar apenas fixture/transporte fake. Sem bypass de DRM, CAPTCHA, autenticação ou controles de acesso.
+- **G-F003/F005/F010 — fonte real**: consultas pontuais e downloads locais NDL de item individual do corpus PDM estão autorizados, com host de entrega exato e limites locais documentados. MangaDex/outras fontes e atualização periódica F010 continuam bloqueadas. Sem bypass de DRM, CAPTCHA, autenticação ou controles de acesso.
 - **G-F007 — conversão**: o writer EPUB usa biblioteca padrão e passou pelo EPUBCheck. A CLI oficial KCC 13.0.4 foi validada para MOBI com perfis K810 (600×800) e KPW34 (1072×1448); é selecionada por caminho, não empacotada e não instalada automaticamente. Sem promessa de compatibilidade Kindle/Send to Kindle; teste físico permanece pendente.
 - **G-F009 — SMTP**: integração opcional requer cofre do sistema, destinatário autorizado e confirmação por tentativa; resultado de aceite nunca significa entrega.
 - **G-F012 — release**: baseline do app e build local existem; não presumir matriz x86/x64/ARM64. Inno Setup, KCC e browser ficam condicionados a licença/requisitos. Windows limpo deve ser executado e documentado antes de release.
@@ -49,24 +49,24 @@ Este documento coordena os `tasks.md` das features F001–F012. Os arquivos loca
 |---|---|---:|---:|---:|---:|---:|---|---|
 | F001 | — | COMPLETED | 20 | 2 | 8 | 0 | Nenhuma para gerar tarefas | SYNCED (20/20) |
 | F002 | F001 | COMPLETED | 18 | 2 | 8 | 0 | Nenhuma para gerar tarefas | SYNCED (18/18) |
-| F003 | F001–F002 | COMPLETED | 18 | 2 | 7 | 0 | Fonte real autorizada bloqueada | SYNCED (18/18) |
-| F004 | F001–F003 | COMPLETED | 20 | 2 | 8 | 0 | Fonte real autorizada bloqueada | SYNCED (20/20) |
-| F005 | F001–F004 | COMPLETED | 26 | 2 | 11 | 0 | Fonte real autorizada bloqueada | SYNCED (26/26) |
+| F003 | F001–F002 | COMPLETED | 24 | 2 | 10 | 0 | Outras fontes fora do escopo NDL | SYNCED (18/18); 6 tarefas locais de extensão não sincronizadas |
+| F004 | F001–F003 | COMPLETED | 20 | 2 | 8 | 0 | Outras fontes fora do escopo NDL | SYNCED (20/20) |
+| F005 | F001–F004 | COMPLETED | 26 | 2 | 11 | 0 | Validação visual Windows manual | SYNCED (26/26) |
 | F006 | F001–F005 | COMPLETED | 24 | 2 | 12 | 0 | Nenhuma para gerar tarefas | SYNCED (24/24) |
 | F007 | F001–F006 | COMPLETED | 24 | 2 | 10 | 0 | Compatibilidade física Kindle/Send to Kindle | SYNCED (24/24) |
 | F008 | F001–F007 | COMPLETED | 22 | 2 | 10 | 0 | Nenhuma para gerar tarefas | SYNCED (22/22) |
 | F009 | F001,F002,F007,F008 | COMPLETED | 24 | 2 | 11 | 0 | Cofre Windows antes de SMTP | SYNCED (24/24) |
-| F010 | F001–F005,F008 | COMPLETED | 24 | 2 | 11 | 0 | Fonte real autorizada bloqueada | SYNCED (24/24) |
+| F010 | F001–F005,F008 | COMPLETED | 24 | 2 | 11 | 0 | Uso contínuo não autorizado pela NDL | SYNCED (24/24) |
 | F011 | F001,F002,F005–F008 | COMPLETED | 26 | 2 | 12 | 0 | Fontes documentadas para diferenças de hardware | SYNCED (26/26) |
-| F012 | F001–F011 | COMPLETED | 25 | 2 | 9 | 0 | Baseline, matriz Windows e licenças | SYNCED (25/25) |
+| F012 | F001–F011 | COMPLETED | 25 | 2 | 9 | 0 | VMs limpas e revisão de licenças/notices | SYNCED (25/25) |
 
-**Totais locais**: 12 features; 271 tarefas; 24 tarefas paralelizáveis; 117 tarefas de teste/checklist; 0 tarefas previamente concluídas. A contagem de testes identifica tarefas cujo resultado principal é teste/checklist verificável; subtarefas com validação secundária não são contadas novamente.
+**Totais locais**: 12 features; 277 tarefas; 24 tarefas paralelizáveis; 120 tarefas de teste/checklist; 0 tarefas previamente concluídas. A contagem de testes identifica tarefas cujo resultado principal é teste/checklist verificável; subtarefas com validação secundária não são contadas novamente.
 
-**Sincronização MCP**: projeto `cb1f3d9b-f17c-4080-8c32-27aca6349b87` (Manage To Kindle), repositório/área `backend` (`9b02703b-4ae7-4400-868a-ea4f73f91034`). Foram vinculadas 12 features e 271 tarefas pelos IDs `Fnnn:Tnnn`, com dependências por ID e um anexo `sdd-context.md` por tarefa. Todas permanecem pendentes; a verificação retornou 271 tarefas esperadas, sem IDs ausentes/duplicados, vínculos incorretos ou dependências inválidas.
+**Sincronização MCP**: projeto `cb1f3d9b-f17c-4080-8c32-27aca6349b87` (Manage To Kindle), repositório/área `backend` (`9b02703b-4ae7-4400-868a-ea4f73f91034`). A verificação anterior cobre 12 features e 271 tarefas. Seis tarefas locais T019–T024 adicionadas à F003 para a extensão NDL permanecem fora dessa sincronização; não foram criadas tarefas de execução externa nesta retomada.
 
 ## Validação consolidada
 
 - Cobertura: cada história tem tarefas de teste antes de suas tarefas de implementação; os intervalos RF/RNF/CS são mapeados ao fim de cada `tasks.md`.
 - Sequência: IDs T001…Tnn são únicos e crescentes dentro de cada feature. Referências cross-feature usam `Fnnn:Tnnn` sem redefinir entregáveis upstream.
-- Regras comuns: sem tarefas de implementação para fonte real não aprovada; sem rede nas fixtures; sem envio automático; sem I/O bloqueante na UI; sem exclusão/desinstalação destrutiva por padrão.
+- Regras comuns: fonte real limitada à autorização NDL/PDM; sem rede nas fixtures; sem envio automático; sem I/O bloqueante na UI; sem exclusão/desinstalação destrutiva por padrão.
 - Status `COMPLETED` significa geração e revisão local dos planos de tarefas, não implementação das features nem aprovação dos gates acima.

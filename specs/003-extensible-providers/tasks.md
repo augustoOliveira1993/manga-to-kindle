@@ -5,8 +5,8 @@
 ## Dependências
 
 - Features anteriores: F001 (tipos, erros, injeção de dependências e logs) e F002 (entrada/resultado na UI).
-- F004 depende do registro e contrato definidos aqui; F005 só poderá usar fonte real após autorização verificável.
-- Gate: manter provedor fixture apenas enquanto não houver fonte autorizada, documentação verificável e revisão de termos/licença. Não simular integração real.
+- F004 depende do registro e contrato definidos aqui. O escopo NDL foi autorizado em 2026-11-27 para consulta pontual e download local de itens individuais do corpus PDM; F005 ainda precisa validar o fluxo de download real.
+- Gate: manter a fixture offline e limitar NDL ao escopo aprovado, sem periodicidade. Outros provedores seguem bloqueados. Não simular integração real.
 
 ## Fase 1 — Setup
 
@@ -61,20 +61,29 @@
 - [x] T017 Atualizar README/quickstart para declarar funcionamento offline de fixtures e bloqueio de fontes reais.; arquivos/componentes: `README.md; specs/003-extensible-providers/quickstart.md`
 - [x] T018 Executar testes focados de contratos e segurança; registrar qualquer dependência de integração autorizada ainda bloqueada.; arquivos/componentes: `tests/security/test_provider_log_redaction.py; specs/003-extensible-providers/quickstart.md`
 
+## Extensão autorizada NDL — 2026-11-27
+
+- [x] T019 Criar testes do transporte HTTPS fixado que comprovem conexão somente a IP aprovado, SNI/certificado do host original e ausência de segunda resolução DNS.; arquivos/componentes: `tests/unit/infrastructure/test_pinned_http_transport.py`
+- [x] T020 Implementar transporte HTTPS sem proxy ambiental, com redirects revalidados por hop, limites/stream e erro sanitizado.; arquivos/componentes: `src/manga_to_kindle/infrastructure/network/pinned_http_transport.py`
+- [x] T021 Criar testes do contrato NDL para URL de item, payload, identidade, páginas IIIF, redirect permitido/recusado, limite local e capability sem periodicidade.; arquivos/componentes: `tests/unit/infrastructure/providers/test_ndl_provider.py; tests/unit/infrastructure/test_pinned_http_transport.py`
+- [x] T022 Implementar `NdlProvider` injetável para metadados de item PDM e referências IIIF, usando validação central antes de cada request.; arquivos/componentes: `src/manga_to_kindle/infrastructure/providers/ndl_provider.py`
+- [x] T023 Registrar NDL sem tráfego na inicialização, manter consulta no worker cancelável e listar claramente fontes disponíveis na interface.; arquivos/componentes: `src/manga_to_kindle/main.py; src/manga_to_kindle/application/catalog/get_catalog.py; src/manga_to_kindle/presentation/qt/views/add_manga_view.py`
+- [x] T024 Executar testes F003, confirmar inicialização e consulta pontual real autorizada; atualizar README, quickstart, pesquisa e checkpoint com fontes disponíveis, pendências e validação manual.; arquivos/componentes: `README.md; specs/003-extensible-providers/quickstart.md; specs/implementation-checkpoint.md`
+
 ## Dependências e estratégia de execução
 
 - Requer `F001:T017` e `F002:T015`; F004 aguarda `F003:T015`.
-- T003/T005/T007 podem ser preparados paralelamente; implementar URL policy antes do resolver. Sem provider de produção nesta etapa sem autorização verificável.
-- MVP: US1 com fixture offline; US2 permanece obrigatório antes de aceitar qualquer URL externa.
+- T003/T005/T007 foram concluídos antes da autorização NDL. Para a extensão, T019 antecede T020, T021 antecede T022, e T023 depende do transporte e provider; não paralelizar alterações na composição principal.
+- MVP: fixture continua offline; NDL é um acesso real pontual autorizado, restrito a item individual PDM e sem atualização contínua.
 
 ## Rastreabilidade
 
 - RF-001–RF-006: T003–T004; RF-007–RF-013: T005–T006/T011–T012; RF-014–RF-017: T007–T010; RF-018–RF-020: T013–T018.
-- RNF-001–RNF-006 e CS-001–CS-007: T005–T018; critérios que exigem fonte real permanecem condicionados ao gate de autorização.
+- RNF-001–RNF-006 e CS-001–CS-007: T005–T024; os critérios de fontes além da NDL permanecem condicionados ao gate de autorização.
 
 ## Dependências explícitas por ID
 
 - T001 e T002 são raízes paralelizáveis após as dependências de feature: F001 e F002. Em F001, essas raízes não têm dependência externa.
 - T003 depende de T001 e T002. Cada tarefa T004 em diante depende da tarefa imediatamente anterior no mesmo tasks.md; essa ordem conservadora preserva os gates, os testes antes da implementação e as integrações indicadas acima.
 - No MCP, cada dependência aponta para o ID da tarefa equivalente; tarefas-raiz também dependem da última tarefa de integração das features predecessoras listadas.
-- Nenhuma tarefa aparece concluída nesta etapa.
+- T019–T024 são tarefas adicionadas após a autorização específica; marcar cada uma somente após existir artefato e validação correspondente.

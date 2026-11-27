@@ -2,9 +2,12 @@
 
 from __future__ import annotations
 
+import time
+from collections.abc import Callable
+from dataclasses import replace
 from uuid import UUID
 
-from PySide6.QtCore import Qt
+from PySide6.QtCore import Qt, QTimer
 from PySide6.QtWidgets import (
     QHBoxLayout,
     QLabel,
@@ -16,6 +19,9 @@ from PySide6.QtWidgets import (
 )
 
 from manga_to_kindle.application.downloads.controls import DownloadControls
+from manga_to_kindle.application.downloads.enqueue import PreparedDownload
+from manga_to_kindle.application.downloads.errors import DownloadUnavailable
+from manga_to_kindle.application.downloads.queue import DownloadQueue, DownloadRunResult
 from manga_to_kindle.domain.download_job import DownloadState
 from manga_to_kindle.domain.downloads import DownloadChapterState, DownloadPageState
 from manga_to_kindle.infrastructure.persistence.download_repository import (
@@ -29,6 +35,7 @@ from manga_to_kindle.presentation.qt.workers.adapter import (
     OperationRunner,
     ProgressReporter,
 )
+from manga_to_kindle.presentation.qt.workers.download_worker import make_download_operation
 
 _STATE_LABELS = {
     DownloadState.QUEUED: "Na fila",
@@ -68,17 +75,25 @@ class DownloadsView(QWidget):
         self._controls: DownloadControls | None = None
         self._resume_available = False
         self._operation_id: str | None = None
+        self._operation_action: str | None = None
         self._jobs: dict[UUID, DownloadQueueSnapshot] = {}
+        self._download_queue: DownloadQueue | None = None
+        self._resume_preparer: Callable[[UUID], PreparedDownload] | None = None
+        self._prepared_by_job: dict[UUID, PreparedDownload] = {}
+        self._download_runs: dict[str, UUID] = {}
+        self._active_run_by_job: dict[UUID, str] = {}
+        self._refresh_pending = False
+        self._last_progress_refresh = 0.0
 
         layout = QVBoxLayout(self)
         layout.setContentsMargins(0, 0, 0, 0)
         layout.setSpacing(14)
         self.empty_state = EmptyState(
-            "Nenhuma fonte autorizada",
-            "A fixture do catálogo não permite baixar páginas. Downloads serão habilitados "
-            "quando houver um provedor com autorização, destinos e limites revisados. "
-            "Nenhuma conexão será iniciada enquanto esse requisito não existir.",
-            "Fonte sem autorização",
+            "Nenhum download na fila",
+            "Para baixar, consulte um item individual NDL marcado Public Domain Mark em "
+            "Adicionar mangá, selecione o item e confirme o download local. A fixture offline "
+            "não autoriza downloads.",
+            "Ação explícita necessária",
         )
         self.empty_state.action_button.setEnabled(False)
         self.empty_state.action_button.setAccessibleDescription(
@@ -139,6 +154,7 @@ class DownloadsView(QWidget):
         self.resume_button.clicked.connect(lambda: self._change_state("resume"))
         self.cancel_button.clicked.connect(lambda: self._change_state("cancel"))
         self._runner.succeeded.connect(self._operation_succeeded)
+        self._runner.progress.connect(self._operation_progress)
         self._runner.failed.connect(self._operation_failed)
         self._runner.finished.connect(self._operation_finished)
 
@@ -148,16 +164,65 @@ class DownloadsView(QWidget):
         controls: DownloadControls,
         *,
         resume_available: bool = False,
+        download_queue: DownloadQueue | None = None,
+        resume_preparer: Callable[[UUID], PreparedDownload] | None = None,
     ) -> None:
         self._repository = repository
         self._controls = controls
-        self._resume_available = resume_available
+        self._download_queue = download_queue
+        self._resume_preparer = resume_preparer
+        self._resume_available = resume_available or resume_preparer is not None
         self.refresh_button.setEnabled(True)
         self.refresh()
 
+    def start_download(self, prepared: PreparedDownload) -> None:
+        if self._download_queue is None or self._repository is None:
+            self.queue_status.setText("A fila de downloads ainda não está pronta.")
+            return
+        job_id = prepared.snapshot.job.id
+        self._prepared_by_job[job_id] = prepared
+        snapshots = list(self._jobs.values())
+        snapshots = [snapshot for snapshot in snapshots if snapshot.job.id != job_id]
+        snapshots.insert(0, prepared.snapshot)
+        self._render_jobs(tuple(snapshots))
+        if self._operation_id is not None:
+            self._refresh_pending = True
+        self._start_download_run(prepared)
+
+    def _start_download_run(self, prepared: PreparedDownload) -> None:
+        queue = self._download_queue
+        if queue is None:
+            self.queue_status.setText("A fila de downloads ainda não está pronta.")
+            return
+        job_id = prepared.snapshot.job.id
+        if job_id in self._active_run_by_job:
+            return
+        self._prepared_by_job[job_id] = prepared
+        current_snapshots = [
+            snapshot for snapshot in self._jobs.values() if snapshot.job.id != job_id
+        ]
+        current_snapshots.insert(0, prepared.snapshot)
+        self._render_jobs(tuple(current_snapshots))
+        operation_id = self._runner.start(
+            make_download_operation(
+                queue,
+                job_id=job_id,
+                provider=prepared.provider,
+                references=prepared.page_references,
+            )
+        )
+        self._download_runs[operation_id] = job_id
+        self._active_run_by_job[job_id] = operation_id
+        self.queue_status.setText(
+            "Download iniciado. As páginas são validadas e gravadas localmente."
+        )
+
     def refresh(self) -> None:
         repository = self._repository
-        if repository is None or self._operation_id is not None:
+        if repository is None:
+            return
+        if self._operation_id is not None:
+            self._refresh_pending = True
             return
 
         def read_jobs(
@@ -177,21 +242,40 @@ class DownloadsView(QWidget):
         job_id = item.data(Qt.ItemDataRole.UserRole)
         if not isinstance(job_id, UUID):
             return
-        command = {
-            "pause": controls.pause,
-            "resume": controls.resume,
-            "cancel": controls.cancel,
-        }[action]
+        if action == "resume" and self._resume_preparer is None:
+            self.queue_status.setText(
+                "A fonte não permite restaurar as referências deste trabalho."
+            )
+            return
+        command = {"pause": controls.pause, "cancel": controls.cancel}.get(action)
+        self._operation_action = action
 
         def change_state(
             cancellation: CancellationToken,
             _report: ProgressReporter,
-        ) -> tuple[DownloadQueueSnapshot, ...]:
+        ) -> tuple[DownloadQueueSnapshot, ...] | PreparedDownload:
             if cancellation.cancelled:
                 return ()
-            command(job_id)
             repository = self._repository
-            return repository.list_snapshots() if repository is not None else ()
+            if repository is None:
+                return ()
+            if action == "resume":
+                assert self._resume_preparer is not None
+                prepared = self._resume_preparer(job_id)
+                current = repository.get(job_id)
+                if current is None:
+                    raise DownloadUnavailable("O trabalho não foi encontrado.")
+                if current.job.state in {DownloadState.PAUSED, DownloadState.INTERRUPTED}:
+                    controls.resume(job_id)
+                elif current.job.state is not DownloadState.QUEUED:
+                    raise DownloadUnavailable("O trabalho não pode ser retomado neste estado.")
+                refreshed = repository.get(job_id)
+                if refreshed is None:
+                    raise DownloadUnavailable("O trabalho não foi encontrado.")
+                return replace(prepared, snapshot=refreshed)
+            assert command is not None
+            command(job_id)
+            return repository.list_snapshots()
 
         self.queue_status.setText("Salvando controle do trabalho…")
         self._start_operation(change_state)
@@ -203,8 +287,38 @@ class DownloadsView(QWidget):
         self.resume_button.setEnabled(False)
         self.cancel_button.setEnabled(False)
 
+    def _operation_progress(
+        self,
+        operation_id: str,
+        completed: int,
+        total: int | None,
+        stage: str,
+    ) -> None:
+        if operation_id not in self._download_runs:
+            return
+        total_text = str(total) if total is not None else "?"
+        self.queue_status.setText(f"{stage} · {completed}/{total_text} páginas")
+        now = time.monotonic()
+        if now - self._last_progress_refresh >= 0.75:
+            self._last_progress_refresh = now
+            self.refresh()
+
     def _operation_succeeded(self, operation_id: str, result: object) -> None:
-        if operation_id != self._operation_id or not isinstance(result, tuple):
+        if operation_id in self._download_runs:
+            if isinstance(result, DownloadRunResult):
+                self.queue_status.setText(
+                    f"Download {result.state.value}: {result.completed_pages}/"
+                    f"{result.total_pages if result.total_pages is not None else '?'} páginas "
+                    "concluídas."
+                )
+            self._refresh_pending = True
+            return
+        if operation_id != self._operation_id:
+            return
+        if isinstance(result, PreparedDownload) and self._operation_action == "resume":
+            self._start_download_run(result)
+            return
+        if not isinstance(result, tuple):
             return
         snapshots = tuple(
             snapshot for snapshot in result if isinstance(snapshot, DownloadQueueSnapshot)
@@ -213,18 +327,39 @@ class DownloadsView(QWidget):
             self._render_jobs(snapshots)
 
     def _operation_failed(self, operation_id: str, code: str) -> None:
-        if operation_id == self._operation_id:
+        if operation_id in self._download_runs:
             self.queue_status.setText(
-                "Não foi possível ler a fila local. Tente atualizar novamente. "
+                "O download foi interrompido com segurança. Confira o estado da fila. "
                 f"Código: {code}."
             )
+            self._refresh_pending = True
+            return
+        if operation_id == self._operation_id:
+            if self._operation_action == "resume":
+                message = "Não foi possível retomar o trabalho com segurança."
+            else:
+                message = "Não foi possível ler a fila local. Tente atualizar novamente."
+            self.queue_status.setText(f"{message} Código: {code}.")
 
     def _operation_finished(self, operation_id: str) -> None:
+        if operation_id in self._download_runs:
+            job_id = self._download_runs.pop(operation_id)
+            self._active_run_by_job.pop(job_id, None)
+            self._refresh_pending = True
+            if self._operation_id is None:
+                self._refresh_pending = False
+                self.refresh()
+            self._selection_changed()
+            return
         if operation_id != self._operation_id:
             return
         self._operation_id = None
+        self._operation_action = None
         self.refresh_button.setEnabled(self._repository is not None)
         self._selection_changed()
+        if self._refresh_pending:
+            self._refresh_pending = False
+            QTimer.singleShot(0, self.refresh)
 
     def _render_jobs(self, snapshots: tuple[DownloadQueueSnapshot, ...]) -> None:
         selected_id = self.job_list.currentItem().data(Qt.ItemDataRole.UserRole) if (
@@ -248,15 +383,17 @@ class DownloadsView(QWidget):
         has_jobs = bool(snapshots)
         self.empty_state.setVisible(not has_jobs)
         self.job_list.setVisible(has_jobs)
-        if has_jobs:
-            self.queue_status.setText(
-                "Os trabalhos ficam salvos localmente. Após reiniciar, um trabalho interrompido "
-                "não inicia tráfego sem uma ação explícita."
-            )
-        else:
-            self.queue_status.setText(
-                "Fila vazia. A consulta de catálogo não concede autorização para baixar páginas."
-            )
+        if not self._active_run_by_job:
+            if has_jobs:
+                self.queue_status.setText(
+                    "Os trabalhos ficam salvos localmente. Após reiniciar, um trabalho "
+                    "interrompido não inicia tráfego sem uma ação explícita."
+                )
+            else:
+                self.queue_status.setText(
+                    "Fila vazia. Consulte um item individual NDL PDM em Adicionar mangá e "
+                    "confirme o download local para iniciar."
+                )
         self._selection_changed()
 
     def _selection_changed(self, *_args: object) -> None:
@@ -264,6 +401,12 @@ class DownloadsView(QWidget):
         job_id = item.data(Qt.ItemDataRole.UserRole) if item is not None else None
         snapshot = self._jobs.get(job_id) if isinstance(job_id, UUID) else None
         job = snapshot.job if snapshot is not None else None
+        current_job_id = job.id if job is not None else None
+        active_run = (
+            current_job_id in self._active_run_by_job
+            if current_job_id is not None
+            else False
+        )
         busy = self._operation_id is not None
         if snapshot is None:
             self.chapter_progress.clear()
@@ -297,7 +440,19 @@ class DownloadsView(QWidget):
             not busy
             and self._resume_available
             and job is not None
-            and job.state in {DownloadState.PAUSED, DownloadState.INTERRUPTED}
+            and not active_run
+            and job.state in {
+                DownloadState.QUEUED,
+                DownloadState.PAUSED,
+                DownloadState.INTERRUPTED,
+            }
+        )
+        self.resume_button.setText(
+            "Iniciar" if job is not None and job.state is DownloadState.QUEUED else "Retomar"
+        )
+        self.resume_button.setAccessibleName(
+            "Iniciar trabalho enfileirado" if job is not None and job.state is DownloadState.QUEUED
+            else "Retomar trabalho pausado ou interrompido"
         )
         self.cancel_button.setEnabled(
             not busy

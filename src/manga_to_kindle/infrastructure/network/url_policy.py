@@ -24,6 +24,9 @@ class ValidatedDestination:
     hostname: str
     port: int
     approved_addresses: frozenset[str]
+    allowed_hosts: frozenset[str]
+    allowed_ports: frozenset[int]
+    allowed_schemes: frozenset[str]
 
     def assert_connected_address(self, address: str) -> None:
         candidate = _parse_public_address(address)
@@ -73,7 +76,15 @@ class ExternalUrlPolicy:
         approved = frozenset(_parse_public_address(address) for address in addresses)
         if not approved:
             raise UnsafeDestination()
-        return ValidatedDestination(url.scheme, url.host, url.port, approved)
+        return ValidatedDestination(
+            url.scheme,
+            url.host,
+            url.port,
+            approved,
+            normalized_hosts,
+            allowed_ports,
+            allowed_schemes,
+        )
 
     def validate_redirect_chain(
         self,

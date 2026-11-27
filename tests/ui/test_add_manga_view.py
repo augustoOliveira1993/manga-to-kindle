@@ -1,18 +1,26 @@
 from __future__ import annotations
 
+import json
 import socket
 import time
 from dataclasses import replace
 from datetime import UTC, datetime
+from pathlib import Path
 from threading import Event
 
 import pytest
 from PySide6.QtCore import QEventLoop, Qt, QTimer
 from PySide6.QtTest import QTest
+from tests.download_support import make_repository
 
 from manga_to_kindle.application.catalog.errors import CatalogRefreshCancelled
+from manga_to_kindle.application.catalog.get_catalog import GetCatalog
+from manga_to_kindle.application.downloads.enqueue import EnqueueDownload, PreparedDownload
+from manga_to_kindle.application.providers.registry import ProviderRegistry
 from manga_to_kindle.domain.catalog import CatalogSnapshot
 from manga_to_kindle.domain.providers import ProviderUnavailable
+from manga_to_kindle.infrastructure.network.url_policy import ExternalUrlPolicy
+from manga_to_kindle.infrastructure.providers.ndl_provider import NdlProvider
 from manga_to_kindle.presentation.qt.fixtures import build_demo_catalog
 
 
@@ -25,6 +33,29 @@ def _wait_for_operation(view, qt_core_app) -> None:
     QTimer.singleShot(3000, loop.quit)
     loop.exec()
     qt_core_app.processEvents()
+
+
+class _CatalogResponse:
+    status_code = 200
+    headers = {"Content-Type": "application/json"}
+
+    def __init__(self) -> None:
+        self.body = json.dumps(
+            {"id": "851650", "title": "北斎漫画", "page": 1},
+            ensure_ascii=False,
+        ).encode("utf-8")
+
+    def read_limited(self, maximum_bytes: int) -> bytes:
+        assert len(self.body) <= maximum_bytes
+        return self.body
+
+    def close(self) -> None:
+        return None
+
+
+class _CatalogTransport:
+    def get(self, _url, **_kwargs) -> _CatalogResponse:
+        return _CatalogResponse()
 
 
 def test_fixture_url_loads_authorized_offline_catalog_without_network(
@@ -46,6 +77,69 @@ def test_fixture_url_loads_authorized_offline_catalog_without_network(
     assert view.selected_chapter_ids == ()
     assert view.catalog_title.text() == "A Biblioteca das Estrelas"
     assert "Não informado" in view.catalog_metadata.text()
+
+
+def test_ndl_download_requires_confirmation_and_enqueues_selected_item(
+    main_window,
+    qt_core_app,
+    tmp_path: Path,
+    monkeypatch,
+) -> None:
+    from PySide6.QtWidgets import QMessageBox
+
+    policy = ExternalUrlPolicy(lambda _host: ("93.184.216.34",))
+    provider = NdlProvider(_CatalogTransport(), policy)
+    providers = ProviderRegistry((provider,))
+    catalog = GetCatalog(providers).execute("https://lab.ndl.go.jp/dl/book/851650")
+    database, repository = make_repository(tmp_path, catalog)
+    preparer = EnqueueDownload(repository, policy)
+    main_window.set_current_page("add")
+    view = main_window.add_manga_view
+    view.set_catalog_query(lambda _url, *, is_cancelled=None: catalog)
+    view.set_download_preparer(
+        lambda snapshot, selected: preparer.prepare(
+            provider=provider,
+            catalog=snapshot,
+            selected_chapter_ids=selected,
+        )
+    )
+    emitted: list[PreparedDownload] = []
+    view.download_enqueued.connect(emitted.append)
+
+    try:
+        view.url_input.setText("https://lab.ndl.go.jp/dl/book/851650")
+        QTest.mouseClick(view.query_button, Qt.MouseButton.LeftButton)
+        _wait_for_operation(view, qt_core_app)
+        assert view.download_button.isVisible()
+        assert not view.download_button.isEnabled()
+
+        view.chapter_list.item(0).setCheckState(Qt.CheckState.Checked)
+        qt_core_app.processEvents()
+        assert view.download_button.isEnabled()
+
+        answers = iter((QMessageBox.StandardButton.No, QMessageBox.StandardButton.Yes))
+        monkeypatch.setattr(QMessageBox, "question", lambda *_args, **_kwargs: next(answers))
+        QTest.mouseClick(view.download_button, Qt.MouseButton.LeftButton)
+        qt_core_app.processEvents()
+        assert emitted == []
+        assert repository.list_jobs() == ()
+
+        QTest.mouseClick(view.download_button, Qt.MouseButton.LeftButton)
+        operation_id = view._download_operation_id
+        assert operation_id is not None
+        loop = QEventLoop()
+        view.operation_runner.finished.connect(
+            lambda finished_id: loop.quit() if finished_id == operation_id else None
+        )
+        QTimer.singleShot(3000, loop.quit)
+        loop.exec()
+        qt_core_app.processEvents()
+
+        assert len(emitted) == 1
+        assert emitted[0].snapshot.job.total == 1
+        assert len(repository.list_jobs()) == 1
+    finally:
+        database.close()
 
 
 def test_unsupported_external_url_does_not_fall_back_to_fixture(

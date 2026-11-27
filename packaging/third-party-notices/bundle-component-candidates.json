@@ -2,8 +2,8 @@
   "schema_version": "1.0",
   "evidence_kind": "PyInstaller COLLECT TOC and installed distribution metadata; origin/license candidates, not legal approval",
   "build_toc_name": "COLLECT-00.toc",
-  "file_count": 222,
-  "mapped_file_count": 222,
+  "file_count": 221,
+  "mapped_file_count": 221,
   "unresolved_file_count": 0,
   "provenance_status": "mapped",
   "license_review_status": "pending",
@@ -74,7 +74,6 @@
         "_internal/PIL/_avif.cp312-win_amd64.pyd",
         "_internal/PIL/_imaging.cp312-win_amd64.pyd",
         "_internal/PIL/_imagingcms.cp312-win_amd64.pyd",
-        "_internal/PIL/_imagingft.cp312-win_amd64.pyd",
         "_internal/PIL/_imagingtk.cp312-win_amd64.pyd",
         "_internal/PIL/_webp.cp312-win_amd64.pyd"
       ]
@@ -331,7 +330,7 @@
     },
     {
       "name": "Python runtime",
-      "version": "3.12.16",
+      "version": "3.12.10",
       "origin_status": "python-runtime-path",
       "source_root_kind": "python-runtime",
       "license_metadata_candidate": null,
@@ -356,9 +355,9 @@
         "_internal/_uuid.pyd",
         "_internal/_wmi.pyd",
         "_internal/_zoneinfo.pyd",
-        "_internal/libcrypto-3-x64.dll",
+        "_internal/libcrypto-3.dll",
         "_internal/libffi-8.dll",
-        "_internal/libssl-3-x64.dll",
+        "_internal/libssl-3.dll",
         "_internal/pyexpat.pyd",
         "_internal/python3.dll",
         "_internal/python312.dll",
@@ -469,23 +468,6 @@
       "bundle_path": "_internal/PIL/_imagingcms.cp312-win_amd64.pyd",
       "pyinstaller_kind": "EXTENSION",
       "source_basename": "_imagingcms.cp312-win_amd64.pyd",
-      "origin_status": "distribution-metadata-match",
-      "source_root_kind": "python-package",
-      "component_name": "pillow",
-      "version": "13.0.0",
-      "project_url_candidate": "https://pypi.org/project/pillow/13.0.0/",
-      "license_metadata_candidate": {
-        "field": "License-Expression",
-        "value": "MIT-CMU"
-      },
-      "license_file_path_candidates": [
-        "pillow-13.0.0.dist-info/licenses/LICENSE"
-      ]
-    },
-    {
-      "bundle_path": "_internal/PIL/_imagingft.cp312-win_amd64.pyd",
-      "pyinstaller_kind": "EXTENSION",
-      "source_basename": "_imagingft.cp312-win_amd64.pyd",
       "origin_status": "distribution-metadata-match",
       "source_root_kind": "python-package",
       "component_name": "pillow",
@@ -3005,7 +2987,7 @@
       "origin_status": "python-runtime-path",
       "source_root_kind": "python-runtime",
       "component_name": "Python runtime",
-      "version": "3.12.16"
+      "version": "3.12.10"
     },
     {
       "bundle_path": "_internal/VCRUNTIME140_1.dll",
@@ -3014,7 +2996,7 @@
       "origin_status": "python-runtime-path",
       "source_root_kind": "python-runtime",
       "component_name": "Python runtime",
-      "version": "3.12.16"
+      "version": "3.12.10"
     },
     {
       "bundle_path": "_internal/_asyncio.pyd",
@@ -3023,7 +3005,7 @@
       "origin_status": "python-runtime-path",
       "source_root_kind": "python-runtime",
       "component_name": "Python runtime",
-      "version": "3.12.16"
+      "version": "3.12.10"
     },
     {
       "bundle_path": "_internal/_bz2.pyd",
@@ -3032,7 +3014,7 @@
       "origin_status": "python-runtime-path",
       "source_root_kind": "python-runtime",
       "component_name": "Python runtime",
-      "version": "3.12.16"
+      "version": "3.12.10"
     },
     {
       "bundle_path": "_internal/_ctypes.pyd",
@@ -3041,7 +3023,7 @@
       "origin_status": "python-runtime-path",
       "source_root_kind": "python-runtime",
       "component_name": "Python runtime",
-      "version": "3.12.16"
+      "version": "3.12.10"
     },
     {
       "bundle_path": "_internal/_decimal.pyd",
@@ -3050,7 +3032,7 @@
       "origin_status": "python-runtime-path",
       "source_root_kind": "python-runtime",
       "component_name": "Python runtime",
-      "version": "3.12.16"
+      "version": "3.12.10"
     },
     {
       "bundle_path": "_internal/_elementtree.pyd",
@@ -3059,7 +3041,7 @@
       "origin_status": "python-runtime-path",
       "source_root_kind": "python-runtime",
       "component_name": "Python runtime",
-      "version": "3.12.16"
+      "version": "3.12.10"
     },
     {
       "bundle_path": "_internal/_hashlib.pyd",
@@ -3068,7 +3050,7 @@
       "origin_status": "python-runtime-path",
       "source_root_kind": "python-runtime",
       "component_name": "Python runtime",
-      "version": "3.12.16"
+      "version": "3.12.10"
     },
     {
       "bundle_path": "_internal/_lzma.pyd",
@@ -3077,7 +3059,7 @@
       "origin_status": "python-runtime-path",
       "source_root_kind": "python-runtime",
       "component_name": "Python runtime",
-      "version": "3.12.16"
+      "version": "3.12.10"
     },
     {
       "bundle_path": "_internal/_multiprocessing.pyd",
@@ -3086,7 +3068,7 @@
       "origin_status": "python-runtime-path",
       "source_root_kind": "python-runtime",
       "component_name": "Python runtime",
-      "version": "3.12.16"
+      "version": "3.12.10"
     },
     {
       "bundle_path": "_internal/_overlapped.pyd",
@@ -3095,7 +3077,7 @@
       "origin_status": "python-runtime-path",
       "source_root_kind": "python-runtime",
       "component_name": "Python runtime",
-      "version": "3.12.16"
+      "version": "3.12.10"
     },
     {
       "bundle_path": "_internal/_queue.pyd",
@@ -3104,7 +3086,7 @@
       "origin_status": "python-runtime-path",
       "source_root_kind": "python-runtime",
       "component_name": "Python runtime",
-      "version": "3.12.16"
+      "version": "3.12.10"
     },
     {
       "bundle_path": "_internal/_socket.pyd",
@@ -3113,7 +3095,7 @@
       "origin_status": "python-runtime-path",
       "source_root_kind": "python-runtime",
       "component_name": "Python runtime",
-      "version": "3.12.16"
+      "version": "3.12.10"
     },
     {
       "bundle_path": "_internal/_sqlite3.pyd",
@@ -3122,7 +3104,7 @@
       "origin_status": "python-runtime-path",
       "source_root_kind": "python-runtime",
       "component_name": "Python runtime",
-      "version": "3.12.16"
+      "version": "3.12.10"
     },
     {
       "bundle_path": "_internal/_ssl.pyd",
@@ -3131,7 +3113,7 @@
       "origin_status": "python-runtime-path",
       "source_root_kind": "python-runtime",
       "component_name": "Python runtime",
-      "version": "3.12.16"
+      "version": "3.12.10"
     },
     {
       "bundle_path": "_internal/_uuid.pyd",
@@ -3140,7 +3122,7 @@
       "origin_status": "python-runtime-path",
       "source_root_kind": "python-runtime",
       "component_name": "Python runtime",
-      "version": "3.12.16"
+      "version": "3.12.10"
     },
     {
       "bundle_path": "_internal/_wmi.pyd",
@@ -3149,7 +3131,7 @@
       "origin_status": "python-runtime-path",
       "source_root_kind": "python-runtime",
       "component_name": "Python runtime",
-      "version": "3.12.16"
+      "version": "3.12.10"
     },
     {
       "bundle_path": "_internal/_zoneinfo.pyd",
@@ -3158,7 +3140,7 @@
       "origin_status": "python-runtime-path",
       "source_root_kind": "python-runtime",
       "component_name": "Python runtime",
-      "version": "3.12.16"
+      "version": "3.12.10"
     },
     {
       "bundle_path": "_internal/base_library.zip",
@@ -3178,13 +3160,13 @@
       ]
     },
     {
-      "bundle_path": "_internal/libcrypto-3-x64.dll",
+      "bundle_path": "_internal/libcrypto-3.dll",
       "pyinstaller_kind": "BINARY",
-      "source_basename": "libcrypto-3-x64.dll",
+      "source_basename": "libcrypto-3.dll",
       "origin_status": "python-runtime-path",
       "source_root_kind": "python-runtime",
       "component_name": "Python runtime",
-      "version": "3.12.16"
+      "version": "3.12.10"
     },
     {
       "bundle_path": "_internal/libffi-8.dll",
@@ -3193,16 +3175,16 @@
       "origin_status": "python-runtime-path",
       "source_root_kind": "python-runtime",
       "component_name": "Python runtime",
-      "version": "3.12.16"
+      "version": "3.12.10"
     },
     {
-      "bundle_path": "_internal/libssl-3-x64.dll",
+      "bundle_path": "_internal/libssl-3.dll",
       "pyinstaller_kind": "BINARY",
-      "source_basename": "libssl-3-x64.dll",
+      "source_basename": "libssl-3.dll",
       "origin_status": "python-runtime-path",
       "source_root_kind": "python-runtime",
       "component_name": "Python runtime",
-      "version": "3.12.16"
+      "version": "3.12.10"
     },
     {
       "bundle_path": "_internal/manga_to_kindle/infrastructure/persistence/migrations/__init__.py",
@@ -3578,7 +3560,7 @@
       "origin_status": "python-runtime-path",
       "source_root_kind": "python-runtime",
       "component_name": "Python runtime",
-      "version": "3.12.16"
+      "version": "3.12.10"
     },
     {
       "bundle_path": "_internal/python3.dll",
@@ -3587,7 +3569,7 @@
       "origin_status": "python-runtime-path",
       "source_root_kind": "python-runtime",
       "component_name": "Python runtime",
-      "version": "3.12.16"
+      "version": "3.12.10"
     },
     {
       "bundle_path": "_internal/python312.dll",
@@ -3596,7 +3578,7 @@
       "origin_status": "python-runtime-path",
       "source_root_kind": "python-runtime",
       "component_name": "Python runtime",
-      "version": "3.12.16"
+      "version": "3.12.10"
     },
     {
       "bundle_path": "_internal/select.pyd",
@@ -3605,7 +3587,7 @@
       "origin_status": "python-runtime-path",
       "source_root_kind": "python-runtime",
       "component_name": "Python runtime",
-      "version": "3.12.16"
+      "version": "3.12.10"
     },
     {
       "bundle_path": "_internal/shiboken6/MSVCP140.dll",
@@ -3835,7 +3817,7 @@
       "origin_status": "python-runtime-path",
       "source_root_kind": "python-runtime",
       "component_name": "Python runtime",
-      "version": "3.12.16"
+      "version": "3.12.10"
     },
     {
       "bundle_path": "_internal/unicodedata.pyd",
@@ -3844,7 +3826,7 @@
       "origin_status": "python-runtime-path",
       "source_root_kind": "python-runtime",
       "component_name": "Python runtime",
-      "version": "3.12.16"
+      "version": "3.12.10"
     }
   ],
   "scope_note": "Source paths are classified and redacted; license metadata and license files are candidates only. Review notices and source terms before any release."

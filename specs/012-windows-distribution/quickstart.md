@@ -2,13 +2,13 @@
 
 ## Estado e escopo local
 
-Existe um bundle `onedir` e um pacote local Windows 10 x64 com instalador, atualização e desinstalação por usuário. O build, a inicialização real do executável, a migração local e o ciclo de instalação foram exercitados neste Windows 10 x64 com Python 3.12.16 e PyInstaller 6.22.3. Isso comprova o fluxo local deste host; não aprova uma matriz de suporte nem uma release.
+Existe um bundle `onedir` e um pacote local Windows 10 x64 com instalador, atualização e desinstalação por usuário. A pessoa usuária aprovou a matriz desejada Windows 10/11 x64 somente. O build, a inicialização real do executável, a migração local e o ciclo de instalação foram exercitados neste Windows 10 x64 com Python 3.12.16 e PyInstaller 6.22.3; Windows 11 x64 limpo ainda não foi validado. A decisão da matriz não aprova uma release nem prova compatibilidade.
 
-O ZIP em `dist/local-release-draft` é um artefato de validação descartável, gerado no checkout atual. A revisão das licenças e avisos de terceiros, a aprovação da matriz e os testes em VMs limpas de Windows 10/11 continuam pendentes. O CycloneDX, `dependency-license-candidates.json` e `bundle-component-candidates.json` contêm candidatos, não substituem `THIRD-PARTY-NOTICES` revisado. O inventário de proveniência associa arquivos nativos do Qt ao pacote e sua metadata instalada, sem concluir a licença. O instalador usa PowerShell por usuário; Inno Setup não foi usado. Nenhuma atualização remota é executada.
+O ZIP em `dist/local-release-draft` é um artefato de validação descartável, gerado no checkout atual. A revisão das licenças/avisos de terceiros e os testes em VMs limpas de Windows 10/11 x64 continuam pendentes. O CycloneDX, `dependency-license-candidates.json` e `bundle-component-candidates.json` contêm candidatos, não substituem `THIRD-PARTY-NOTICES` revisado. O inventário de proveniência associa arquivos nativos do Qt ao pacote e sua metadata instalada, sem concluir a licença. O instalador usa PowerShell por usuário; Inno Setup não foi usado. Nenhuma atualização remota é executada.
 
 ## Pré-requisitos
 
-- Windows 10 x64 para reproduzir o build local validado. Isso não declara a arquitetura suportada pelo produto.
+- Windows 10 x64 para reproduzir o build local validado. A matriz desejada aprovada é Windows 10/11 x64 somente; ela não declara compatibilidade comprovada antes das VMs limpas.
 - Python 3.12 e `uv` no `PATH`.
 - Checkout com `pyproject.toml` e `uv.lock` sincronizados.
 - Fechar qualquer instância do Manga to Kindle antes de instalar, atualizar ou desinstalar.
@@ -115,6 +115,8 @@ uv run --locked --python 3.12 mypy src/manga_to_kindle tools/release/bundle_inve
 
 Execução local em 2026-11-26: **34 testes de packaging passaram em 32,01s**, com um build lento ignorado por flag; o build lento passou separadamente em **94,71s**. A regressão completa teve **373 passed, 1 skipped em 139,00s**, incluindo KCC 13.0.4 real. Ruff concluiu com `All checks passed`; MyPy concluiu sem problemas nos 155 arquivos verificados. O ZIP real instalou, abriu, atualizou sem alterar o hash do banco e desinstalou preservando um sentinela. O bundle enumera **222 arquivos e 151.601.693 bytes**, todos mapeados por proveniência candidata; o build com `PATH` restrito não incluiu `ucrtbase.dll` externo nem shims API-set. O SBOM tem 24 componentes: 23 têm metadata candidata encontrada e `macholib==1.16.4` não está instalado neste host. Todas as revisões de licença continuam `pending`.
 
+Revalidação em 27/11/2026: `uv run --locked --python 3.12 pytest tests/packaging -q` — **32 passed, 3 skipped em 33,71s**; `uv run --locked --python 3.12 pytest tests -q` — **369 passed, 5 skipped em 99,39s**; smoke de inicialização/composição — **2 passed em 3,24s**. Os três skips de packaging requerem build PyInstaller, ZIP local ou habilitação explícita do build isolado; não foram tratados como sucesso do pacote instalado. O resultado de startup usa perfil temporário e comprova o app local, não instalação em VM limpa. A execução desta revalidação não configurou o binário KCC real.
+
 O smoke visual do executável foi feito no Windows 10 x64 usando `MANGA_TO_KINDLE_DATA_ROOT` apontado para uma pasta temporária. A fixture foi consultada somente por escolha explícita; Atualizações mostrou seu estado local depois de navegar e novamente após reiniciar, e Downloads não apresentou fonte autorizada. A fixture foi usada apenas para verificar apresentação, persistência e isolamento. Não foi usada para comprovar integração remota, download ou refresh.
 
 Para iniciar manualmente o executável com uma raiz de QA descartável:
@@ -139,22 +141,22 @@ $env:MANGA_TO_KINDLE_DATA_ROOT = Join-Path $env:TEMP 'MangaToKindle-F012-QA'
 
 ## Funcionalidades ainda não disponíveis como release
 
-- Matriz de Windows/arquiteturas aprovada e declaração de suporte.
-- Instalação, upgrade e remoção em VMs limpas Windows 10/11 sem Python, `uv`, Qt ou ferramentas de desenvolvimento.
+- Matriz registrada: Windows 10/11 x64 somente. A matriz não declara compatibilidade comprovada.
+- Instalação, upgrade e remoção em VMs limpas Windows 10/11 x64 sem Python, `uv`, Qt ou ferramentas de desenvolvimento.
 - Revisão de licenças, textos de licença e `THIRD-PARTY-NOTICES` completos para os componentes efetivamente empacotados.
 - Assinatura digital, release publicada, installer Inno Setup, auto-update e targets ARM64/x86.
 
-F005 (download real) e F010 (atualização remota) continuam bloqueadas por uma fonte externa autorizada, conforme seus quickstarts. Os testes de transportes e a fixture não contam como evidência de download ou refresh real. O instalador e o bundle local são funcionais no host validado, mas não são uma release aprovada.
+F005 (fluxo de download pela aplicação) continua pendente de integração end-to-end. F010 (atualização periódica) não está autorizada pelo escopo NDL. O instalador e o bundle local funcionam no host validado, mas não são uma release aprovada.
 
 ## Critérios de aceitação que exigem validação manual
 
-- Em cada par de Windows/arquitetura que vier a ser aprovado, validar instalação limpa sem Python/uv/Qt, ícone, versão, primeira abertura e encerramento.
+- Em Windows 10 x64 e Windows 11 x64, validar instalação limpa sem Python/uv/Qt, ícone, versão, primeira abertura e encerramento.
 - Confirmar navegação e funções principais com dependências opcionais ausentes, incluindo KCC e navegador; o primeiro início não deve abrir rede.
 - Instalar uma versão anterior com dados sintéticos, atualizar e comparar IDs, relações, caminhos, preferências e checksums; simular migração interrompida e confirmar recuperação do backup.
 - Validar app aberto, cancelamento, espaço insuficiente, arquivos em uso, permissões de usuário e caminho com espaços/acentos.
 - Desinstalar, conferir remoção de atalhos/registro e comparar a base e os dados antes/depois; reinstalar e abrir a biblioteca preservada.
 - Conferir metadados e ícone do EXE, assinatura/SmartScreen e notices por dependência; registrar hashes e evidências em [checklist de release](checklists/release.md).
-- Confirmar no Windows 11 e em qualquer arquitetura aprovada; o teste local atual não cobre esses ambientes.
+- Confirmar no Windows 11 x64 limpo; o teste local atual cobre somente Windows 10 x64.
 
 ## Recuperação
 

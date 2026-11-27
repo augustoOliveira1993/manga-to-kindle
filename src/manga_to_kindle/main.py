@@ -2,8 +2,10 @@
 
 from __future__ import annotations
 
+import socket
 import sys
 from collections.abc import Sequence
+from uuid import UUID
 
 from PySide6.QtWidgets import QApplication
 
@@ -13,6 +15,9 @@ from manga_to_kindle.application.downloads.controls import (
     DownloadControls,
     DownloadControlSignals,
 )
+from manga_to_kindle.application.downloads.enqueue import EnqueueDownload, PreparedDownload
+from manga_to_kindle.application.downloads.queue import DownloadQueue
+from manga_to_kindle.application.downloads.restore_references import RestoreDownloadReferences
 from manga_to_kindle.application.exports.create_export import CreateExport
 from manga_to_kindle.application.images.import_pages import ImportImages
 from manga_to_kindle.application.lifecycle import ApplicationRuntime
@@ -47,6 +52,7 @@ from manga_to_kindle.application.updates.refresh_manga_catalog import RefreshMan
 from manga_to_kindle.domain.catalog import CatalogSnapshot
 from manga_to_kindle.domain.settings import ApplicationPreferences, DeviceProfileSettings
 from manga_to_kindle.infrastructure.config.settings import save_settings
+from manga_to_kindle.infrastructure.downloads.page_store import PageStore
 from manga_to_kindle.infrastructure.exports.cbz_validator import ValidateCbz
 from manga_to_kindle.infrastructure.exports.cbz_writer import NativeCbzWriter
 from manga_to_kindle.infrastructure.exports.epub_validator import ValidateEpub
@@ -56,6 +62,8 @@ from manga_to_kindle.infrastructure.exports.output_store import ExportOutputStor
 from manga_to_kindle.infrastructure.images.image_store import ImageStore
 from manga_to_kindle.infrastructure.images.pillow_decoder import PillowImageDecoder
 from manga_to_kindle.infrastructure.images.source_reader import LocalImageSourceReader
+from manga_to_kindle.infrastructure.network.pinned_http_transport import PinnedHttpTransport
+from manga_to_kindle.infrastructure.network.url_policy import ExternalUrlPolicy
 from manga_to_kindle.infrastructure.os_open import DesktopSystemOpener
 from manga_to_kindle.infrastructure.persistence.catalog_repository import CatalogRepository
 from manga_to_kindle.infrastructure.persistence.download_repository import DownloadRepository
@@ -68,10 +76,21 @@ from manga_to_kindle.infrastructure.persistence.settings_repository import Setti
 from manga_to_kindle.infrastructure.persistence.transfer_repository import TransferRepository
 from manga_to_kindle.infrastructure.persistence.update_repository import UpdateRepository
 from manga_to_kindle.infrastructure.providers.fixture_provider import FixtureProvider
+from manga_to_kindle.infrastructure.providers.ndl_provider import NdlProvider
 from manga_to_kindle.infrastructure.security.credential_vault import WindowsCredentialVault
 from manga_to_kindle.infrastructure.transfers.smtp_transport import SmtpTransport
 from manga_to_kindle.presentation.qt.lifecycle import ApplicationController
 from manga_to_kindle.presentation.qt.main_window import MainWindow
+
+
+def _resolve_external_host(host: str) -> tuple[str, ...]:
+    return tuple(
+        dict.fromkeys(
+            address
+            for result in socket.getaddrinfo(host, 443, type=socket.SOCK_STREAM)
+            if isinstance((address := result[4][0]), str)
+        )
+    )
 
 
 def main(argv: Sequence[str] | None = None) -> int:
@@ -95,7 +114,14 @@ def main(argv: Sequence[str] | None = None) -> int:
 
 def configure_application(window: MainWindow, runtime: ApplicationRuntime) -> None:
     """Inject local services after startup and connect persisted preferences to consumers."""
-    providers = ProviderRegistry((FixtureProvider(),))
+    url_policy = ExternalUrlPolicy(_resolve_external_host)
+    network_transport = PinnedHttpTransport(url_policy)
+    providers = ProviderRegistry(
+        (
+            FixtureProvider(),
+            NdlProvider(network_transport, url_policy),
+        )
+    )
     query = GetCatalog(providers)
     catalog_repository = CatalogRepository(runtime.database)
     refresh = RefreshCatalog(query, catalog_repository)
@@ -214,10 +240,36 @@ def configure_application(window: MainWindow, runtime: ApplicationRuntime) -> No
             window.conversion_view.set_default_output_directory(preferences.export_directory)
         if preferences.download_directory is not None:
             downloads = DownloadRepository(runtime.database, preferences.download_directory)
+            download_signals = DownloadControlSignals()
+            download_queue = DownloadQueue(
+                downloads,
+                network_transport,
+                PageStore(preferences.download_directory),
+                url_policy,
+                download_signals,
+            )
+            enqueuer = EnqueueDownload(downloads, url_policy)
+
+            def prepare_download(
+                catalog: CatalogSnapshot,
+                selected_chapter_ids: tuple[UUID, ...],
+            ) -> PreparedDownload:
+                provider = providers.by_id(catalog.provider_id)
+                return enqueuer.prepare(
+                    provider=provider,
+                    catalog=catalog,
+                    selected_chapter_ids=selected_chapter_ids,
+                )
+
+            window.add_manga_view.set_download_preparer(prepare_download)
+            window.add_manga_view.download_enqueued.connect(
+                window.downloads_view.start_download
+            )
             window.downloads_view.bind_queue(
                 downloads,
-                DownloadControls(downloads, DownloadControlSignals()),
-                resume_available=False,
+                DownloadControls(downloads, download_signals),
+                download_queue=download_queue,
+                resume_preparer=RestoreDownloadReferences(downloads, providers).execute,
             )
             window.library_view.bind_services(
                 LibraryRepository(

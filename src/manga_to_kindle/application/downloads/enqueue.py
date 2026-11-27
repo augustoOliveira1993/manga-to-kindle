@@ -2,7 +2,9 @@
 
 from __future__ import annotations
 
-from collections.abc import Iterable
+from collections.abc import Iterable, Mapping
+from dataclasses import dataclass
+from types import MappingProxyType
 from uuid import UUID
 
 from manga_to_kindle.application.downloads.errors import (
@@ -23,6 +25,13 @@ from manga_to_kindle.infrastructure.persistence.download_repository import (
 )
 
 
+@dataclass(frozen=True, slots=True)
+class PreparedDownload:
+    snapshot: DownloadQueueSnapshot
+    provider: MangaProvider
+    page_references: Mapping[tuple[UUID, str], ProviderPageReference]
+
+
 class EnqueueDownload:
     def __init__(
         self,
@@ -39,6 +48,19 @@ class EnqueueDownload:
         catalog: CatalogSnapshot,
         selected_chapter_ids: Iterable[UUID],
     ) -> DownloadQueueSnapshot:
+        return self.prepare(
+            provider=provider,
+            catalog=catalog,
+            selected_chapter_ids=selected_chapter_ids,
+        ).snapshot
+
+    def prepare(
+        self,
+        *,
+        provider: MangaProvider,
+        catalog: CatalogSnapshot,
+        selected_chapter_ids: Iterable[UUID],
+    ) -> PreparedDownload:
         capabilities = provider.capabilities
         if (
             provider.provider_id != catalog.provider_id
@@ -66,6 +88,7 @@ class EnqueueDownload:
         )
 
         chapter_pages: list[ChapterPageReferences] = []
+        page_references: dict[tuple[UUID, str], ProviderPageReference] = {}
         for chapter in ordered_chapters:
             try:
                 references = tuple(provider.get_pages(chapter))
@@ -77,9 +100,13 @@ class EnqueueDownload:
                 ) from None
             self._validate_references(provider, references)
             chapter_pages.append((chapter, references))
+            page_references.update(
+                ((chapter.id, reference.source_id), reference) for reference in references
+            )
 
         policy_snapshot: dict[str, object] = {
             "provider_id": provider.provider_id,
+            "source_id": catalog.source_id,
             "authorization_reviewed_on": capabilities.authorization_reviewed_on.isoformat()
             if capabilities.authorization_reviewed_on is not None
             else None,
@@ -87,12 +114,21 @@ class EnqueueDownload:
             "allowed_ports": sorted(capabilities.allowed_ports),
             "allowed_schemes": sorted(capabilities.allowed_schemes),
             "requests_per_minute": capabilities.requests_per_minute,
+            "authorization_evidence": capabilities.authorization_evidence,
+            "authorization_scope": capabilities.authorization_scope,
+            "required_attribution": capabilities.required_attribution,
+            "removal_policy": capabilities.removal_policy,
         }
-        return self._repository.enqueue(
+        snapshot = self._repository.enqueue(
             manga_id=catalog.manga.id,
             provider_id=provider.provider_id,
             chapter_pages=chapter_pages,
             policy_snapshot=policy_snapshot,
+        )
+        return PreparedDownload(
+            snapshot=snapshot,
+            provider=provider,
+            page_references=MappingProxyType(page_references),
         )
 
     def _validate_references(

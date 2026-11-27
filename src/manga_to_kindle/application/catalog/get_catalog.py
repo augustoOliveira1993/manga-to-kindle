@@ -15,6 +15,7 @@ from manga_to_kindle.domain.errors import DomainValidationError
 from manga_to_kindle.domain.providers import (
     CapabilityUnavailable,
     MangaProvider,
+    ProviderError,
     ProviderResponseInvalid,
 )
 
@@ -37,7 +38,11 @@ class GetCatalog:
         if not provider.capabilities.metadata or not provider.capabilities.chapters:
             raise CapabilityUnavailable()
         try:
-            manga = provider.get_manga(resolved.url)
+            cancellable_query = getattr(provider, "get_manga_with_cancellation", None)
+            if callable(cancellable_query):
+                manga = cancellable_query(resolved.url, is_cancelled=cancelled)
+            else:
+                manga = provider.get_manga(resolved.url)
             ordered_chapters = order_chapters(tuple(provider.get_chapters(manga)))
             if cancelled():
                 raise CatalogRefreshCancelled("A consulta foi cancelada.")
@@ -58,5 +63,11 @@ class GetCatalog:
             )
         except CatalogRefreshCancelled:
             raise
+        except ProviderError:
+            if cancelled():
+                raise CatalogRefreshCancelled("A consulta foi cancelada.") from None
+            raise
         except (AttributeError, DomainValidationError, TypeError, ValueError):
+            if cancelled():
+                raise CatalogRefreshCancelled("A consulta foi cancelada.") from None
             raise ProviderResponseInvalid() from None

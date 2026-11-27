@@ -6,7 +6,7 @@
 
 - Features anteriores: F001–F004 (persistência, UI worker boundary, providers e catálogo/seleção).
 - Reutilizar a política de URL F003, IDs e seleção F004, e runner de migrações F001. Fila não cria cliente nem regras de segurança paralelos.
-- Gate: testes usam transporte fake. Downloads reais exigem provider/fonte autorizada e limites documentados; nunca contornar bloqueios.
+- Gate: testes automatizados usam transporte fake. O download real limitado NDL foi autorizado em 2026-11-27 para item individual PDM após seleção/consentimento; demais fontes exigem autorização e limites próprios.
 
 ## Fase 1 — Setup
 
@@ -44,7 +44,7 @@
 - [x] T013 [US2] Criar testes de pause/resume/cancel e interrupção durante shutdown em `tests/integration/test_download_controls.py`.
 - [x] T014 [US2] Implementar comandos de controle cooperativo e persistência de estado após cada checkpoint seguro em `application/downloads/controls.py`.
 - [x] T015 [US2] Criar testes de estado e acessibilidade dos controles em `tests/ui/test_download_controls_view.py`.
-- [x] T016 [US2] Integrar pausa, retomada e cancelamento à tela Downloads, distinguindo retomada suportada de não suportada.; arquivos/componentes: `src/manga_to_kindle/presentation/qt/views/downloads_view.py`
+- [x] T016 [US2] Integrar início da fila após confirmação explícita, pausa, retomada, restauração das referências e cancelamento à tela Downloads.; arquivos/componentes: `src/manga_to_kindle/presentation/qt/views/add_manga_view.py; src/manga_to_kindle/presentation/qt/views/downloads_view.py`
 
 ### US3 — Recuperar falhas sem arquivos inválidos (P1)
 
@@ -66,13 +66,13 @@
 
 ## Fase 5 — Polish e validação
 
-- [x] T025 Documentar fluxo local, autorização exigida para fontes e recuperação da fila em README e quickstart.; arquivos/componentes: `README.md; specs/005-download-queue/quickstart.md`
-- [x] T026 Executar testes focados de retry, cancelamento, segurança de arquivos e reinício; registrar a fonte real como gate não resolvido.; arquivos/componentes: `tests/integration/test_download_flow.py; tests/security/test_download_boundaries.py; specs/005-download-queue/quickstart.md`
+- [x] T025 Documentar fluxo local, confirmação, escopo NDL/PDM, limites e recuperação da fila em README e quickstart.; arquivos/componentes: `README.md; specs/005-download-queue/quickstart.md`
+- [x] T026 Executar testes focados de retry, cancelamento, segurança de arquivos e reinício; validar o item NDL individual em perfil temporário e registrar manualmente os critérios restantes.; arquivos/componentes: `tests/integration/test_download_flow.py; tests/security/test_download_boundaries.py; specs/005-download-queue/quickstart.md`
 
 ## Dependências e estratégia de execução
 
-- Requer `F001:T017`, `F002:T015`, `F003:T015` e `F004:T018`. T009–T012 constituem MVP de fila, sempre com transporte fake até liberação de fonte.
-- A política de retry (T017–T018) deve anteceder qualquer implementação HTTP. Não executar download externo sem a evidência de autorização prevista em F003.
+- Requer `F001:T017`, `F002:T015`, `F003:T015` e `F004:T018`. T009–T012 constituem MVP de fila; testes permanecem isolados e NDL real só opera dentro do escopo autorizado.
+- A política de retry (T017–T018) antecede o transporte real. Não executar download externo fora da autorização específica registrada em F003.
 
 ## Rastreabilidade
 
@@ -84,4 +84,4 @@
 - T001 e T002 são raízes paralelizáveis após as dependências de feature: F001–F004. Em F001, essas raízes não têm dependência externa.
 - T003 depende de T001 e T002. Cada tarefa T004 em diante depende da tarefa imediatamente anterior no mesmo tasks.md; essa ordem conservadora preserva os gates, os testes antes da implementação e as integrações indicadas acima.
 - No MCP, cada dependência aponta para o ID da tarefa equivalente; tarefas-raiz também dependem da última tarefa de integração das features predecessoras listadas.
-- As tarefas de engenharia T001–T026 foram concluídas e validadas localmente. Isso não resolve `B003-REAL-SOURCE`: a capacidade de baixar conteúdo real e o marco F005 continuam pendentes até haver fonte com autorização verificável.
+- As tarefas de engenharia T001–T026 foram concluídas e validadas. O marco F005 foi atingido com 33/33 páginas PDM reais no perfil temporário QA; `B003-REAL-SOURCE` continua para fontes, itens e escopos além da autorização NDL.

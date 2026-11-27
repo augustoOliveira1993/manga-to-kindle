@@ -41,7 +41,7 @@ class MainWindow(QMainWindow):
 
     _PAGES: tuple[tuple[str, str, str, str], ...] = (
         ("library", "▤  Biblioteca", "Biblioteca", "Sua coleção local"),
-        ("add", "＋  Adicionar mangá", "Adicionar mangá", "Catálogo local de demonstração"),
+        ("add", "＋  Adicionar mangá", "Adicionar mangá", "Consultar fontes disponíveis"),
         ("downloads", "↓  Downloads", "Downloads", "Fila local; fonte autorizada indisponível"),
         ("conversion", "▣  Conversão", "Conversão", "EPUB e CBZ locais; sem envio"),
         ("send", "↗  Enviar ao Kindle", "Enviar ao Kindle", "Fluxo manual oficial"),

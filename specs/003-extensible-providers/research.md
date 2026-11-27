@@ -1,25 +1,60 @@
 # Pesquisa — F003 Provedores
 
-## Decisões técnicas
+## Decisão autorizada — 2026-11-27
 
-- Fixture handler intercepta `https://fixture.invalid/...` localmente antes de resolver nome; não há fallback à internet.
-- HTTPX é candidato futuro: docs confirmam timeouts/pool configuráveis e redirects desligados por padrão. O uso real exige autorização verificada e regra própria para cada request/hop.
-- HTTPX não garante que DNS validado e socket conectado usem o mesmo IP; não declarar SSRF protegido só por validar resolução antecipada. Sem adapter seguro comprovado, mantém-se bloqueio.
-- BeautifulSoup4 continua condicional; não instalar até scraping/parser ser explicitamente autorizado para uma fonte documentada.
-- Retry/rate limit têm origem na política de cada provedor, nunca em defaults de cliente.
+A pessoa usuária autorizou: (1) consultas pontuais de metadados à Next Digital Library da
+National Diet Library (NDL); (2) download local, iniciado por seleção explícita, de item
+individual pertencente ao acervo marcado Public Domain Mark; (3) nenhuma atualização
+periódica ou contínua. A autorização não cobre outros catálogos, distribuição do conteúdo,
+acesso em lote sem seleção nem conteúdo cuja inclusão no acervo PDM não tenha sido
+confirmada.
 
-## Referências primárias
+## Evidência e limites da fonte
 
-- [HTTPX timeouts](https://www.python-httpx.org/advanced/timeouts/)
-- [HTTPX resource limits](https://www.python-httpx.org/advanced/resource-limits/)
-- [HTTPX redirects](https://www.python-httpx.org/compatibility/#redirects)
-- [OWASP SSRF Prevention](https://cheatsheetseries.owasp.org/cheatsheets/Server_Side_Request_Forgery_Prevention_Cheat_Sheet.html)
-- [Beautiful Soup docs](https://www.crummy.com/software/BeautifulSoup/bs4/doc/) — não usada por fixtures.
+- A [página oficial do serviço NDL](https://lab.ndl.go.jp/service/tsugidigi/tsugidigi_en/)
+  descreve Next Digital Library como acervo experimental de livros antigos/raros com
+  materiais e dados Public Domain Mark. Os avisos PDM/CC0 devem ser preservados. Consulta
+  contínua requer contato com a NDL; a aplicação não implementa periodicidade.
+- A [documentação oficial da API](https://lab.ndl.go.jp/service/tsugidigi/apiinfo/)
+  documenta busca/detalhe de livros e imagens IIIF. Os exemplos incluem o padrão de URL
+  `/api/iiif/{PID}/R0000028/full/full/0/default.jpg`.
+- Em 2026-11-27, com autorização limitada já obtida, uma consulta pontual real ao endpoint
+  `/dl/api/book/search` retornou `北斎漫画`, volume `５編` (1878), PID `851650`, 33 páginas.
+  O endpoint de detalhe confirmou os metadados; a API não devolve campo de direitos, então
+  a indicação PDM deriva da inclusão do item no corpus descrito nos termos da NDL, não de
+  uma flag por registro.
+- A documentação não publica cota numérica de requisições/minuto. A aplicação impõe um
+  intervalo mínimo de 60 segundos entre consultas de metadados e até 12 requisições IIIF
+  por minuto. Esses são limites locais, sem atribuí-los à NDL.
+- O smoke de 27/11/2026 confirmou que a página 1 retorna JPEG diretamente; páginas 21 e 29
+  retornaram HTTP 307 do endpoint IIIF oficial para o host exato
+  `dss-r4-prod-contents-download.s3.amazonaws.com`. O bucket respondeu HTTP 200 com bytes
+  JPEG e `binary/octet-stream`; o aplicativo valida cada redirect/IP/TLS e só usa fallback
+  `image/jpeg` para uma referência `.jpg`, seguida de verificação de assinatura e decode.
+  O download completo F005 terminou com 33/33 arquivos no perfil temporário de QA.
 
-## Bloqueio
+## Implementação segura
 
-`B003-REAL-SOURCE`: nenhuma fonte identificada com autorização verificável para baixar o conteúdo pretendido. Não incluir MangaDex ou outra fonte como real; uma futura integração demanda prova/revisão dos termos e especificação própria.
+- `NdlProvider` aceita somente `https://lab.ndl.go.jp/dl/book/<PID>` e consulta um registro
+  de metadados por ação explícita no worker de catálogo.
+- O transporte padrão da biblioteca valida host/porta/esquema, resolve A/AAAA uma vez,
+  recusa respostas DNS mistas ou não globais, conecta diretamente a IP validado, mantém SNI
+  e valida o certificado do host atual. Ele não usa proxies ambientais. Todo redirect exige
+  HTTPS e host exato aprovado, tem IP e TLS revalidados, detecta loops e termina em até cinco
+  saltos; o bucket S3 de entrega da NDL é o único host adicional autorizado.
+- O provider cria referências IIIF apenas para páginas do item cujo metadado foi obtido.
+  F005 revalida destino, MIME, assinatura/tamanho raster e persiste atomicamente.
+- `periodic_catalog_updates_authorized=False`. A F010 permanece bloqueada para NDL.
+- A fixture `fixture.invalid` segue offline, sintética e sem autorização de download.
 
-## Procedimento para reavaliar o bloqueio
+## Referências adicionais
 
-Antes de qualquer provider de produção, registrar fonte e páginas oficiais dos termos aplicáveis; confirmar expressamente que consulta, armazenamento local e uso pretendido são autorizados; descrever limites de taxa, atribuição, licença, remoção e condições de encerramento; revisar destinos, redirects e riscos SSRF; e obter aprovação humana para o escopo concreto. Sem todos esses itens, manter `B003-REAL-SOURCE`, `download_authorized=False` e testes sem tráfego externo. Uma licença permissiva do código de uma biblioteca não autoriza baixar conteúdo hospedado por terceiros.
+- [OWASP SSRF Prevention Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/Server_Side_Request_Forgery_Prevention_Cheat_Sheet.html)
+- [Python `http.client`](https://docs.python.org/3/library/http.client.html)
+- [Python `ssl`](https://docs.python.org/3/library/ssl.html)
+
+## Bloqueios restantes
+
+`B003-REAL-SOURCE` continua para MangaDex e demais provedores, uso contínuo/periódico,
+itens fora do corpus PDM e qualquer distribuição de conteúdo. Não inferir que o catálogo
+da NDL represente mangas modernos ou uma coleção completa de capítulos.
