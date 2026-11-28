@@ -339,10 +339,10 @@ def test_local_archive_installs_starts_and_uninstalls_without_removing_user_data
     assert bundle_inventory["file_count"] > 0
     assert bundle_inventory["license_review_status"] == "pending"
 
-    local_app_data = tmp_path / "LocalAppData"
+    local_app_data = tmp_path / "L"
     app_data = tmp_path / "AppData" / "Roaming"
     shortcut_directory = tmp_path / "StartMenu"
-    install_directory = local_app_data / "Programs" / "MangaToKindle"
+    install_directory = local_app_data / "I"
     data_root = tmp_path / "isolated-user-data"
     data_root.mkdir()
     app_data.mkdir(parents=True)
